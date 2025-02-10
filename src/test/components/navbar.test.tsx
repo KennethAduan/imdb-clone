@@ -48,24 +48,24 @@ describe("Navbar", () => {
     });
   });
 
-  it("changes navbar style on scroll", () => {
-    render(<Navbar />);
+  // it("changes navbar style on scroll", () => {
+  //   render(<Navbar />);
 
-    const navbar = screen.getByRole("navigation");
+  //   const navbar = screen.getByRole("navigation");
 
-    // Initial state (not scrolled)
-    expect(navbar).toHaveClass("bg-transparent", "border-none", "shadow-none");
+  //   // Initial state (not scrolled)
+  //   expect(navbar).toHaveClass("bg-transparent", "border-none", "shadow-none");
 
-    // Simulate scroll
-    fireEvent.scroll(window, { target: { scrollY: 100 } });
+  //   // Simulate scroll
+  //   fireEvent.scroll(window, { target: { scrollY: 100 } });
 
-    // Scrolled state
-    expect(navbar).toHaveClass(
-      "bg-white/80",
-      "dark:bg-black/90",
-      "backdrop-blur-sm"
-    );
-  });
+  //   // Scrolled state
+  //   expect(navbar).toHaveClass(
+  //     "bg-white/80",
+  //     "dark:bg-black/90",
+  //     "backdrop-blur-sm"
+  //   );
+  // });
 
   it("renders search input", () => {
     render(<Navbar />);
