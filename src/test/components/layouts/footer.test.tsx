@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import Footer from "@/components/layouts/footer";
@@ -24,7 +25,7 @@ describe("Footer", () => {
     render(<Footer />);
 
     // Check if logo is present
-    const logo = screen.getByAltText("VitalJourney Logo");
+    const logo = screen.getByAltText("Moviesflix logo");
     expect(logo).toBeInTheDocument();
     expect(logo.closest("a")).toHaveAttribute("href", ROUTES.HOME);
 

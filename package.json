@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.3.1",
+    "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-navigation-menu": "^1.2.5",
     "@radix-ui/react-slot": "^1.1.2",
     "@types/jest": "^29.5.14",

@@ -1,4 +1,5 @@
 import { Facebook, Twitter, Instagram, Github, Youtube } from "lucide-react";
+export const APP_NAME = "MOVIESFLIX";
 export const TOP_LOADER_COLOR = "#DC143C";
 export const ROUTES = {
   HOME: "/",

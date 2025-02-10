@@ -16,7 +16,7 @@ const Footer = () => {
             <Link href={ROUTES.HOME} className="flex items-center">
               <Image
                 src={FOOTER_DETAILS.LOGO}
-                alt="VitalJourney Logo"
+                alt="Moviesflix logo"
                 width={130}
                 height={130}
                 className="mb-4"
