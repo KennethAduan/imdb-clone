@@ -1,5 +1,5 @@
 import { Facebook, Twitter, Instagram, Github, Youtube } from "lucide-react";
-
+export const TOP_LOADER_COLOR = "#DC143C";
 export const ROUTES = {
   HOME: "/",
   SIGN_IN: "/sign-in",
