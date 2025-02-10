@@ -1,6 +1,7 @@
 import { Facebook, Twitter, Instagram, Github, Youtube } from "lucide-react";
 export const APP_NAME = "MOVIESFLIX";
 export const TOP_LOADER_COLOR = "#DC143C";
+
 export const ROUTES = {
   HOME: "/",
   SIGN_IN: "/sign-in",
@@ -102,5 +103,36 @@ export const FOOTER_DETAILS = {
       href: "https://youtube.com",
       icon: Youtube,
     },
+  ],
+} as const;
+
+export const API_FOLDER_DETAILS = {
+  TYPE: {
+    MOVIE: "movie",
+    SERIES: "series",
+    EPISODE: "episode",
+  },
+  PLOT: {
+    SHORT: "short",
+    FULL: "full",
+  },
+  POPULAR_SEARCHES: [
+    "love",
+    "hero",
+    "star",
+    "war",
+    "life",
+    "world",
+    "game",
+    "dark",
+    "night",
+    "day",
+    "love",
+    "hero",
+    "star",
+    "war",
+    "life",
+    "world",
+    "game",
   ],
 } as const;

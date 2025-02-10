@@ -2,12 +2,12 @@ import { z } from "zod";
 
 const envSchema = z.object({
   OMDB_API_KEY: z.string().min(1, "OMDB API key is required"),
+  OMDB_API_URL: z.string().min(1, "OMDB API URL is required"),
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
   JWT_SECRET: z.string().min(32, "JWT secret must be at least 32 characters"),
   JWT_EXPIRES_IN: z.string().default("7d"),
-  SALT_ROUNDS: z.number().default(10),
 });
 
 // This will throw an error if the environment variables are invalid
@@ -27,7 +27,7 @@ export const env = envParse.data;
 export const config = {
   api: {
     omdb: {
-      baseUrl: "https://www.omdbapi.com",
+      baseUrl: env.OMDB_API_URL,
       key: env.OMDB_API_KEY,
     },
   },
@@ -37,6 +37,9 @@ export const config = {
       secret: env.JWT_SECRET,
       expiresIn: env.JWT_EXPIRES_IN,
     },
-    saltRounds: env.SALT_ROUNDS,
+  },
+  rateLimit: {
+    windowMs: 60000,
+    max: 60,
   },
 } as const;
