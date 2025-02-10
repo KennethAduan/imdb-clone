@@ -1,5 +1,14 @@
 import { config } from "@/config/environment";
+import { isEmptyObject } from "@/utils";
 import { NextResponse } from "next/server";
+
+const getSearchResults = async ({ searchTerm }: { searchTerm: string }) => {
+  const response = await fetch(
+    `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&s=${searchTerm}`
+  );
+  const data = await response.json();
+  return data;
+};
 
 export const GET = async (req: Request) => {
   try {
@@ -15,11 +24,13 @@ export const GET = async (req: Request) => {
       );
     }
 
-    const response = await fetch(
-      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&s=${searchTerm}`
-    );
-    const data = await response.json();
-    return NextResponse.json(data);
+    const response = await getSearchResults({ searchTerm });
+    if (isEmptyObject(response)) {
+      return NextResponse.json({
+        message: "No results found",
+      });
+    }
+    return NextResponse.json(response);
   } catch (error) {
     return NextResponse.json(
       { error: "Failed to fetch data from OMDB", message: error },

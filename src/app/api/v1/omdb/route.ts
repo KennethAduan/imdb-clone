@@ -1,6 +1,7 @@
 import { config } from "@/config/environment";
 import { NextResponse } from "next/server";
 import { API_FOLDER_DETAILS } from "@/constants";
+import { isEmptyObject } from "@/utils";
 
 type OmdbParams = {
   page: string;
@@ -50,7 +51,11 @@ export const GET = async (req: Request) => {
 
     const response = await fetch(url);
     const data = await response.json();
-
+    if (isEmptyObject(data)) {
+      return NextResponse.json({
+        message: "No results found",
+      });
+    }
     return NextResponse.json({
       ...data,
       year: params.year,

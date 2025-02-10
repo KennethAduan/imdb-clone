@@ -2,8 +2,9 @@ import { API_FOLDER_DETAILS } from "@/constants";
 import { NextResponse } from "next/server";
 import { config } from "@/config/environment";
 import { ParamsRequest } from "../../shared/types";
+import { isEmptyObject } from "@/utils";
 
-const getEpisodeById = async (id: string) => {
+const getEpisodeById = async ({ id }: ParamsRequest) => {
   const response = await fetch(
     `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=${API_FOLDER_DETAILS.TYPE.EPISODE}&i=${id}`
   );
@@ -17,8 +18,12 @@ export const GET = async (
 ) => {
   const id = (await params).id;
   try {
-    const episode = await getEpisodeById(id);
-
+    const episode = await getEpisodeById({ id });
+    if (isEmptyObject(episode)) {
+      return NextResponse.json({
+        message: "Episode not found",
+      });
+    }
     return NextResponse.json({
       data: episode,
     });
