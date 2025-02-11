@@ -19,3 +19,10 @@ export type ApiResponse<T> = {
     timestamp: string;
   };
 };
+
+export type OmdbParams = {
+  page: string;
+  type: string;
+  year: string;
+  searchTerm: string;
+};

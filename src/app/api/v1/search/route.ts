@@ -1,13 +1,37 @@
 import { config } from "@/config/environment";
-import { isEmptyObject } from "@/lib/utils";
+import logger from "@/lib/logger";
+import { handleError, isFalse, isFalseString } from "@/lib/utils";
+import { SearchResponse } from "@/types/omdb.types";
 import { NextResponse } from "next/server";
 
 const getSearchResults = async ({ searchTerm }: { searchTerm: string }) => {
-  const response = await fetch(
-    `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&s=${searchTerm}`
-  );
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(
+      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&s=${searchTerm}`
+    );
+
+    if (isFalse(response.ok)) {
+      return handleError("Failed to fetch search results", 500);
+    }
+
+    const SearchResponseData: SearchResponse = await response.json();
+
+    if (isFalseString(SearchResponseData.Response)) {
+      return {
+        success: false,
+        data: {
+          message: SearchResponseData.Error,
+        },
+      };
+    }
+    return SearchResponseData;
+  } catch (error) {
+    logger.error("Error fetching search results:", { error, searchTerm });
+    return handleError(
+      error instanceof Error ? error.message : "Failed to fetch search results",
+      500
+    );
+  }
 };
 
 export const GET = async (req: Request) => {
@@ -16,25 +40,20 @@ export const GET = async (req: Request) => {
     const searchTerm = searchParams.get("s");
 
     if (!searchTerm || searchTerm.length < 2) {
-      return NextResponse.json(
-        {
-          error: "Search term must be at least 2 characters long",
-        },
-        { status: 400 }
-      );
+      return handleError("Search term must be at least 2 characters long", 400);
     }
 
     const response = await getSearchResults({ searchTerm });
-    if (isEmptyObject(response)) {
-      return NextResponse.json({
-        message: "No results found",
-      });
-    }
-    return NextResponse.json(response);
+
+    return NextResponse.json({
+      success: true,
+      data: response,
+    });
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch data from OMDB", message: error },
-      { status: 500 }
+    logger.error("Error in search route:", { error });
+    return handleError(
+      error instanceof Error ? error.message : "Internal server error",
+      500
     );
   }
 };

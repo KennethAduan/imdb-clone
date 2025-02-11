@@ -1,22 +1,15 @@
 import { config } from "@/config/environment";
 import { NextResponse } from "next/server";
-import { API_FOLDER_DETAILS } from "@/constants";
-import { isEmptyObject } from "@/lib/utils";
-
-type OmdbParams = {
-  page: string;
-  type: string;
-  year: string;
-  searchTerm: string;
-};
-
-// Get random search term from popular searches
-const getRandomSearchTerm = () => {
-  const randomIndex = Math.floor(
-    Math.random() * API_FOLDER_DETAILS.POPULAR_SEARCHES.length
-  );
-  return API_FOLDER_DETAILS.POPULAR_SEARCHES[randomIndex];
-};
+import {
+  getRandomSearchTerm,
+  handleError,
+  isEmptyArray,
+  isEmptyString,
+  isFalse,
+  isUndefined,
+} from "@/lib/utils";
+import { OmdbParams } from "../shared/types";
+import { OMDBResponse } from "@/types/omdb.types";
 
 // Get default parameters
 const getDefaultParams = (searchParams: URLSearchParams): OmdbParams => {
@@ -45,28 +38,34 @@ const buildOmdbUrl = (params: OmdbParams): URL => {
 
 export const GET = async (req: Request) => {
   try {
+    // Validate request URL
+    if (isUndefined(req.url) || isEmptyString(req.url)) {
+      return handleError("Invalid request URL", 400);
+    }
     const { searchParams } = new URL(req.url);
     const params = getDefaultParams(searchParams);
     const url = buildOmdbUrl(params);
 
-    const response = await fetch(url);
-    const data = await response.json();
-    if (isEmptyObject(data)) {
+    try {
+      const response = await fetch(url);
+
+      if (isFalse(response.ok)) {
+        throw new Error(`OMDB API responded with status: ${response.status}`);
+      }
+
+      const data: OMDBResponse = await response.json();
+
+      if (isEmptyArray(data.Search)) {
+        return handleError(data.error?.message ?? "No results found", 400);
+      }
+
       return NextResponse.json({
-        message: "No results found",
+        ...data,
       });
+    } catch (fetchError) {
+      return handleError(fetchError, 503);
     }
-    return NextResponse.json({
-      ...data,
-      year: params.year,
-    });
   } catch (error) {
-    return NextResponse.json(
-      {
-        error: "Failed to fetch data from OMDB",
-        message: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 }
-    );
+    return handleError(error);
   }
 };

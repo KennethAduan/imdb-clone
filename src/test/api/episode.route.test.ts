@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { GET } from "@/app/api/v1/series/[id]/route";
+import { GET } from "@/app/api/v1/episode/[id]/route";
 import { config } from "@/config/environment";
-import { mockSeriesData } from "../mock";
+
+import { mockEpisodeData } from "../mock";
 
 // Mock Next.js Response
 jest.mock("next/server", () => ({
@@ -16,41 +17,41 @@ jest.mock("@/lib/logger", () => ({
   info: jest.fn(),
 }));
 
-describe("Series Route Handler", () => {
+describe("Episode Route Handler", () => {
   // Reset mocks before each test
   beforeEach(() => {
     jest.clearAllMocks();
     global.fetch = jest.fn();
   });
 
-  it("should successfully fetch series details", async () => {
+  it("should successfully fetch episode details", async () => {
     // Mock successful fetch response
     (global.fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve(mockSeriesData),
+      json: () => Promise.resolve(mockEpisodeData),
     });
 
     const request = new Request(
-      "http://localhost:3000/api/v1/series/tt0903747"
+      "http://localhost:3000/api/v1/episode/tt0959621"
     );
     await GET(request, {
-      params: { id: "tt0903747" },
+      params: { id: "tt0959621" },
     });
 
     // Verify the fetch call
     expect(global.fetch).toHaveBeenCalledWith(
-      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=series&i=tt0903747`
+      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=episode&i=tt0959621`
     );
 
     // Verify response
     expect(NextResponse.json).toHaveBeenCalledWith({
       success: true,
-      data: mockSeriesData,
+      data: mockEpisodeData,
     });
   });
 
-  it("should handle empty series ID", async () => {
-    const request = new Request("http://localhost:3000/api/v1/series/");
+  it("should handle empty episode ID", async () => {
+    const request = new Request("http://localhost:3000/api/v1/episode/");
     await GET(request, {
       params: { id: "" },
     });
@@ -58,14 +59,14 @@ describe("Series Route Handler", () => {
     expect(NextResponse.json).toHaveBeenCalledWith(
       {
         success: false,
-        message: "Series ID is required",
+        message: "Episode ID is required",
       },
       { status: 400 }
     );
   });
 
-  it("should handle undefined series ID", async () => {
-    const request = new Request("http://localhost:3000/api/v1/series/");
+  it("should handle undefined episode ID", async () => {
+    const request = new Request("http://localhost:3000/api/v1/episode/");
     await GET(request, {
       params: { id: "" },
     });
@@ -73,7 +74,7 @@ describe("Series Route Handler", () => {
     expect(NextResponse.json).toHaveBeenCalledWith(
       {
         success: false,
-        message: "Series ID is required",
+        message: "Episode ID is required",
       },
       { status: 400 }
     );
@@ -88,16 +89,16 @@ describe("Series Route Handler", () => {
     });
 
     const request = new Request(
-      "http://localhost:3000/api/v1/series/tt0903747"
+      "http://localhost:3000/api/v1/episode/tt0959621"
     );
     await GET(request, {
-      params: { id: "tt0903747" },
+      params: { id: "tt0959621" },
     });
 
     expect(NextResponse.json).toHaveBeenCalledWith(
       {
         success: false,
-        message: "Failed to fetch series details",
+        message: "Failed to fetch episode details",
       },
       { status: 500 }
     );
@@ -110,10 +111,10 @@ describe("Series Route Handler", () => {
     );
 
     const request = new Request(
-      "http://localhost:3000/api/v1/series/tt0903747"
+      "http://localhost:3000/api/v1/episode/tt0959621"
     );
     await GET(request, {
-      params: { id: "tt0903747" },
+      params: { id: "tt0959621" },
     });
 
     expect(NextResponse.json).toHaveBeenCalledWith(

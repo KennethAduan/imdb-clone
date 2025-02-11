@@ -2,14 +2,31 @@ import { API_FOLDER_DETAILS } from "@/constants";
 import { NextResponse } from "next/server";
 import { config } from "@/config/environment";
 import { ParamsRequest } from "../../shared/types";
-import { isEmptyObject } from "@/lib/utils";
+import { handleError, isEmptyString, isFalse, isUndefined } from "@/lib/utils";
+import logger from "@/lib/logger";
+import { MovieResponse } from "@/types/omdb.types";
 
 const getMovieById = async ({ id }: ParamsRequest) => {
-  const response = await fetch(
-    `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=${API_FOLDER_DETAILS.TYPE.MOVIE}&i=${id}`
-  );
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(
+      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=${API_FOLDER_DETAILS.TYPE.MOVIE}&i=${id}`
+    );
+
+    if (isFalse(response.ok)) {
+      throw new Error(`Failed to fetch movie details`);
+    }
+
+    const data: MovieResponse = await response.json();
+
+    if (isFalse(data.success)) {
+      throw new Error(data.error?.message || "Movie not found");
+    }
+
+    return data;
+  } catch (error) {
+    logger.error("Error fetching movie details:", { error, movieId: id });
+    throw error;
+  }
 };
 
 export const GET = async (
@@ -18,21 +35,21 @@ export const GET = async (
 ) => {
   const id = (await params).id;
   try {
-    const movie = await getMovieById({ id });
-    if (isEmptyObject(movie)) {
-      return NextResponse.json({
-        message: "Movie not found",
-      });
+    if (isUndefined(id) || isEmptyString(id)) {
+      return handleError("Movie ID is required", 400);
     }
+
+    const movie = await getMovieById({ id });
+    logger.info("Movie details:", { movie });
     return NextResponse.json({
+      success: true,
       data: movie,
     });
   } catch (error) {
-    return NextResponse.json(
-      {
-        message: error,
-      },
-      { status: 500 }
-    );
+    logger.error("Error in movie GET endpoint:", {
+      error,
+      movieId: id,
+    });
+    return handleError(error);
   }
 };
