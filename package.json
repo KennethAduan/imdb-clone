@@ -64,5 +64,29 @@
     "typescript": "^5"
   },
   "module": "index.ts",
-  "type": "module"
+  "type": "module",
+  "jest": {
+    "projects": [
+      {
+        "displayName": "dom",
+        "testEnvironment": "jsdom",
+        "testMatch": [
+          "<rootDir>/src/test/**/*.test.tsx"
+        ],
+        "setupFilesAfterEnv": [
+          "<rootDir>/jest.setup.ts"
+        ]
+      },
+      {
+        "displayName": "node",
+        "testEnvironment": "node",
+        "testMatch": [
+          "<rootDir>/src/test/api/**/*.test.ts"
+        ],
+        "setupFilesAfterEnv": [
+          "<rootDir>/jest.setup.ts"
+        ]
+      }
+    ]
+  }
 }

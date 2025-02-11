@@ -2,6 +2,11 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import SearchInput from "@/components/search.input";
 
+// Mock the utils module
+jest.mock("@/lib/utils", () => ({
+  cn: (...inputs: string[]) => inputs.join(" "),
+}));
+
 describe("SearchInput", () => {
   it("renders with default placeholder", () => {
     render(<SearchInput />);

@@ -19,6 +19,11 @@ jest.mock("next/image", () => ({
   default: (props: any) => <img {...props} />,
 }));
 
+// Mock the utils module
+jest.mock("@/lib/utils", () => ({
+  cn: (...inputs: string[]) => inputs.join(" "),
+}));
+
 describe("NavbarMobile", () => {
   const defaultProps = {
     pathname: "/",

@@ -8,6 +8,11 @@ jest.mock("next-themes", () => ({
   useTheme: jest.fn(),
 }));
 
+// Mock the utils module
+jest.mock("@/lib/utils", () => ({
+  cn: (...inputs: string[]) => inputs.join(" "),
+}));
+
 describe("ToggleTheme", () => {
   const mockUseTheme = useTheme as jest.Mock;
 

@@ -14,6 +14,11 @@ jest.mock("use-debounce", () => ({
   useDebouncedCallback: (callback: (...args: unknown[]) => unknown) => callback,
 }));
 
+// Mock the utils module
+jest.mock("@/lib/utils", () => ({
+  cn: (...inputs: string[]) => inputs.join(" "),
+}));
+
 describe("SearchDialog", () => {
   const mockReplace = jest.fn();
   const mockSearchParams = new URLSearchParams();

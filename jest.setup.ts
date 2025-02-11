@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-// Import testing-library only when in jsdom environment
+
 if (typeof window !== "undefined") {
+  // DOM-specific setup
   require("@testing-library/jest-dom");
 
   // DOM-specific mocks
@@ -25,6 +26,24 @@ if (typeof window !== "undefined") {
     disconnect: () => null,
   });
   window.IntersectionObserver = mockIntersectionObserver;
+}
+
+// Conditionally mock Request based on environment
+if (typeof global !== "undefined" && !global.Request) {
+  global.Request = class Request {
+    constructor(input: RequestInfo | URL, init?: RequestInit) {
+      if (typeof window !== "undefined") {
+        return new window.Request(input, init);
+      }
+      // Basic mock for node environment
+      return {
+        url: typeof input === "string" ? input : input.toString(),
+        method: init?.method || "GET",
+        headers: init?.headers || {},
+        body: init?.body,
+      } as any;
+    }
+  } as any;
 }
 
 // Add any non-DOM specific setup here
