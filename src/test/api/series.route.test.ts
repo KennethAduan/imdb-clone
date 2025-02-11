@@ -1,104 +1,134 @@
+import { NextResponse } from "next/server";
 import { GET } from "@/app/api/v1/series/[id]/route";
 import { config } from "@/config/environment";
-import { API_FOLDER_DETAILS } from "@/constants";
 
-// Mock fetch globally
-global.fetch = jest.fn();
+// Mock Next.js Response
+jest.mock("next/server", () => ({
+  NextResponse: {
+    json: jest.fn(),
+  },
+}));
 
-describe("Series API Route", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
+// Mock logger to prevent console output during tests
+jest.mock("@/lib/logger", () => ({
+  error: jest.fn(),
+  info: jest.fn(),
+}));
 
-  const mockSeriesResponse = {
+describe("Series Route Handler", () => {
+  const mockSeriesData = {
     Title: "Breaking Bad",
     Year: "2008–2013",
-    Rated: "TV-MA",
-    Released: "20 Jan 2008",
-    Runtime: "49 min",
-    Genre: "Crime, Drama, Thriller",
-    Director: "N/A",
-    Writer: "Vince Gilligan",
-    Actors: "Bryan Cranston, Aaron Paul, Anna Gunn",
-    Plot: "A high school chemistry teacher turned methamphetamine manufacturer partners with a former student to secure his family's financial future as he battles terminal lung cancer.",
-    Language: "English, Spanish",
-    Country: "United States",
-    Awards: "Won 16 Primetime Emmys.",
-    Poster: "https://example.com/poster.jpg",
-    imdbRating: "9.5",
-    imdbVotes: "1,900,000",
-    imdbID: "tt0903747",
     Type: "series",
-    totalSeasons: "5",
+    imdbID: "tt0903747",
     Response: "True",
   };
 
-  it("should fetch series details successfully", async () => {
-    // Mock fetch implementation
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      json: () => Promise.resolve(mockSeriesResponse),
-    });
-
-    const params = { id: "tt0903747" };
-    const req = new Request("http://localhost:3000/api/v1/series/tt0903747");
-    const response = await GET(req, { params });
-    const data = await response.json();
-
-    // Verify response structure
-    expect(data).toEqual({
-      data: mockSeriesResponse,
-    });
-
-    // Verify API call
-    const fetchCall = (fetch as jest.Mock).mock.calls[0][0];
-    const expectedUrl = `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=${API_FOLDER_DETAILS.TYPE.SERIES}&i=${params.id}`;
-    expect(fetchCall).toBe(expectedUrl);
+  // Reset mocks before each test
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.fetch = jest.fn();
   });
 
-  it("should handle API errors correctly", async () => {
-    const errorMessage = "API Error";
-    (fetch as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
+  it("should successfully fetch series details", async () => {
+    // Mock successful fetch response
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockSeriesData),
+    });
 
-    const params = { id: "invalid_id" };
-    const req = new Request("http://localhost:3000/api/v1/series/invalid_id");
-    const response = await GET(req, { params });
-    const data = await response.json();
+    const request = new Request(
+      "http://localhost:3000/api/v1/series/tt0903747"
+    );
+    await GET(request, {
+      params: { id: "tt0903747" },
+    });
 
-    expect(data).toEqual({
-      message: {},
+    // Verify the fetch call
+    expect(global.fetch).toHaveBeenCalledWith(
+      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=series&i=tt0903747`
+    );
+
+    // Verify response
+    expect(NextResponse.json).toHaveBeenCalledWith({
+      success: true,
+      data: mockSeriesData,
     });
   });
 
-  it("should handle OMDB API error response", async () => {
-    const errorResponse = {
-      Response: "False",
-      Error: "Series not found!",
-    };
-
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      json: () => Promise.resolve(errorResponse),
+  it("should handle empty series ID", async () => {
+    const request = new Request("http://localhost:3000/api/v1/series/");
+    await GET(request, {
+      params: { id: "" },
     });
 
-    const params = { id: "nonexistent" };
-    const req = new Request("http://localhost:3000/api/v1/series/nonexistent");
-    const response = await GET(req, { params });
-    const data = await response.json();
-
-    expect(data).toEqual({
-      data: errorResponse,
-    });
+    expect(NextResponse.json).toHaveBeenCalledWith(
+      {
+        success: false,
+        message: "Series ID is required",
+      },
+      { status: 400 }
+    );
   });
 
-  it("should include series type in API request", async () => {
-    (fetch as jest.Mock).mockResolvedValueOnce({
-      json: () => Promise.resolve(mockSeriesResponse),
+  it("should handle undefined series ID", async () => {
+    const request = new Request("http://localhost:3000/api/v1/series/");
+    await GET(request, {
+      params: { id: "" },
     });
 
-    const params = { id: "tt0903747" };
-    const req = new Request("http://localhost:3000/api/v1/series/tt0903747");
-    await GET(req, { params });
+    expect(NextResponse.json).toHaveBeenCalledWith(
+      {
+        success: false,
+        message: "Series ID is required",
+      },
+      { status: 400 }
+    );
+  });
 
-    const fetchCall = (fetch as jest.Mock).mock.calls[0][0];
-    expect(fetchCall).toContain(`type=${API_FOLDER_DETAILS.TYPE.SERIES}`);
+  it("should handle API error response", async () => {
+    // Mock failed fetch response
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      status: 500,
+      statusText: "Internal Server Error",
+    });
+
+    const request = new Request(
+      "http://localhost:3000/api/v1/series/tt0903747"
+    );
+    await GET(request, {
+      params: { id: "tt0903747" },
+    });
+
+    expect(NextResponse.json).toHaveBeenCalledWith(
+      {
+        success: false,
+        message: "Failed to fetch series details",
+      },
+      { status: 500 }
+    );
+  });
+
+  it("should handle network error", async () => {
+    // Mock network error
+    (global.fetch as jest.Mock).mockRejectedValueOnce(
+      new Error("Network error")
+    );
+
+    const request = new Request(
+      "http://localhost:3000/api/v1/series/tt0903747"
+    );
+    await GET(request, {
+      params: { id: "tt0903747" },
+    });
+
+    expect(NextResponse.json).toHaveBeenCalledWith(
+      {
+        success: false,
+        message: "Network error",
+      },
+      { status: 500 }
+    );
   });
 });

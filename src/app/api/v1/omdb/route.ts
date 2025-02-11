@@ -1,7 +1,7 @@
 import { config } from "@/config/environment";
 import { NextResponse } from "next/server";
 import { API_FOLDER_DETAILS } from "@/constants";
-import { isEmptyObject } from "@/utils";
+import { isEmptyObject } from "@/lib/utils";
 
 type OmdbParams = {
   page: string;

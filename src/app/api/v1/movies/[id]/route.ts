@@ -2,7 +2,7 @@ import { API_FOLDER_DETAILS } from "@/constants";
 import { NextResponse } from "next/server";
 import { config } from "@/config/environment";
 import { ParamsRequest } from "../../shared/types";
-import { isEmptyObject } from "@/utils";
+import { isEmptyObject } from "@/lib/utils";
 
 const getMovieById = async ({ id }: ParamsRequest) => {
   const response = await fetch(

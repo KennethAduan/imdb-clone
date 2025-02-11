@@ -1,5 +1,5 @@
 import { config } from "@/config/environment";
-import { isEmptyObject } from "@/utils";
+import { isEmptyObject } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 const getSearchResults = async ({ searchTerm }: { searchTerm: string }) => {
