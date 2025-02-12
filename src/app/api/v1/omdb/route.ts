@@ -17,7 +17,7 @@ const getDefaultParams = (searchParams: URLSearchParams): OmdbParams => {
 
   return {
     page: searchParams.get("page") || "1",
-    type: searchParams.get("type") || "movie",
+    type: searchParams.get("type") || "",
     year: searchParams.get("y") || currentYear,
     searchTerm: getRandomSearchTerm(),
   };

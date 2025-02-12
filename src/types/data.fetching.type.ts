@@ -1,5 +1,5 @@
 export type LatestResponse = {
-  type: string;
+  type?: string;
   page?: number;
   year?: string;
   plot?: string;

@@ -8,9 +8,11 @@ export const ROUTES = {
   SIGN_IN: "/sign-in",
   MOVIE: "/movies",
   TV: "/tv",
+  TV_DETAILS_BY_ID: "/tv/:id",
   PERSON: "/person",
   SEARCH: "/search",
   WATCHLIST: "/watchlist",
+  MOVIE_DETAILS_BY_ID: "/movies/:id",
 };
 
 export const NAVBAR_DETAILS = {

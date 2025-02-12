@@ -4,10 +4,10 @@ import { OMDBResponse } from "@/types/omdb.types";
 import axios from "axios";
 
 const getLatestOMDBDataByType = async ({
-  type,
-  page,
-  year,
-  plot,
+  type = "",
+  page = 1,
+  year = "",
+  plot = "",
 }: LatestResponse) => {
   try {
     const response = await axios<OMDBResponse>(
