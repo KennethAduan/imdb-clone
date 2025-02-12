@@ -46,7 +46,7 @@ describe("SearchDialog", () => {
     const searchButton = screen.getByRole("button");
     fireEvent.click(searchButton);
 
-    const searchInput = screen.getByPlaceholderText("Search movie title");
+    const searchInput = screen.getByPlaceholderText("Enter keywords...");
     expect(searchInput).toBeInTheDocument();
   });
 
@@ -62,7 +62,7 @@ describe("SearchDialog", () => {
     fireEvent.click(closeButton);
 
     // Check if dialog is closed
-    const searchInput = screen.queryByPlaceholderText("Search movie title");
+    const searchInput = screen.queryByPlaceholderText("Enter keywords...");
     expect(searchInput).not.toBeInTheDocument();
   });
 
@@ -74,7 +74,7 @@ describe("SearchDialog", () => {
     fireEvent.click(searchButton);
 
     // Type in search input
-    const searchInput = screen.getByPlaceholderText("Search movie title");
+    const searchInput = screen.getByPlaceholderText("Enter keywords...");
     act(() => {
       fireEvent.change(searchInput, { target: { value: "Batman" } });
     });
@@ -91,11 +91,11 @@ describe("SearchDialog", () => {
     fireEvent.click(searchButton);
 
     // Perform search
-    const searchInput = screen.getByPlaceholderText("Search movie title");
+    const searchInput = screen.getByPlaceholderText("Enter keywords...");
     fireEvent.change(searchInput, { target: { value: "Batman" } });
 
     // Check if dialog is closed
-    const dialogContent = screen.queryByPlaceholderText("Search movie title");
+    const dialogContent = screen.queryByPlaceholderText("Enter keywords...");
     expect(dialogContent).not.toBeInTheDocument();
   });
 
@@ -107,6 +107,6 @@ describe("SearchDialog", () => {
 
     const dialog = screen.getByRole("dialog");
     expect(dialog).toBeInTheDocument();
-    expect(dialog).toHaveClass("max-w-md rounded-lg");
+    expect(dialog).toHaveClass("max-w-sm rounded-lg");
   });
 });

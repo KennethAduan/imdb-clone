@@ -1,4 +1,5 @@
 "use client";
+
 import { SearchResponseParams } from "@/types/data.fetching.type";
 import { useOMDBDataBySearch } from "@/services/react.query";
 import React, { memo, useCallback, useTransition } from "react";
@@ -74,6 +75,7 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
         {searchResultsData.map((item) => (
           <MovieSeriesCard
             key={item.imdbID}
+            showBookmark
             showType
             showYear
             content={item as Data}

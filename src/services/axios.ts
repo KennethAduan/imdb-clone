@@ -8,7 +8,7 @@ import axios from "axios";
 
 const getLatestOMDBDataByType = async ({
   type = "",
-  page = 1,
+  page = "1",
   year = "",
   plot = "",
 }: LatestResponse) => {
@@ -38,12 +38,9 @@ const getOMDBDataBySearch = async ({
 }: SearchResponseParams) => {
   try {
     const url = `${API_URL}/search?s=${search}&page=${page}`;
-    console.log("Calling API URL:", url);
 
     const response = await axios<SearchResponse>(url);
-    console.log("Raw API Response:", response.data);
 
-    // Access the nested data structure
     if (response.data.data.Response === "False") {
       throw new Error(response.data.data?.Error || "No results found");
     }

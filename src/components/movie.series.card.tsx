@@ -6,12 +6,18 @@ import Image from "next/image";
 import { APP_LOGO } from "@/constants";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
-import { PlayIcon } from "lucide-react";
-
+import { BookmarkIcon, PlayIcon } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 type MovieCardProps = {
   content: Data;
   showYear?: boolean;
   showType?: boolean;
+  showBookmark?: boolean;
   onClick: () => void;
   "data-testid"?: string;
 };
@@ -21,15 +27,16 @@ const MovieSeriesCard = ({
   onClick,
   showYear = false,
   showType = false,
+  showBookmark = false,
   "data-testid": dataTestId,
 }: MovieCardProps) => {
   const [imgError, setImgError] = useState<boolean>(false);
-  console.log(content);
+
   return (
     <Card
       className="bg-transparent border-0 shadow-none cursor-pointer"
-      onClick={onClick}
       data-testid={dataTestId}
+      onClick={onClick}
     >
       <CardContent className="p-0">
         <div className="relative aspect-[2/3] overflow-hidden rounded-xl">
@@ -37,6 +44,23 @@ const MovieSeriesCard = ({
             <Badge className="absolute z-10 text-xs text-yellow-500 top-2 left-2 bg-black/90">
               {content.Type.toUpperCase()}
             </Badge>
+          )}
+          {showBookmark && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size={"icon"}
+                    className="absolute z-10 text-xs top-2 right-2"
+                  >
+                    <BookmarkIcon className="w-4 h-4" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent className="text-white bg-black/90 dark:bg-white/90 dark:text-black">
+                  <p>Add to Watchlist</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
           <Image
             src={
@@ -50,7 +74,7 @@ const MovieSeriesCard = ({
           />
         </div>
         <h3
-          className="mt-2 text-sm font-medium text-center line-clamp-1"
+          className="mt-2 text-sm font-bold text-center line-clamp-1"
           data-testid={`movie-title-${content.imdbID}`}
         >
           {content.Title}
@@ -62,10 +86,12 @@ const MovieSeriesCard = ({
             {content.Year}
           </p>
         )}
-        <Button variant="outline" className="w-full " onClick={onClick}>
-          <PlayIcon className="w-4 h-4 mr-2" />
-          Watch Now
-        </Button>
+        <div>
+          <Button className="w-full " variant={"secondary"} onClick={onClick}>
+            <PlayIcon className="w-4 h-4 mr-2" />
+            Watch Now
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

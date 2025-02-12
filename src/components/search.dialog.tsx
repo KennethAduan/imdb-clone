@@ -30,30 +30,30 @@ const SearchDialog = () => {
     }
     setOpen(false);
     replace(`/search/?${params.toString()}`);
-  }, 300);
+  }, 500);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="ghost" size="icon" onClick={() => setOpen(true)}>
-          <Search className="h-4 w-4" aria-hidden="true" />
+          <Search className="w-4 h-4" aria-hidden="true" />
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-md rounded-lg">
+      <DialogContent className="max-w-sm rounded-lg">
         <DialogHeader>
           <DialogTitle />
           <DialogDescription />
           <SearchInput
-            className="mt-4 w-full"
-            placeholder="Search movie title"
+            className="w-full mt-4"
+            placeholder="Enter keywords..."
             onChange={handleSearch}
             data-testid="search-input"
           />
         </DialogHeader>
-        <DialogFooter className="w-1/3 mt-4">
+        <DialogFooter className="mt-4 ">
           <Button
             data-testid="close-button"
-            variant={"secondary"}
+            className="w-full"
             onClick={() => setOpen(false)}
           >
             Close
