@@ -13,7 +13,7 @@ describe("SearchInput", () => {
 
     const input = screen.getByRole("searchbox");
     expect(input).toBeInTheDocument();
-    expect(input).toHaveAttribute("placeholder", "The Dark Knight");
+    expect(input).toHaveAttribute("placeholder", "Enter keywords...");
   });
 
   it("renders with custom placeholder", () => {

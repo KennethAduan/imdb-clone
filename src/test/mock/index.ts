@@ -41,18 +41,20 @@ export const mockEpisodeData: EpisodeResponse = {
 };
 
 export const mockSearchData: SearchResponse = {
-  Search: [
-    {
-      Title: "A Hero Who Happens to Be Legendary",
-      Year: "2025",
-      imdbID: "tt31579490",
-      Type: "movie",
-      Poster: "N/A",
-    },
-  ],
-  totalResults: "1",
-  Response: "True",
-  Error: "No results found",
+  success: true,
+  data: {
+    Search: [
+      {
+        Title: "A Hero Who Happens to Be Legendary",
+        Year: "2025",
+        imdbID: "tt31579490",
+        Type: "movie",
+        Poster: "N/A",
+      },
+    ],
+    Response: "True",
+    Error: "No results found",
+  },
 };
 
 export const mockSeriesData: SeriesResponse = {

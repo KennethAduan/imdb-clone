@@ -7,6 +7,10 @@ import "../../__mocks__/next-router-mock";
 jest.mock("@/services/react.query", () => ({
   useLatestOMDBDataByType: jest.fn(),
 }));
+jest.mock("@/lib/logger", () => ({
+  error: jest.fn(),
+  info: jest.fn(),
+}));
 
 describe("LatestSeriesCarousel", () => {
   it("renders loading state correctly", () => {

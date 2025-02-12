@@ -26,7 +26,7 @@ describe("Search Route Handler", () => {
 
   it("should successfully fetch search results", async () => {
     const mockResponse = {
-      Search: mockSearchData.Search,
+      Search: mockSearchData,
       totalResults: "1",
       Response: "True",
     };
@@ -37,7 +37,7 @@ describe("Search Route Handler", () => {
     });
 
     const request = new Request(
-      "http://localhost:3000/api/v1/search?s=breaking+bad"
+      "http://localhost:3000/api/v1/search?s=breaking+bad&page="
     );
     const response = await GET(request);
     const data = await response.json();
@@ -47,7 +47,7 @@ describe("Search Route Handler", () => {
       data: mockResponse,
     });
     expect(global.fetch).toHaveBeenCalledWith(
-      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&s=breaking bad`
+      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&s=breaking bad&page=`
     );
   });
 
@@ -94,10 +94,8 @@ describe("Search Route Handler", () => {
     expect(data).toEqual({
       success: true,
       data: {
-        success: false,
-        data: {
-          message: "Movie not found!",
-        },
+        Error: "Movie not found!",
+        Response: "False",
       },
     });
   });
