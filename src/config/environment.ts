@@ -3,6 +3,7 @@ import { z } from "zod";
 const envSchema = z.object({
   OMDB_API_KEY: z.string().min(1, "OMDB API key is required"),
   OMDB_API_URL: z.string().min(1, "OMDB API URL is required"),
+
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
@@ -37,9 +38,5 @@ export const config = {
       secret: env.JWT_SECRET,
       expiresIn: env.JWT_EXPIRES_IN,
     },
-  },
-  rateLimit: {
-    windowMs: 60000,
-    max: 60,
   },
 } as const;

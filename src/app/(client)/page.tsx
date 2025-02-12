@@ -1,7 +1,8 @@
+import HomeUpperCarousel from "@/components/sections/home.upper.carousel";
 export default function Page() {
   return (
-    <div>
-      <h1>Home</h1>
-    </div>
+    <>
+      <HomeUpperCarousel />
+    </>
   );
 }

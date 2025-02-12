@@ -35,9 +35,9 @@ const NavbarDesktop = ({ isScrolled, pathname }: NavbarComponentProps) => {
   return (
     <nav
       data-testid="desktop-nav"
-      className={`w-[90%] hidden lg:flex md:w-[70%] lg:w-[75%] lg:max-w-screen-2xl fixed left-1/2 -translate-x-1/2 top-5 border border-secondary z-[9999] rounded-xl justify-between items-center p-2 transition-all duration-200 shadow-md ${
+      className={`w-[90%] hidden lg:flex md:w-[70%] lg:w-[75%] lg:max-w-screen-2xl fixed left-1/2 -translate-x-1/2 top-2 border border-secondary z-[9999] rounded-xl justify-between items-center p-2 transition-all duration-200 shadow-md ${
         isScrolled
-          ? "bg-white/80 dark:bg-black/90 backdrop-blur-sm border-none lg:max-w-screen-md"
+          ? "bg-white/80 dark:bg-black/90 backdrop-blur-sm border-none "
           : "bg-transparent border-none shadow-none"
       }`}
     >

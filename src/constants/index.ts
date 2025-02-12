@@ -1,7 +1,8 @@
 import { Facebook, Twitter, Instagram, Github, Youtube } from "lucide-react";
 export const APP_NAME = "MOVIESFLIX";
 export const TOP_LOADER_COLOR = "#DC143C";
-
+export const API_URL = process.env.NEXT_PUBLIC_API_URL;
+export const APP_LOGO = "/movie-icon.png";
 export const ROUTES = {
   HOME: "/",
   SIGN_IN: "/sign-in",
@@ -13,7 +14,7 @@ export const ROUTES = {
 };
 
 export const NAVBAR_DETAILS = {
-  LOGO: "/movie-icon.png",
+  LOGO: APP_LOGO,
   TITLE: "IMDB Clone",
   NAVLINKS_LEFT_SIDE: [
     {
