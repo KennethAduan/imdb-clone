@@ -24,7 +24,7 @@ const NavbarMobile = ({ pathname }: NavbarComponentProps) => {
   return (
     <div
       data-testid="mobile-nav"
-      className="lg:hidden border-b border-secondary px-2  bg-white/80 dark:bg-black/90 backdrop-blur-sm"
+      className="lg:hidden fixed top-0 left-0 right-0 z-50 border-b border-secondary px-2  bg-white/80 dark:bg-black/90 backdrop-blur-sm"
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">

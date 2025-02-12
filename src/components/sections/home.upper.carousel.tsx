@@ -1,5 +1,11 @@
 "use client";
-import { API_FOLDER_DETAILS, APP_LOGO, ROUTES } from "@/constants";
+
+import {
+  API_FOLDER_DETAILS,
+  APP_LOGO,
+  CAROUSEL_DETAILS,
+  ROUTES,
+} from "@/constants";
 import { useLatestOMDBDataByType } from "@/services/react.query";
 import {
   Carousel,
@@ -11,11 +17,11 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Data } from "@/types/omdb.types";
 import Image from "next/image";
-import { Star } from "lucide-react";
+import { Film, PlusIcon, Tv } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Badge } from "../ui/badge";
-import { cn } from "@/lib/utils";
+import { useState } from "react";
 
 const HeroCardSkeleton = () => (
   <div
@@ -36,9 +42,12 @@ const HeroCardSkeleton = () => (
 );
 
 const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
-  const posterUrl =
-    omdbDetails.Poster !== "N/A" ? omdbDetails.Poster : APP_LOGO;
   const router = useRouter();
+  const [imgError, setImgError] = useState(false);
+  const imageSource =
+    imgError || omdbDetails.Poster === CAROUSEL_DETAILS.N_A_IMAGE_SOURCE
+      ? APP_LOGO
+      : omdbDetails.Poster;
 
   const handleRedirectByType = (type: string) => {
     if (type === API_FOLDER_DETAILS.TYPE.MOVIE) {
@@ -55,13 +64,14 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
       <div className="absolute inset-0">
         <div className="relative w-full h-full">
           <Image
-            src={posterUrl}
+            src={imageSource}
             alt={omdbDetails.Title}
             fill
             className="object-cover object-center"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
             quality={90}
             priority
+            onError={() => setImgError(true)}
           />
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -69,10 +79,16 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
 
       {/* Content */}
       <div className="relative h-full flex flex-col justify-end p-8 md:p-12">
-        {/* Rating Badge */}
-        <Badge className="absolute top-6 left-8 bg-black/50 backdrop-blur-sm rounded-full px-3 py-1.5 flex items-center gap-1">
-          <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-          <span className="text-sm font-medium text-white">8.5</span>
+        {/* Type Badge */}
+        <Badge className="absolute top-6 left-8 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2 transition-colors">
+          {omdbDetails.Type === "movie" ? (
+            <Film className="w-4 h-4" />
+          ) : (
+            <Tv className="w-4 h-4" />
+          )}
+          <span className="text-sm font-medium">
+            {omdbDetails.Type === "movie" ? "MOVIE" : "TV SERIES"}
+          </span>
         </Badge>
         {/* Movie Info */}
         <div className="max-w-2xl">
@@ -83,12 +99,17 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
             {omdbDetails.Plot ||
               "After a shipwreck, an intelligent robot called Rod is stranded on an uninhabited island. To survive the harsh environment, Rod bonds with the island's animals and cares for an orphaned baby."}
           </p>
-          <Button
-            className="rounded-full"
-            onClick={() => handleRedirectByType(omdbDetails.Type)}
-          >
-            Watch Now
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              className="rounded-full"
+              onClick={() => handleRedirectByType(omdbDetails.Type)}
+            >
+              {CAROUSEL_DETAILS.WATCH_NOW_BUTTON_TEXT}
+            </Button>
+            <Button variant="outline" className="rounded-xl">
+              <PlusIcon className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -107,7 +128,7 @@ const HomeUpperCarousel = () => {
 
   if (isLoading) {
     return (
-      <section className="w-full max-w-[95%] mx-auto my-6  md:my-28">
+      <section className="w-full max-w-[95%] mx-auto mt-28 mb-4">
         <Carousel
           opts={{
             align: "start",
@@ -131,13 +152,15 @@ const HomeUpperCarousel = () => {
     return (
       <div className="flex items-center justify-center min-h-[600px] text-red-500">
         Error: {error.message}
-        <Button onClick={() => refetch()}>Retry</Button>
+        <Button onClick={() => refetch()}>
+          {CAROUSEL_DETAILS.RETRY_BUTTON_TEXT}
+        </Button>
       </div>
     );
   }
 
   return (
-    <section className="w-full max-w-[95%] md:max-w-[80%] mx-auto mt-6 mb-4 md:mt-28">
+    <section className="w-full max-w-[95%] md:max-w-[80%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
       <Carousel
         data-testid="movie-carousel"
         opts={{
@@ -156,18 +179,6 @@ const HomeUpperCarousel = () => {
         <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-0" />
         <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-0" />
       </Carousel>
-      <div className="flex justify-center gap-2 mt-4">
-        {lastestOmdBDetails?.Search.map((_, index) => (
-          <div
-            key={index}
-            data-testid="navigation-dot"
-            className={cn(
-              "h-2 rounded-full transition-all duration-300",
-              index === 0 ? "w-8 bg-blue-600" : "w-2 bg-gray-600"
-            )}
-          />
-        ))}
-      </div>
     </section>
   );
 };

@@ -24,7 +24,7 @@ export const NAVBAR_DETAILS = {
       href: ROUTES.HOME,
     },
     {
-      label: "TV Shows",
+      label: "TV Series",
       href: ROUTES.TV,
     },
     {
@@ -44,6 +44,44 @@ export const NAVBAR_DETAILS = {
     },
   ],
 };
+
+export const API_FOLDER_DETAILS = {
+  TYPE: {
+    MOVIE: "movie",
+    SERIES: "series",
+    EPISODE: "episode",
+  },
+  PLOT: {
+    SHORT: "short",
+    FULL: "full",
+  },
+  POPULAR_SEARCHES: [
+    "love",
+    "hero",
+    "star",
+    "war",
+    "life",
+    "world",
+    "game",
+    "dark",
+    "night",
+    "day",
+    "love",
+    "hero",
+    "star",
+    "war",
+    "life",
+    "world",
+    "game",
+  ],
+} as const;
+
+export const CAROUSEL_DETAILS = {
+  CAROUSEL_ITEMS: 3,
+  WATCH_NOW_BUTTON_TEXT: "Watch Now",
+  RETRY_BUTTON_TEXT: "Retry",
+  N_A_IMAGE_SOURCE: "N/A",
+} as const;
 
 export const FOOTER_DETAILS = {
   LOGO: "/movie-icon.png",
@@ -106,36 +144,5 @@ export const FOOTER_DETAILS = {
       href: "https://youtube.com",
       icon: Youtube,
     },
-  ],
-} as const;
-
-export const API_FOLDER_DETAILS = {
-  TYPE: {
-    MOVIE: "movie",
-    SERIES: "series",
-    EPISODE: "episode",
-  },
-  PLOT: {
-    SHORT: "short",
-    FULL: "full",
-  },
-  POPULAR_SEARCHES: [
-    "love",
-    "hero",
-    "star",
-    "war",
-    "life",
-    "world",
-    "game",
-    "dark",
-    "night",
-    "day",
-    "love",
-    "hero",
-    "star",
-    "war",
-    "life",
-    "world",
-    "game",
   ],
 } as const;
