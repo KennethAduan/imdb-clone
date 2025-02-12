@@ -60,7 +60,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
     }
   };
   return (
-    <div className="relative w-full h-[600px] overflow-hidden rounded-3xl">
+    <div className="relative w-full h-[600px] overflow-hidden rounded-sm md:rounded-3xl">
       {/* Background Image with Gradient Overlay */}
       <div className="absolute inset-0">
         <div className="relative w-full h-full">

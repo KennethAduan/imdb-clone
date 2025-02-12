@@ -108,6 +108,17 @@ export const LATEST_MOVIES_CAROUSEL_DETAILS = {
   DESCRIPTION: "Discover the newest releases in cinema",
   RETRY_BUTTON_TEXT: "Retry",
   N_A_IMAGE_SOURCE: "N/A",
+  EXPLORE_MORE_BUTTON_TEXT: "Explore More",
+  EXPLORE_MORE_BUTTON_LINK: ROUTES.MOVIE,
+} as const;
+
+export const LATEST_SERIES_CAROUSEL_DETAILS = {
+  TITLE: "Latest Series",
+  DESCRIPTION: "Discover the newest releases in television",
+  RETRY_BUTTON_TEXT: "Retry",
+  N_A_IMAGE_SOURCE: "N/A",
+  EXPLORE_MORE_BUTTON_TEXT: "Explore More",
+  EXPLORE_MORE_BUTTON_LINK: ROUTES.TV,
 } as const;
 
 export const FOOTER_DETAILS = {

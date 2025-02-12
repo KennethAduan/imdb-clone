@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import LatestMoviesCarousel from "@/components/sections/latest.movies.carousel";
 import { useLatestOMDBDataByType } from "@/services/react.query";
+import LatestSeriesCarousel from "@/components/sections/latest.series.carousel";
 import "../../__mocks__/next-router-mock";
 
 // Mock the react-query hook
@@ -8,12 +8,7 @@ jest.mock("@/services/react.query", () => ({
   useLatestOMDBDataByType: jest.fn(),
 }));
 
-describe("LatestMoviesCarousel", () => {
-  beforeEach(() => {
-    // Clear all mocks before each test
-    jest.clearAllMocks();
-  });
-
+describe("LatestSeriesCarousel", () => {
   it("renders loading state correctly", () => {
     // Mock loading state
     (useLatestOMDBDataByType as jest.Mock).mockReturnValue({
@@ -23,7 +18,7 @@ describe("LatestMoviesCarousel", () => {
       refetch: jest.fn(),
     });
 
-    render(<LatestMoviesCarousel />);
+    render(<LatestSeriesCarousel />);
 
     // Check if skeleton loading items are rendered
     const skeletonItems = screen.getAllByTestId(/^movie-skeleton-/);
@@ -39,15 +34,15 @@ describe("LatestMoviesCarousel", () => {
       refetch: jest.fn(),
     });
 
-    render(<LatestMoviesCarousel />);
+    render(<LatestSeriesCarousel />);
 
     // Check if error message is displayed
     expect(screen.getByText(/retry/i)).toBeInTheDocument();
   });
 
-  it("renders movies data correctly", () => {
+  it("renders series data correctly", () => {
     // Mock successful data fetch with valid image URL
-    const mockMovies = {
+    const mockSeries = {
       Search: [
         {
           Title: "Tougen Anki: Dark Demon of Paradise",
@@ -61,13 +56,13 @@ describe("LatestMoviesCarousel", () => {
     };
 
     (useLatestOMDBDataByType as jest.Mock).mockReturnValue({
-      data: mockMovies,
+      data: mockSeries,
       isLoading: false,
       error: null,
       refetch: jest.fn(),
     });
 
-    render(<LatestMoviesCarousel />);
+    render(<LatestSeriesCarousel />);
 
     // Update the test to match the new mock data
     expect(
@@ -83,7 +78,7 @@ describe("LatestMoviesCarousel", () => {
       refetch: jest.fn(),
     });
 
-    render(<LatestMoviesCarousel />);
+    render(<LatestSeriesCarousel />);
 
     // Check if section title and description are rendered
     expect(screen.getByRole("heading", { level: 2 })).toBeInTheDocument();

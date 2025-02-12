@@ -14,23 +14,22 @@ import MovieSeriesCard from "../movie.series.card";
 import { Data } from "@/types/omdb.types";
 import {
   API_FOLDER_DETAILS,
-  LATEST_MOVIES_CAROUSEL_DETAILS,
+  LATEST_SERIES_CAROUSEL_DETAILS,
   ROUTES,
 } from "@/constants";
 import { getYear } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-
-const LatestMoviesCarousel = () => {
+const LatestSeriesCarousel = () => {
   const currentYear = getYear();
 
   const {
-    data: latestMovies,
+    data: latestSeries,
     isLoading,
     error,
     refetch,
   } = useLatestOMDBDataByType({
-    type: API_FOLDER_DETAILS.TYPE.MOVIE,
+    type: API_FOLDER_DETAILS.TYPE.SERIES,
     year: currentYear,
   });
   const router = useRouter();
@@ -57,18 +56,18 @@ const LatestMoviesCarousel = () => {
               className="text-lg font-bold tracking-tight md:text-2xl"
               data-testid="section-title"
             >
-              {LATEST_MOVIES_CAROUSEL_DETAILS.TITLE} of {currentYear}
+              {LATEST_SERIES_CAROUSEL_DETAILS.TITLE} of {currentYear}
             </h2>
           </div>
           <Button
             variant="link"
             onClick={() =>
               router.push(
-                LATEST_MOVIES_CAROUSEL_DETAILS.EXPLORE_MORE_BUTTON_LINK
+                LATEST_SERIES_CAROUSEL_DETAILS.EXPLORE_MORE_BUTTON_LINK
               )
             }
           >
-            {LATEST_MOVIES_CAROUSEL_DETAILS.EXPLORE_MORE_BUTTON_TEXT}
+            {LATEST_SERIES_CAROUSEL_DETAILS.EXPLORE_MORE_BUTTON_TEXT}
           </Button>
         </div>
 
@@ -97,17 +96,17 @@ const LatestMoviesCarousel = () => {
               data-testid="movies-carousel"
             >
               <CarouselContent className="-ml-4">
-                {latestMovies?.Search?.map((movie) => (
+                {latestSeries?.Search?.map((series) => (
                   <CarouselItem
-                    key={movie.imdbID}
+                    key={series.imdbID}
                     className="pl-4 basis-[250px] md:basis-[200px] lg:basis-[250px]"
                     data-testid="carousel-item"
                   >
                     <MovieSeriesCard
-                      data-testid={`movie-card-${movie.imdbID}`}
-                      content={movie as Data}
+                      data-testid={`movie-card-${series.imdbID}`}
+                      content={series as Data}
                       onClick={() => {
-                        router.push(`${ROUTES.MOVIE}/${movie.imdbID}`);
+                        router.push(`${ROUTES.TV}/${series.imdbID}`);
                       }}
                     />
                   </CarouselItem>
@@ -129,4 +128,4 @@ const LatestMoviesCarousel = () => {
   );
 };
 
-export default LatestMoviesCarousel;
+export default LatestSeriesCarousel;

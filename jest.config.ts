@@ -8,7 +8,10 @@ const createJestConfig = nextJest({
 
 // Base config shared between both environments
 const baseConfig: Config = {
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  setupFilesAfterEnv: [
+    "<rootDir>/src/test/__mocks__/next-router-mock.tsx",
+    "<rootDir>/jest.setup.ts",
+  ],
   moduleNameMapper: {
     "^@/(.*)$": "<rootDir>/src/$1",
   },

@@ -51,7 +51,7 @@ const MovieSeriesCard = ({
             {content.Year}
           </p>
         )}
-        <Button variant="outline" className="w-full">
+        <Button variant="outline" className="w-full" onClick={onClick}>
           <PlayIcon className="w-4 h-4 mr-2" />
           Watch Now
         </Button>

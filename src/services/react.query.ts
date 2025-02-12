@@ -8,6 +8,9 @@ const useLatestOMDBDataByType = ({
   plot,
 }: LatestResponse) => {
   return useQuery({
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     queryKey: ["latest-omdb-data-by-type", type, page, year, plot],
     queryFn: () => getLatestOMDBDataByType({ type, page, year, plot }),
   });

@@ -28,3 +28,12 @@ if (typeof window !== "undefined") {
 }
 
 // Add any non-DOM specific setup here
+
+// Mock ResizeObserver
+class ResizeObserverMock {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+global.ResizeObserver = ResizeObserverMock;
