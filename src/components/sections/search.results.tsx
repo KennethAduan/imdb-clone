@@ -4,11 +4,11 @@ import { useOMDBDataBySearch } from "@/services/react.query";
 import React, { memo, useCallback, useTransition } from "react";
 import MovieSeriesCard from "../movie.series.card";
 import { Data } from "@/types/omdb.types";
-import { Skeleton } from "@/components/ui/skeleton";
-import { XCircle } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { APPLICATION_TYPES, ROUTES } from "@/constants";
 import PagePagination from "../page.pagination";
+import MoviesSeriesCardSkeleton from "../loaders/movies.series.card.skeleton";
+import ErrorData from "../error.data";
 
 const SearchResults = memo(({ search }: SearchResponseParams) => {
   const params = useSearchParams();
@@ -40,38 +40,11 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
   );
 
   if (isLoading) {
-    return (
-      <section className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
-        <div className="grid grid-cols-1 gap-6 p-6 mt-16 md:mt-32 md:grid-cols-5">
-          {Array.from({ length: 10 }).map((_, index) => (
-            <div key={index} className="space-y-3">
-              <Skeleton className="aspect-[2/3] rounded-xl" />
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-[80%]" />
-                <Skeleton className="h-3 w-[60%]" />
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    );
+    return <MoviesSeriesCardSkeleton data-testid="movies-series-skeleton" />;
   }
 
   if (isError) {
-    return (
-      <section className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
-        <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4 p-8">
-          <XCircle className="w-16 h-16 text-red-500 animate-pulse" />
-          <div className="text-center">
-            <p className="text-muted-foreground">
-              {error instanceof Error
-                ? error.message
-                : "An unknown error occurred"}
-            </p>
-          </div>
-        </div>
-      </section>
-    );
+    return <ErrorData error={error} data-testid="error-message" />;
   }
 
   if (!searchResultsData || searchResultsData.length === 0) {
@@ -87,9 +60,13 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
   }
 
   return (
-    <section className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
+    <section
+      data-testid="search-results-section"
+      className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24"
+    >
       <PagePagination />
       <div
+        data-testid="search-results-grid"
         className={`grid grid-cols-1 gap-6 p-6 md:grid-cols-5 ${
           isPending ? "opacity-70" : ""
         }`}
@@ -101,10 +78,11 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
             showYear
             content={item as Data}
             onClick={() => handleCardClick(item.imdbID, item.Type)}
+            data-testid={`movie-card-${item.imdbID}`}
           />
         ))}
       </div>
-      <div className="block sm:hidden">
+      <div data-testid="mobile-pagination" className="block sm:hidden">
         <PagePagination />
       </div>
     </section>

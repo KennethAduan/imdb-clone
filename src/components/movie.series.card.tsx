@@ -13,6 +13,7 @@ type MovieCardProps = {
   showYear?: boolean;
   showType?: boolean;
   onClick: () => void;
+  "data-testid"?: string;
 };
 
 const MovieSeriesCard = ({
@@ -20,6 +21,7 @@ const MovieSeriesCard = ({
   onClick,
   showYear = false,
   showType = false,
+  "data-testid": dataTestId,
 }: MovieCardProps) => {
   const [imgError, setImgError] = useState<boolean>(false);
   console.log(content);
@@ -27,6 +29,7 @@ const MovieSeriesCard = ({
     <Card
       className="bg-transparent border-0 shadow-none cursor-pointer"
       onClick={onClick}
+      data-testid={dataTestId}
     >
       <CardContent className="p-0">
         <div className="relative aspect-[2/3] overflow-hidden rounded-xl">

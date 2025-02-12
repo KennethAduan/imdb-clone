@@ -8,7 +8,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import MoviesSeriesSkeleton from "../movies.series.skeleton";
+import MoviesSeriesCarouselSkeleton from "../loaders/movies.series.carousel.skeleton";
 import ErrorRefetch from "../error.refetch";
 import MovieSeriesCard from "../movie.series.card";
 import { Data } from "@/types/omdb.types";
@@ -80,7 +80,7 @@ const LatestSeriesCarousel = () => {
                   key={index}
                   className="basis-[250px] md:basis-[200px] lg:basis-[250px]"
                 >
-                  <MoviesSeriesSkeleton
+                  <MoviesSeriesCarouselSkeleton
                     data-testid={`movie-skeleton-${index}`}
                   />
                 </div>

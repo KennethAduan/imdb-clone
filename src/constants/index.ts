@@ -24,12 +24,12 @@ export const NAVBAR_DETAILS = {
       href: ROUTES.HOME,
     },
     {
-      label: "TV Series",
-      href: ROUTES.TV,
-    },
-    {
       label: "Movies",
       href: ROUTES.MOVIE,
+    },
+    {
+      label: "TV Series",
+      href: ROUTES.TV,
     },
     {
       label: "Watchlist",

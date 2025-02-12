@@ -1,3 +1,4 @@
+"use client";
 import React, { useMemo, useTransition } from "react";
 import {
   Pagination,
