@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen, cleanup } from "@testing-library/react";
-import HomeUpperCarousel from "@/components/sections/home.upper.carousel";
+import HeroCarousel from "@/components/sections/hero.carousel";
 import { useLatestOMDBDataByType } from "@/services/react.query";
 
 // Mock the react-query hook
@@ -60,7 +60,7 @@ describe("HomeUpperCarousel", () => {
       error: null,
     });
 
-    render(<HomeUpperCarousel />);
+    render(<HeroCarousel />);
 
     // Check if skeleton carousel exists
     expect(screen.getByTestId("movie-carousel")).toBeInTheDocument();
@@ -77,7 +77,7 @@ describe("HomeUpperCarousel", () => {
       error: new Error("Failed to fetch data"),
     });
 
-    render(<HomeUpperCarousel />);
+    render(<HeroCarousel />);
     expect(screen.getByText(/Error:/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
   });
@@ -89,7 +89,7 @@ describe("HomeUpperCarousel", () => {
       error: null,
     });
 
-    render(<HomeUpperCarousel />);
+    render(<HeroCarousel />);
 
     // Check if carousel container exists
     expect(screen.getByTestId("movie-carousel")).toBeInTheDocument();

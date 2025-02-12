@@ -42,3 +42,8 @@ export const getRandomSearchTerm = () => {
   );
   return API_FOLDER_DETAILS.POPULAR_SEARCHES[randomIndex];
 };
+
+export const getYear = () => {
+  const currentYear = new Date().getFullYear();
+  return currentYear.toString();
+};

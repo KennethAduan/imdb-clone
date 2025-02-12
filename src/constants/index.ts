@@ -45,20 +45,31 @@ export const NAVBAR_DETAILS = {
   ],
 };
 
+export enum APPLICATION_TYPES {
+  MOVIE = "movie",
+  SERIES = "series",
+  EPISODE = "episode",
+}
+export enum YEARS {
+  YEAR_2025 = "2025",
+  YEAR_2024 = "2024",
+  YEAR_2023 = "2023",
+  YEAR_2022 = "2022",
+  YEAR_2021 = "2021",
+}
+
 export const API_FOLDER_DETAILS = {
   TYPE: {
-    MOVIE: "movie",
-    SERIES: "series",
-    EPISODE: "episode",
+    MOVIE: APPLICATION_TYPES.MOVIE,
+    SERIES: APPLICATION_TYPES.SERIES,
+    EPISODE: APPLICATION_TYPES.EPISODE,
   },
   YEAR: {
-    YEAR_2025: "2025",
-    YEAR_2024: "2024",
-    YEAR_2023: "2023",
-    YEAR_2022: "2022",
-    YEAR_2021: "2021",
-    YEAR_2020: "2020",
-    YEAR_2019: "2019",
+    YEAR_2025: YEARS.YEAR_2025,
+    YEAR_2024: YEARS.YEAR_2024,
+    YEAR_2023: YEARS.YEAR_2023,
+    YEAR_2022: YEARS.YEAR_2022,
+    YEAR_2021: YEARS.YEAR_2021,
   },
   PLOT: {
     SHORT: "short",

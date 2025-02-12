@@ -1,10 +1,11 @@
-import HomeLatestMoviesCarousel from "@/components/sections/home.latest.movies.carousel";
-import HomeUpperCarousel from "@/components/sections/home.upper.carousel";
+import HeroCarousel from "@/components/sections/hero.carousel";
+import LatestMoviesCarousel from "@/components/sections/latest.movies.carousel";
+
 export default function Page() {
   return (
     <>
-      <HomeUpperCarousel />
-      <HomeLatestMoviesCarousel />
+      <HeroCarousel />
+      <LatestMoviesCarousel />
     </>
   );
 }

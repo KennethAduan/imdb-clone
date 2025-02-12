@@ -27,16 +27,16 @@ import ErrorRefetch from "../error.refetch";
 const HeroCardSkeleton = () => (
   <div
     data-testid="hero-card-skeleton"
-    className="relative w-full h-[600px] overflow-hidden rounded-3xl bg-inherit"
+    className="relative w-full h-[600px] overflow-hidden rounded-3x bg-primary/10"
   >
-    <div className="relative h-full flex flex-col justify-end p-8 md:p-12">
+    <div className="relative flex flex-col justify-end h-full p-8 md:p-12">
       <div className="absolute top-6 left-8">
-        <Skeleton className="h-8 w-16 rounded-full" />
+        <Skeleton className="w-16 h-8 rounded-full" />
       </div>
       <div className="max-w-2xl space-y-4">
-        <Skeleton className="h-14 w-3/4" />
-        <Skeleton className="h-20 w-full" />
-        <Skeleton className="h-12 w-32 rounded-full" />
+        <Skeleton className="w-3/4 h-14" />
+        <Skeleton className="w-full h-20" />
+        <Skeleton className="w-32 h-12 rounded-full" />
       </div>
     </div>
   </div>
@@ -79,11 +79,11 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
       </div>
 
       {/* Content */}
-      <div className="relative h-full flex flex-col justify-end p-8 md:p-12">
+      <div className="relative flex flex-col justify-end h-full p-8 md:p-12">
         {/* Movie Info */}
         <div className="max-w-2xl space-y-6">
           {/* Title */}
-          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 line-clamp-2 tracking-tight">
+          <h2 className="mb-4 text-4xl font-bold tracking-tight text-white md:text-6xl line-clamp-2">
             {omdbDetails.Title}
           </h2>
 
@@ -111,7 +111,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
 
           {/* Description - if available */}
           {omdbDetails.Plot && (
-            <p className="text-gray-200 text-base md:text-lg line-clamp-3 max-w-prose">
+            <p className="text-base text-gray-200 md:text-lg line-clamp-3 max-w-prose">
               {omdbDetails.Plot}
             </p>
           )}
@@ -120,7 +120,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
           <div className="flex items-center gap-3 pt-2">
             <Button
               size="lg"
-              className="rounded-full px-8 hover:scale-105 transition-transform duration-300"
+              className="px-8 transition-transform duration-300 rounded-full hover:scale-105"
               onClick={() => handleRedirectByType(omdbDetails.Type)}
             >
               {CAROUSEL_DETAILS.WATCH_NOW_BUTTON_TEXT}
@@ -128,7 +128,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
             <Button
               variant="outline"
               size="lg"
-              className="rounded-full aspect-square p-0 w-12 hover:scale-105 transition-transform duration-300 bg-white/10 hover:bg-white/20 border-0"
+              className="w-12 p-0 transition-transform duration-300 border-0 rounded-full aspect-square hover:scale-105 bg-white/10 hover:bg-white/20"
             >
               <PlusIcon className="w-5 h-5" />
             </Button>
@@ -139,7 +139,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
   );
 };
 
-const HomeUpperCarousel = () => {
+const HeroCarousel = () => {
   const {
     data: lastestOmdBDetails,
     isLoading,
@@ -149,7 +149,7 @@ const HomeUpperCarousel = () => {
 
   if (isLoading) {
     return (
-      <section className="w-full max-w-[95%] mx-auto mt-28 mb-4">
+      <section className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
         <Carousel
           opts={{
             align: "start",
@@ -180,7 +180,7 @@ const HomeUpperCarousel = () => {
   }
 
   return (
-    <section className="w-full max-w-[95%] md:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
+    <section className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
       <Carousel
         data-testid="movie-carousel"
         opts={{
@@ -196,11 +196,11 @@ const HomeUpperCarousel = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-0" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-0" />
+        <CarouselPrevious className="absolute -translate-y-1/2 border-0 left-4 top-1/2 bg-white/10 hover:bg-white/20" />
+        <CarouselNext className="absolute -translate-y-1/2 border-0 right-4 top-1/2 bg-white/10 hover:bg-white/20" />
       </Carousel>
     </section>
   );
 };
 
-export default HomeUpperCarousel;
+export default HeroCarousel;
