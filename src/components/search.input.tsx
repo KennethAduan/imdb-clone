@@ -10,7 +10,7 @@ interface SearchInputProps {
 }
 
 const SearchInput = ({
-  placeholder = "The Dark Knight",
+  placeholder = "Enter keywords...",
   value,
   onChange,
   className,
@@ -22,7 +22,7 @@ const SearchInput = ({
   return (
     <div className="relative">
       <Search
-        className="absolute left-3 top-8 h-4 w-4 -translate-y-1/2 text-muted-foreground md:top-1/2"
+        className="absolute w-4 h-4 -translate-y-1/2 left-3 top-8 text-muted-foreground md:top-1/2"
         aria-hidden="true"
         data-testid="search-icon"
       />

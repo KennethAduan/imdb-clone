@@ -30,7 +30,7 @@ const NavbarDesktop = ({ isScrolled, pathname }: NavbarComponentProps) => {
     }
 
     replace(`/search/?${params.toString()}`);
-  }, 300);
+  }, 500);
 
   return (
     <nav
@@ -71,7 +71,7 @@ const NavbarDesktop = ({ isScrolled, pathname }: NavbarComponentProps) => {
         </NavigationMenuList>
       </NavigationMenu>
       {/* Navbar Links Right Side*/}
-      <div className="flex items-center gap-2 flex-1 justify-end">
+      <div className="flex items-center justify-end flex-1 gap-2">
         {/* Search Input */}
         <SearchInput onChange={handleSearch} />
         <NavigationMenu>
@@ -79,7 +79,7 @@ const NavbarDesktop = ({ isScrolled, pathname }: NavbarComponentProps) => {
             <NavigationMenuItem>
               {NAVBAR_DETAILS.NAVLINKS_RIGHT_SIDE.map(({ href, label }) => (
                 <NavigationMenuLink key={href} asChild>
-                  <Link href={href} className="text-base px-4 hover:font-bold">
+                  <Link href={href} className="px-4 text-base hover:font-bold">
                     {label}
                   </Link>
                 </NavigationMenuLink>

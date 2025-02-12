@@ -39,7 +39,7 @@ export const NAVBAR_DETAILS = {
 
   NAVLINKS_RIGHT_SIDE: [
     {
-      label: "Sign In",
+      label: "Login",
       href: ROUTES.SIGN_IN,
     },
   ],
@@ -49,6 +49,7 @@ export enum APPLICATION_TYPES {
   MOVIE = "movie",
   SERIES = "series",
   EPISODE = "episode",
+  GAME = "game",
 }
 export enum YEARS {
   YEAR_2025 = "2025",

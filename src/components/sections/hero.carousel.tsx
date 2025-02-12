@@ -130,7 +130,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
               size="lg"
               className="w-12 p-0 transition-transform duration-300 border-0 rounded-full aspect-square hover:scale-105 bg-white/10 hover:bg-white/20"
             >
-              <PlusIcon className="w-5 h-5" />
+              <PlusIcon className="w-5 h-5 text-white" />
             </Button>
           </div>
         </div>
@@ -190,7 +190,7 @@ const HeroCarousel = () => {
         className="w-full"
       >
         <CarouselContent>
-          {lastestOmdBDetails?.Search.map((omdbDetails) => (
+          {lastestOmdBDetails?.Search?.map((omdbDetails) => (
             <CarouselItem key={omdbDetails.imdbID}>
               <HeroCard omdbDetails={omdbDetails as Data} />
             </CarouselItem>

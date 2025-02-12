@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IMDB Clone",
-  description: "IMDB Clone",
+  title: "MoviesFlix",
+  description: "A simple IMDB clone",
 };
 
 export default function RootLayout({

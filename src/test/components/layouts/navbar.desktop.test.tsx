@@ -67,7 +67,7 @@ describe("NavbarDesktop", () => {
     fireEvent.change(searchInput, { target: { value: "test movie" } });
 
     // Wait for debounce
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     expect(mockReplace).toHaveBeenCalledWith("/search/?title=test+movie");
   });

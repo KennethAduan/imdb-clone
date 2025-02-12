@@ -28,10 +28,18 @@ export interface OMDBResponse {
 }
 
 export interface SearchResponse {
-  Search: Search[];
-  totalResults: string;
-  Response: string;
-  Error: string;
+  success: boolean;
+  data: {
+    Response: string;
+    Search: Array<{
+      Title: string;
+      Year: string;
+      imdbID: string;
+      Type: string;
+      Poster: string;
+    }>;
+    Error?: string;
+  };
 }
 
 export interface Search {
