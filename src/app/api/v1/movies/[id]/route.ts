@@ -2,9 +2,10 @@ import { API_FOLDER_DETAILS } from "@/constants";
 import { NextResponse } from "next/server";
 import { config } from "@/config/environment";
 import { ParamsRequest } from "../../shared/types";
-import { handleError, isEmptyString, isFalse, isUndefined } from "@/lib/utils";
+import { isEmptyString, isFalse, isUndefined } from "@/lib/utils";
 import logger from "@/lib/logger";
 import { MovieResponse } from "@/types/omdb.types";
+import { handleError } from "@/lib/server-utils";
 
 const getMovieById = async ({ id }: ParamsRequest) => {
   try {

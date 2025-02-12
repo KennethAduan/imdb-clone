@@ -8,6 +8,11 @@ jest.mock("next/server", () => ({
     json: jest.fn(),
   },
 }));
+// Mock logger to prevent console output during tests
+jest.mock("@/lib/logger", () => ({
+  error: jest.fn(),
+  info: jest.fn(),
+}));
 
 // Mock fetch
 global.fetch = jest.fn();

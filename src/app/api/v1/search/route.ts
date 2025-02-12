@@ -1,6 +1,7 @@
 import { config } from "@/config/environment";
 import logger from "@/lib/logger";
-import { handleError, isFalse, isFalseString } from "@/lib/utils";
+import { handleError } from "@/lib/server-utils";
+import { isFalse, isFalseString } from "@/lib/utils";
 import { SearchResponse } from "@/types/omdb.types";
 import { NextResponse } from "next/server";
 

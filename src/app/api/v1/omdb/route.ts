@@ -2,7 +2,6 @@ import { config } from "@/config/environment";
 import { NextResponse } from "next/server";
 import {
   getRandomSearchTerm,
-  handleError,
   isEmptyArray,
   isEmptyString,
   isFalse,
@@ -10,7 +9,7 @@ import {
 } from "@/lib/utils";
 import { OmdbParams } from "../shared/types";
 import { OMDBResponse } from "@/types/omdb.types";
-
+import { handleError } from "@/lib/server-utils";
 // Get default parameters
 const getDefaultParams = (searchParams: URLSearchParams): OmdbParams => {
   const currentYear = (new Date().getFullYear() - 1).toString();

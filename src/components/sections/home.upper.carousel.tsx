@@ -15,9 +15,13 @@ import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Badge } from "../ui/badge";
+import { cn } from "@/lib/utils";
 
 const HeroCardSkeleton = () => (
-  <div className="relative w-full h-[600px] overflow-hidden rounded-3xl bg-slate-200 dark:bg-slate-300">
+  <div
+    data-testid="hero-card-skeleton"
+    className="relative w-full h-[600px] overflow-hidden rounded-3xl bg-slate-200 dark:bg-slate-300"
+  >
     <div className="relative h-full flex flex-col justify-end p-8 md:p-12">
       <div className="absolute top-6 left-8">
         <Skeleton className="h-8 w-16 rounded-full" />
@@ -135,6 +139,7 @@ const HomeUpperCarousel = () => {
   return (
     <section className="w-full max-w-[95%] md:max-w-[80%] mx-auto mt-6 mb-4 md:mt-28">
       <Carousel
+        data-testid="movie-carousel"
         opts={{
           align: "start",
           loop: true,
@@ -151,6 +156,18 @@ const HomeUpperCarousel = () => {
         <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-0" />
         <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/20 border-0" />
       </Carousel>
+      <div className="flex justify-center gap-2 mt-4">
+        {lastestOmdBDetails?.Search.map((_, index) => (
+          <div
+            key={index}
+            data-testid="navigation-dot"
+            className={cn(
+              "h-2 rounded-full transition-all duration-300",
+              index === 0 ? "w-8 bg-blue-600" : "w-2 bg-gray-600"
+            )}
+          />
+        ))}
+      </div>
     </section>
   );
 };

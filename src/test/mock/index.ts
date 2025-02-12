@@ -118,3 +118,26 @@ export const omdbMockEmptyResponse: OMDBResponse = {
     message: "No results found",
   },
 };
+
+export const mockMovieData = {
+  Search: [
+    {
+      Title: "The Wild Robot Animation Movies",
+      Year: "2025",
+      imdbID: "tt1234567",
+      Type: "movie",
+      Poster: "https://example.com/poster1.jpg",
+      Plot: "After a shipwreck, an intelligent robot called Rod is stranded on an uninhabited island.",
+    },
+    {
+      Title: "Another Movie",
+      Year: "2025",
+      imdbID: "tt7654321",
+      Type: "movie",
+      Poster: "https://example.com/poster2.jpg",
+      Plot: "Another interesting plot.",
+    },
+  ],
+  totalResults: "2",
+  Response: "True",
+};

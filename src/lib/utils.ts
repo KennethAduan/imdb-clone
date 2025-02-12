@@ -1,12 +1,12 @@
 import { API_FOLDER_DETAILS } from "@/constants";
 import { clsx, type ClassValue } from "clsx";
-import { NextResponse } from "next/server";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Client-side utilities
 export const isFalse = (value: boolean) => {
   return value === false;
 };
@@ -42,19 +42,3 @@ export const getRandomSearchTerm = () => {
   );
   return API_FOLDER_DETAILS.POPULAR_SEARCHES[randomIndex];
 };
-
-// Handle errors for API responses
-export function handleError(error: unknown, statusCode: number = 500) {
-  return NextResponse.json(
-    {
-      success: false,
-      message:
-        typeof error === "string"
-          ? error
-          : error instanceof Error
-          ? error.message
-          : "Something went wrong",
-    },
-    { status: statusCode }
-  );
-}

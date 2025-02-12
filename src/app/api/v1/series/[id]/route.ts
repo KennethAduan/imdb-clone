@@ -2,9 +2,10 @@ import { API_FOLDER_DETAILS } from "@/constants";
 import { NextResponse } from "next/server";
 import { config } from "@/config/environment";
 import { ParamsRequest } from "../../shared/types";
-import { handleError, isUndefined, isFalse, isEmptyString } from "@/lib/utils";
+import { isUndefined, isFalse, isEmptyString } from "@/lib/utils";
 import logger from "@/lib/logger";
 import { SeriesResponse } from "@/types/omdb.types";
+import { handleError } from "@/lib/server-utils";
 
 const getSeriesById = async ({ id }: ParamsRequest) => {
   try {
