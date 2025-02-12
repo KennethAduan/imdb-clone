@@ -22,11 +22,12 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Badge } from "../ui/badge";
 import { useState } from "react";
+import ErrorRefetch from "../error.refetch";
 
 const HeroCardSkeleton = () => (
   <div
     data-testid="hero-card-skeleton"
-    className="relative w-full h-[600px] overflow-hidden rounded-3xl bg-slate-200 dark:bg-slate-300"
+    className="relative w-full h-[600px] overflow-hidden rounded-3xl bg-inherit"
   >
     <div className="relative h-full flex flex-col justify-end p-8 md:p-12">
       <div className="absolute top-6 left-8">
@@ -79,35 +80,57 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
 
       {/* Content */}
       <div className="relative h-full flex flex-col justify-end p-8 md:p-12">
-        {/* Type Badge */}
-        <Badge className="absolute top-6 left-8 bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full px-4 py-2 flex items-center gap-2 transition-colors">
-          {omdbDetails.Type === "movie" ? (
-            <Film className="w-4 h-4" />
-          ) : (
-            <Tv className="w-4 h-4" />
-          )}
-          <span className="text-sm font-medium">
-            {omdbDetails.Type === "movie" ? "MOVIE" : "TV SERIES"}
-          </span>
-        </Badge>
         {/* Movie Info */}
-        <div className="max-w-2xl">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 line-clamp-2">
+        <div className="max-w-2xl space-y-6">
+          {/* Title */}
+          <h2 className="text-4xl md:text-6xl font-bold text-white mb-4 line-clamp-2 tracking-tight">
             {omdbDetails.Title}
           </h2>
-          <p className="text-gray-200 text-sm md:text-base mb-6 line-clamp-2">
-            {omdbDetails.Plot ||
-              "After a shipwreck, an intelligent robot called Rod is stranded on an uninhabited island. To survive the harsh environment, Rod bonds with the island's animals and cares for an orphaned baby."}
-          </p>
-          <div className="flex gap-2">
+
+          {/* Metadata Badges */}
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Type Badge */}
+            <Badge className="bg-black/50 hover:bg-black/70 backdrop-blur-sm rounded-full px-4 py-2.5 flex items-center gap-2 transition-all duration-300 border-0">
+              {omdbDetails.Type === "movie" ? (
+                <Film className="w-4 h-4 text-primary" />
+              ) : (
+                <Tv className="w-4 h-4 text-primary" />
+              )}
+              <span className="text-sm font-semibold tracking-wide">
+                {omdbDetails.Type === "movie" ? "MOVIE" : "TV SERIES"}
+              </span>
+            </Badge>
+
+            {/* Year Badge */}
+            <Badge className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full px-4 py-2.5 transition-all duration-300 border-0">
+              <span className="text-sm font-medium tracking-wide">
+                {omdbDetails.Year}
+              </span>
+            </Badge>
+          </div>
+
+          {/* Description - if available */}
+          {omdbDetails.Plot && (
+            <p className="text-gray-200 text-base md:text-lg line-clamp-3 max-w-prose">
+              {omdbDetails.Plot}
+            </p>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3 pt-2">
             <Button
-              className="rounded-full"
+              size="lg"
+              className="rounded-full px-8 hover:scale-105 transition-transform duration-300"
               onClick={() => handleRedirectByType(omdbDetails.Type)}
             >
               {CAROUSEL_DETAILS.WATCH_NOW_BUTTON_TEXT}
             </Button>
-            <Button variant="outline" className="rounded-xl">
-              <PlusIcon className="w-4 h-4" />
+            <Button
+              variant="outline"
+              size="lg"
+              className="rounded-full aspect-square p-0 w-12 hover:scale-105 transition-transform duration-300 bg-white/10 hover:bg-white/20 border-0"
+            >
+              <PlusIcon className="w-5 h-5" />
             </Button>
           </div>
         </div>
@@ -122,9 +145,7 @@ const HomeUpperCarousel = () => {
     isLoading,
     error,
     refetch,
-  } = useLatestOMDBDataByType({
-    year: "2025",
-  });
+  } = useLatestOMDBDataByType({});
 
   if (isLoading) {
     return (
@@ -150,17 +171,16 @@ const HomeUpperCarousel = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-[600px] text-red-500">
-        Error: {error.message}
-        <Button onClick={() => refetch()}>
-          {CAROUSEL_DETAILS.RETRY_BUTTON_TEXT}
-        </Button>
-      </div>
+      <ErrorRefetch
+        error={error}
+        refetch={refetch}
+        buttonText={CAROUSEL_DETAILS.RETRY_BUTTON_TEXT}
+      />
     );
   }
 
   return (
-    <section className="w-full max-w-[95%] md:max-w-[80%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
+    <section className="w-full max-w-[95%] md:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
       <Carousel
         data-testid="movie-carousel"
         opts={{

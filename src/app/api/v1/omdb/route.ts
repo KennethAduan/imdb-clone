@@ -10,6 +10,7 @@ import {
 import { OmdbParams } from "../shared/types";
 import { OMDBResponse } from "@/types/omdb.types";
 import { handleError } from "@/lib/server-utils";
+import logger from "@/lib/logger";
 // Get default parameters
 const getDefaultParams = (searchParams: URLSearchParams): OmdbParams => {
   const currentYear = (new Date().getFullYear() - 1).toString();
@@ -62,6 +63,7 @@ export const GET = async (req: Request) => {
         ...data,
       });
     } catch (fetchError) {
+      logger.error(fetchError as Error);
       return handleError(fetchError, 503);
     }
   } catch (error) {

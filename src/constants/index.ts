@@ -51,6 +51,15 @@ export const API_FOLDER_DETAILS = {
     SERIES: "series",
     EPISODE: "episode",
   },
+  YEAR: {
+    YEAR_2025: "2025",
+    YEAR_2024: "2024",
+    YEAR_2023: "2023",
+    YEAR_2022: "2022",
+    YEAR_2021: "2021",
+    YEAR_2020: "2020",
+    YEAR_2019: "2019",
+  },
   PLOT: {
     SHORT: "short",
     FULL: "full",
@@ -79,6 +88,13 @@ export const API_FOLDER_DETAILS = {
 export const CAROUSEL_DETAILS = {
   CAROUSEL_ITEMS: 3,
   WATCH_NOW_BUTTON_TEXT: "Watch Now",
+  RETRY_BUTTON_TEXT: "Retry",
+  N_A_IMAGE_SOURCE: "N/A",
+} as const;
+
+export const LATEST_MOVIES_CAROUSEL_DETAILS = {
+  TITLE: "Latest Movies",
+  DESCRIPTION: "Discover the newest releases in cinema",
   RETRY_BUTTON_TEXT: "Retry",
   N_A_IMAGE_SOURCE: "N/A",
 } as const;
