@@ -1,7 +1,7 @@
 "use client";
 
 import { CAROUSEL_DETAILS } from "@/constants";
-import { useLatestOMDBDataByType } from "@/services/react.query";
+
 import {
   Carousel,
   CarouselContent,
@@ -14,6 +14,7 @@ import { Data } from "@/types/omdb.types";
 import ErrorRefetch from "../error.refetch";
 import HeroCardSkeleton from "../loaders/hero.card.skeleton";
 import HeroCard from "../cards/hero.card";
+import useLatestOMDBDataByType from "@/hooks/use.latest.omdb.data.by.type";
 
 const HeroCarousel = () => {
   const {
