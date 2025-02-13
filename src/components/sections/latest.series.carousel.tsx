@@ -1,6 +1,6 @@
 "use client";
 
-import { useLatestOMDBDataByType } from "@/services/react.query";
+import useLatestOMDBDataByType from "@/hooks/use.latest.omdb.data.by.type";
 import {
   Carousel,
   CarouselContent,
@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/carousel";
 import MoviesSeriesCarouselSkeleton from "../loaders/movies.series.carousel.skeleton";
 import ErrorRefetch from "../error.refetch";
-import MovieSeriesCard from "../movie.series.card";
+import MovieSeriesCard from "../cards/movie.series.card";
 import { Data } from "@/types/omdb.types";
 import {
   API_FOLDER_DETAILS,

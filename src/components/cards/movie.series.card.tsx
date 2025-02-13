@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
 import { APP_LOGO } from "@/constants";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { BookmarkIcon, PlayIcon } from "lucide-react";
 import {
   Tooltip,
