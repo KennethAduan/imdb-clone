@@ -3,6 +3,7 @@ import { z } from "zod";
 const envSchema = z.object({
   OMDB_API_KEY: z.string().min(1, "OMDB API key is required"),
   OMDB_API_URL: z.string().min(1, "OMDB API URL is required"),
+  API_URL: z.string().min(1, "API URL is required"),
 
   NODE_ENV: z
     .enum(["development", "production", "test"])
@@ -27,6 +28,7 @@ export const env = envParse.data;
 // API Constants
 export const config = {
   api: {
+    baseUrl: env.API_URL,
     omdb: {
       baseUrl: env.OMDB_API_URL,
       key: env.OMDB_API_KEY,

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GET } from "@/app/api/v1/movies/[id]/route";
+import { GET } from "@/app/api/v1/movie/[id]/route";
 import { config } from "@/config/environment";
 
 // Mock next/server
