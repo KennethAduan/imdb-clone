@@ -8,11 +8,11 @@ import {
 } from "@/constants";
 import { Button } from "../ui/button";
 import { Data } from "@/types/omdb.types";
-import { Badge, Film, Tv, PlusIcon } from "lucide-react";
+import { Film, Tv, PlusIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
-
+import { Badge } from "../ui/badge";
 const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
   const router = useRouter();
   const [imgError, setImgError] = useState(false);
@@ -29,6 +29,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
 
     router.push(route);
   };
+
   return (
     <div className="relative w-full h-[600px] overflow-hidden rounded-sm md:rounded-3xl">
       {/* Background Image with Gradient Overlay */}
