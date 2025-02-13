@@ -16,7 +16,14 @@ jest.mock("next/navigation", () => ({
 // Mock next/image
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: (props: any) => {
+    // Convert boolean priority to string if present
+    const modifiedProps = {
+      ...props,
+      priority: props.priority?.toString() || undefined,
+    };
+    return <img {...modifiedProps} alt="Moviesflix logo" />;
+  },
 }));
 
 // Mock the utils module

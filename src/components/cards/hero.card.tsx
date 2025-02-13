@@ -38,8 +38,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
           <Image
             src={imageSource}
             alt={omdbDetails.Title}
-            width={1000}
-            height={1000}
+            fill
             className="object-cover object-center"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
             quality={90}

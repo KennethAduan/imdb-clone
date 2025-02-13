@@ -5,11 +5,18 @@ import Footer from "@/components/layouts/footer";
 import { FOOTER_DETAILS, ROUTES } from "@/constants";
 
 // Mock next/image
+// Mock next/image
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: (props: any) => {
+    // Convert boolean priority to string if present
+    const modifiedProps = {
+      ...props,
+      priority: props.priority?.toString() || undefined,
+    };
+    return <img {...modifiedProps} alt="Moviesflix logo" />;
+  },
 }));
-
 describe("Footer", () => {
   beforeEach(() => {
     // Mock current year to ensure consistent testing

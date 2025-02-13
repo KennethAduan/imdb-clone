@@ -16,9 +16,15 @@ jest.mock("next/navigation", () => ({
 // Mock next/image
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: (props: any) => {
+    // Convert boolean priority to string if present
+    const modifiedProps = {
+      ...props,
+      priority: props.priority?.toString() || undefined,
+    };
+    return <img {...modifiedProps} alt="Moviesflix logo" />;
+  },
 }));
-
 // Mock the utils module
 jest.mock("@/lib/utils", () => ({
   cn: (...inputs: string[]) => inputs.join(" "),
@@ -34,7 +40,7 @@ describe("NavbarMobile", () => {
     render(<NavbarMobile {...defaultProps} />);
 
     // Check logo
-    expect(screen.getByAltText("Moviesflix")).toBeInTheDocument();
+    expect(screen.getByAltText("Moviesflix logo")).toBeInTheDocument();
 
     // Check menu button
     expect(screen.getByTestId("menu-button")).toBeInTheDocument();
