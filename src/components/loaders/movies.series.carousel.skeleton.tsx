@@ -11,7 +11,7 @@ const MoviesSeriesCarouselSkeleton = ({
 }: MoviesSeriesSkeletonProps) => {
   return (
     <div data-testid={dataTestId}>
-      <Card className="bg-transparent border-0">
+      <Card className="bg-transparent border-0 shadow-none">
         <CardContent className="p-0">
           <Skeleton className="aspect-[2/3] rounded-xl" />
           <Skeleton className="w-3/4 h-4 mx-auto mt-2" />

@@ -75,7 +75,6 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
         {searchResultsData.map((item) => (
           <MovieSeriesCard
             key={item.imdbID}
-            showBookmark
             showType
             showYear
             content={item as Data}

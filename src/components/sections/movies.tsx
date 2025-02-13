@@ -58,7 +58,6 @@ const Movies = memo(() => {
       >
         {moviesData?.Search?.map((item) => (
           <MovieSeriesCard
-            showBookmark
             key={item.imdbID}
             showYear
             content={item as Data}

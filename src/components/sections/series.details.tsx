@@ -11,11 +11,11 @@ import { MediaBadges } from "../media.badge";
 import { MediaPoster } from "../media.poster";
 import { WatchlistButton } from "../watch.list.button";
 
-type MovieDetailsProps = {
-  movie: Data;
+type SeriesDetailsProps = {
+  series: Data;
 };
 
-const MovieDetails = ({ movie }: MovieDetailsProps) => {
+const SeriesDetails = ({ series }: SeriesDetailsProps) => {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [imgError, setImgError] = useState<boolean>(false);
 
@@ -42,7 +42,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
             {...fadeIn}
             className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
           >
-            <h1 className="text-4xl font-bold">{movie.Title}</h1>
+            <h1 className="text-4xl font-bold">{series.Title}</h1>
             <WatchlistButton
               isInWatchlist={isInWatchlist}
               onToggleWatchlist={handleWatchlistClick}
@@ -52,64 +52,78 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
           <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
             {/* Poster Section */}
             <MediaPoster
-              posterUrl={movie.Poster}
-              title={movie.Title}
+              posterUrl={series.Poster}
+              title={series.Title}
               hasError={imgError}
               onError={() => setImgError(true)}
             />
 
             {/* Details Section */}
             <motion.div {...fadeIn} transition={{ delay: 0.4 }}>
-              <MediaBadges media={movie} type="movie" />
+              <MediaBadges media={series} type="series" />
 
               {/* Ratings and Info */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                <InfoCard
-                  icon={<Star className="w-4 h-4 text-yellow-400" />}
-                  label="IMDb"
-                  value={`${movie.imdbRating}/10`}
-                />
-                <InfoCard
-                  icon={<Clock className="w-4 h-4" />}
-                  label="Runtime"
-                  value={movie.Runtime}
-                />
-                <InfoCard
-                  icon={<Calendar className="w-4 h-4" />}
-                  label="Released"
-                  value={movie.Released}
-                />
-                <InfoCard
-                  icon={<Globe className="w-4 h-4" />}
-                  label="Language"
-                  value={movie.Language}
-                />
+                {series.imdbRating !== "N/A" && (
+                  <InfoCard
+                    icon={<Star className="w-4 h-4 text-yellow-400" />}
+                    label="IMDb"
+                    value={`${series.imdbRating}/10`}
+                  />
+                )}
+                {series.Runtime !== "N/A" && (
+                  <InfoCard
+                    icon={<Clock className="w-4 h-4" />}
+                    label="Runtime"
+                    value={series.Runtime}
+                  />
+                )}
+                {series.Released !== "N/A" && (
+                  <InfoCard
+                    icon={<Calendar className="w-4 h-4" />}
+                    label="Released"
+                    value={series.Released}
+                  />
+                )}
+                {series.Country !== "N/A" && (
+                  <InfoCard
+                    icon={<Globe className="w-4 h-4" />}
+                    label="Country"
+                    value={series.Country}
+                  />
+                )}
               </div>
 
               <Separator className="my-4" />
 
               {/* Plot */}
-              <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Plot</h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  {movie.Plot}
-                </p>
-              </div>
+              {series.Plot !== "N/A" && (
+                <div className="mb-6">
+                  <h2 className="text-xl font-semibold mb-2">Plot</h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {series.Plot}
+                  </p>
+                </div>
+              )}
 
               {/* Cast & Crew */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h2 className="text-xl font-semibold mb-2">Cast</h2>
-                  <p className="text-muted-foreground">{movie.Actors}</p>
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold mb-2">Director</h2>
-                  <p className="text-muted-foreground">{movie.Director}</p>
-                </div>
+                {series.Actors !== "N/A" && (
+                  <div>
+                    <h2 className="text-xl font-semibold mb-2">Cast</h2>
+                    <p className="text-muted-foreground">{series.Actors}</p>
+                  </div>
+                )}
+                {series.Director !== "N/A" && (
+                  <div>
+                    <h2 className="text-xl font-semibold mb-2">Director</h2>
+                    <p className="text-muted-foreground">{series.Director}</p>
+                  </div>
+                )}
               </div>
 
               {/* Awards if any */}
-              {movie.Awards !== "N/A" && (
+              {series.Awards !== "N/A" && (
                 <motion.div
                   {...fadeIn}
                   transition={{ delay: 0.6 }}
@@ -119,7 +133,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                     <Trophy className="w-5 h-5 text-yellow-400" />
                     <h2 className="text-xl font-semibold">Awards</h2>
                   </div>
-                  <p className="text-muted-foreground mt-2">{movie.Awards}</p>
+                  <p className="text-muted-foreground mt-2">{series.Awards}</p>
                 </motion.div>
               )}
             </motion.div>
@@ -130,4 +144,4 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
   );
 };
 
-export default MovieDetails;
+export default SeriesDetails;

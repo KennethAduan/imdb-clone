@@ -6,18 +6,12 @@ import Image from "next/image";
 import { APP_LOGO } from "@/constants";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { BookmarkIcon, PlayIcon } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { PlayIcon } from "lucide-react";
+
 type MovieCardProps = {
   content: Data;
   showYear?: boolean;
   showType?: boolean;
-  showBookmark?: boolean;
   onClick: () => void;
   "data-testid"?: string;
 };
@@ -27,7 +21,6 @@ const MovieSeriesCard = ({
   onClick,
   showYear = false,
   showType = false,
-  showBookmark = false,
   "data-testid": dataTestId,
 }: MovieCardProps) => {
   const [imgError, setImgError] = useState<boolean>(false);
@@ -45,27 +38,7 @@ const MovieSeriesCard = ({
               {content.Type.toUpperCase()}
             </Badge>
           )}
-          {showBookmark && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size={"icon"}
-                    className="absolute z-10 text-xs top-2 right-2"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      alert("clicked");
-                    }}
-                  >
-                    <BookmarkIcon className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent className="text-white bg-black/90 dark:bg-white/90 dark:text-black">
-                  <p>Add to Watchlist</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
+
           <Image
             src={
               imgError || content.Poster === "N/A" ? APP_LOGO : content.Poster

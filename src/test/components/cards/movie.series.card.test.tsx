@@ -75,18 +75,6 @@ describe("MovieSeriesCard", () => {
     expect(screen.getByText("MOVIE")).toBeInTheDocument();
   });
 
-  it("shows bookmark button when showBookmark prop is true", () => {
-    render(
-      <MovieSeriesCard
-        content={mockData}
-        onClick={mockOnClick}
-        showBookmark={true}
-      />
-    );
-
-    expect(screen.getByRole("button", { name: "" })).toBeInTheDocument();
-  });
-
   it("calls onClick when card is clicked", () => {
     render(
       <MovieSeriesCard
