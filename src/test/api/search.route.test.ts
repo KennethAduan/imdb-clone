@@ -1,6 +1,6 @@
 import { GET } from "@/app/api/v1/search/route";
 import { config } from "@/config/environment";
-import { mockSearchData } from "../mock";
+import { mockSearchData } from "../data_mocks";
 
 // Mock Next.js Response
 jest.mock("next/server", () => ({

@@ -1,6 +1,6 @@
 import { GET } from "@/app/api/v1/omdb/route";
 import { config } from "@/config/environment";
-import { omdbMockSuccessResponse, omdbMockEmptyResponse } from "../mock";
+import { omdbMockSuccessResponse, omdbMockEmptyResponse } from "../data_mocks";
 
 // Mock the fetch function
 global.fetch = jest.fn();

@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
 import { GET } from "@/app/api/v1/episode/[id]/route";
 import { config } from "@/config/environment";
-
-import { mockEpisodeData } from "../mock";
+import { mockEpisodeData } from "../data_mocks";
 
 // Mock Next.js Response
 jest.mock("next/server", () => ({
