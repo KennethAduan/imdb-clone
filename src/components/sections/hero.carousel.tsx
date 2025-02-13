@@ -26,7 +26,7 @@ const HeroCarousel = () => {
 
   if (isLoading) {
     return (
-      <section className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
+      <section className="w-full max-w-[90%] md:max-w-[70%] mx-auto mb-4 mt-24">
         <Carousel
           opts={{
             align: "start",
@@ -57,7 +57,7 @@ const HeroCarousel = () => {
   }
 
   return (
-    <section className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
+    <section className="w-full max-w-[100%] md:max-w-[70%] mx-auto mb-4 mt-24">
       <Carousel
         data-testid="movie-carousel"
         opts={{

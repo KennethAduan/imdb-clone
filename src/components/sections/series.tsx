@@ -12,17 +12,17 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import useLatestOMDBDataByType from "@/hooks/use.latest.omdb.data.by.type";
 
-const Movies = memo(() => {
+const Series = memo(() => {
   const params = useSearchParams();
   const page = params.get("page") || "1";
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const {
-    data: moviesData,
+    data: seriesData,
     isLoading,
     error,
   } = useLatestOMDBDataByType({
-    type: APPLICATION_TYPES.MOVIE,
+    type: APPLICATION_TYPES.SERIES,
     page: page,
     year: "",
     plot: "",
@@ -31,7 +31,7 @@ const Movies = memo(() => {
   const handleCardClick = useCallback(
     (imdbID: string) => {
       startTransition(() => {
-        router.push(`${ROUTES.MOVIE}/${imdbID}`);
+        router.push(`${ROUTES.TV}/${imdbID}`);
       });
     },
     [router]
@@ -56,7 +56,7 @@ const Movies = memo(() => {
           isPending ? "opacity-70" : ""
         }`}
       >
-        {moviesData?.Search?.map((item) => (
+        {seriesData?.Search?.map((item) => (
           <MovieSeriesCard
             showBookmark
             key={item.imdbID}
@@ -74,6 +74,6 @@ const Movies = memo(() => {
   );
 });
 
-Movies.displayName = "Movies";
+Series.displayName = "Series";
 
-export default Movies;
+export default Series;

@@ -74,7 +74,9 @@ const NavbarMobile = ({ pathname }: NavbarComponentProps) => {
               src={NAVBAR_DETAILS.LOGO}
               alt="Moviesflix"
               width={120}
-              height={120}
+              height={40}
+              className="w-auto h-auto"
+              priority
             />
           </Link>
         </div>

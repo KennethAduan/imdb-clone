@@ -72,6 +72,8 @@ const MovieSeriesCard = ({
             }
             alt={content.Title}
             fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
             className="object-cover transition-transform duration-300 hover:scale-105"
             data-testid={`movie-poster-${content.imdbID}`}
             onError={() => setImgError(true)}

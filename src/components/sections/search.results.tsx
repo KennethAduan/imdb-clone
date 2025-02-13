@@ -50,7 +50,7 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
 
   if (!searchResultsData || searchResultsData.length === 0) {
     return (
-      <section className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24">
+      <section className="w-full max-w-[90%] md:max-w-[70%] mx-auto mb-4 mt-24">
         <div className="flex items-center justify-center p-4">
           <div className="text-lg">
             No results found for &quot;{search}&quot;
@@ -63,7 +63,7 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
   return (
     <section
       data-testid="search-results-section"
-      className="w-full lg:max-w-[95%] sm:max-w-[90%] 2xl:max-w-[45%] mx-auto mb-4 mt-24"
+      className="w-full max-w-[90%] md:max-w-[70%] mx-auto mb-4 mt-24"
     >
       <PagePagination />
       <div

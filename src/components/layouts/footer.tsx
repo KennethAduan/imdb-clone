@@ -3,10 +3,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { FOOTER_DETAILS, ROUTES } from "@/constants";
-
+import { getYear } from "@/lib/utils";
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
+  const currentYear = getYear();
   return (
     <footer className="mt-auto w-full border-t bg-background">
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
@@ -17,9 +16,10 @@ const Footer = () => {
               <Image
                 src={FOOTER_DETAILS.LOGO}
                 alt="Moviesflix logo"
-                width={130}
-                height={130}
-                className="mb-4"
+                width={120}
+                height={40}
+                className="w-auto h-auto"
+                priority
               />
             </Link>
             <p className="text-sm text-muted-foreground">

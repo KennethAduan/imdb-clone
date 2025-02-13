@@ -1,7 +1,7 @@
-import React from "react";
+import SeriesPage from "@/components/sections/series";
 
 const TvPage = () => {
-  return <div>TvPage</div>;
+  return <SeriesPage />;
 };
 
 export default TvPage;
