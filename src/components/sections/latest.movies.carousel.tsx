@@ -1,6 +1,5 @@
 "use client";
 
-import { useLatestOMDBDataByType } from "@/services/react.query";
 import {
   Carousel,
   CarouselContent,
@@ -10,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import MoviesSeriesCarouselSkeleton from "../loaders/movies.series.carousel.skeleton";
 import ErrorRefetch from "../error.refetch";
-import MovieSeriesCard from "../movie.series.card";
+import MovieSeriesCard from "../cards/movie.series.card";
 import { Data } from "@/types/omdb.types";
 import {
   API_FOLDER_DETAILS,
@@ -20,6 +19,7 @@ import {
 import { getYear } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import useLatestOMDBDataByType from "@/hooks/use.latest.omdb.data.by.type";
 
 const LatestMoviesCarousel = () => {
   const currentYear = getYear();
@@ -82,7 +82,7 @@ const LatestMoviesCarousel = () => {
                   className="basis-[250px] md:basis-[200px] lg:basis-[250px]"
                 >
                   <MoviesSeriesCarouselSkeleton
-                    data-testid={`movie-skeleton-${index}`}
+                    data-testid={`movie-skeleton`}
                   />
                 </div>
               ))}

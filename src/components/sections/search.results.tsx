@@ -1,22 +1,22 @@
 "use client";
 
 import { SearchResponseParams } from "@/types/data.fetching.type";
-import { useOMDBDataBySearch } from "@/services/react.query";
+
 import React, { memo, useCallback, useTransition } from "react";
-import MovieSeriesCard from "../movie.series.card";
+import MovieSeriesCard from "../cards/movie.series.card";
 import { Data } from "@/types/omdb.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { APPLICATION_TYPES, ROUTES } from "@/constants";
 import PagePagination from "../page.pagination";
 import MoviesSeriesCardSkeleton from "../loaders/movies.series.card.skeleton";
 import ErrorData from "../error.data";
+import useOMDBDataBySearch from "@/hooks/use.omdb.data.by.search";
 
 const SearchResults = memo(({ search }: SearchResponseParams) => {
   const params = useSearchParams();
   const page = params.get("page") || "1";
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
-
   const {
     data: searchResultsData,
     isLoading,

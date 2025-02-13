@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo, useTransition } from "react";
+import React, { memo, useMemo, useTransition } from "react";
 import {
   Pagination,
   PaginationContent,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/pagination";
 import { useSearchParams, useRouter } from "next/navigation";
 
-const PagePagination = React.memo(() => {
+const PagePagination = memo(() => {
   const router = useRouter();
   const params = useSearchParams();
   const [isPending, startTransition] = useTransition();

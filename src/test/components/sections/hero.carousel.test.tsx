@@ -2,6 +2,7 @@
 import { render, screen, cleanup } from "@testing-library/react";
 import HeroCarousel from "@/components/sections/hero.carousel";
 import { useLatestOMDBDataByType } from "@/services/react.query";
+import "../../__mocks__/next-router-mock";
 
 // Mock the react-query hook
 jest.mock("@/services/react.query", () => ({
@@ -23,11 +24,19 @@ jest.mock("next/image", () => ({
   ),
 }));
 
+// Create a mock router
+const mockRouter = {
+  push: jest.fn(),
+  back: jest.fn(),
+  forward: jest.fn(),
+  refresh: jest.fn(),
+  replace: jest.fn(),
+  prefetch: jest.fn(),
+};
+
 // Mock next/navigation
 jest.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-  }),
+  useRouter: () => mockRouter,
 }));
 
 // Mock the carousel component from shadcn
@@ -47,6 +56,11 @@ jest.mock("@/components/ui/carousel", () => ({
   CarouselNext: () => <button aria-label="Next slide">Next</button>,
 }));
 
+// Add test wrapper with router context
+const TestWrapper = ({ children }: { children: React.ReactNode }) => {
+  return children;
+};
+
 describe("HomeUpperCarousel", () => {
   afterEach(() => {
     cleanup();
@@ -60,7 +74,7 @@ describe("HomeUpperCarousel", () => {
       error: null,
     });
 
-    render(<HeroCarousel />);
+    render(<HeroCarousel />, { wrapper: TestWrapper });
 
     // Check if skeleton carousel exists
     expect(screen.getByTestId("movie-carousel")).toBeInTheDocument();
@@ -77,7 +91,7 @@ describe("HomeUpperCarousel", () => {
       error: new Error("Failed to fetch data"),
     });
 
-    render(<HeroCarousel />);
+    render(<HeroCarousel />, { wrapper: TestWrapper });
     expect(screen.getByText(/Error:/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /retry/i })).toBeInTheDocument();
   });
@@ -85,11 +99,21 @@ describe("HomeUpperCarousel", () => {
   it("renders carousel with navigation controls when data is loaded", () => {
     (useLatestOMDBDataByType as jest.Mock).mockReturnValue({
       isLoading: false,
-      data: { Search: [{ Title: "Test Movie", imdbID: "123" }] },
+      data: {
+        Search: [
+          {
+            Title: "Test Movie",
+            imdbID: "123",
+            Poster: "test-poster.jpg",
+            Type: "movie",
+            Year: "2024",
+          },
+        ],
+      },
       error: null,
     });
 
-    render(<HeroCarousel />);
+    render(<HeroCarousel />, { wrapper: TestWrapper });
 
     // Check if carousel container exists
     expect(screen.getByTestId("movie-carousel")).toBeInTheDocument();

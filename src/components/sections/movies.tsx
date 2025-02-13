@@ -1,16 +1,17 @@
 "use client";
-import React, { useCallback, useTransition } from "react";
+
+import React, { useCallback, useTransition, memo } from "react";
 import { useLatestOMDBDataByType } from "@/services/react.query";
 import { APPLICATION_TYPES, ROUTES } from "@/constants";
 import ErrorData from "../error.data";
 import MoviesSeriesCardSkeleton from "../loaders/movies.series.card.skeleton";
 import PagePagination from "../page.pagination";
-import MovieSeriesCard from "../movie.series.card";
+import MovieSeriesCard from "../cards/movie.series.card";
 import { Data } from "@/types/omdb.types";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
-const Movies = () => {
+const Movies = memo(() => {
   const params = useSearchParams();
   const page = params.get("page") || "1";
   const router = useRouter();
@@ -77,6 +78,8 @@ const Movies = () => {
       </div>
     </section>
   );
-};
+});
+
+Movies.displayName = "Movies";
 
 export default Movies;

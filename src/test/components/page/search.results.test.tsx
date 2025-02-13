@@ -1,13 +1,48 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import SearchResults from "@/components/sections/search.results";
-import { useOMDBDataBySearch } from "@/services/react.query";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Data } from "@/types/omdb.types";
 
 // Mock the hooks
-jest.mock("@/services/react.query");
+jest.mock("@/hooks/use.omdb.data.by.search", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+// Mock next/navigation
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
   useSearchParams: jest.fn(),
+}));
+
+// Mock the MovieSeriesCard component
+jest.mock("@/components/cards/movie.series.card", () => ({
+  __esModule: true,
+  default: ({ content, onClick }: { content: Data; onClick: () => void }) => (
+    <div data-testid={`movie-card-${content.imdbID}`} onClick={onClick}>
+      {content.Title}
+    </div>
+  ),
+}));
+
+// Mock the ErrorData component
+jest.mock("@/components/error.data", () => ({
+  __esModule: true,
+  default: ({ error }: { error: Error }) => (
+    <div data-testid="error-message">Error: {error.message}</div>
+  ),
+}));
+
+// Mock the MoviesSeriesCardSkeleton component
+jest.mock("@/components/loaders/movies.series.card.skeleton", () => ({
+  __esModule: true,
+  default: () => <div data-testid="movies-series-skeleton" />,
+}));
+
+// Mock the PagePagination component
+jest.mock("@/components/page.pagination", () => ({
+  __esModule: true,
+  default: () => <div data-testid="pagination" />,
 }));
 
 // Mock data
@@ -47,7 +82,10 @@ describe("SearchResults", () => {
   });
 
   it("renders loading skeleton when data is loading", () => {
-    (useOMDBDataBySearch as jest.Mock).mockReturnValue({
+    const useOMDBDataBySearch = jest.requireMock(
+      "@/hooks/use.omdb.data.by.search"
+    ).default;
+    useOMDBDataBySearch.mockReturnValue({
       isLoading: true,
       data: null,
       error: null,
@@ -59,8 +97,11 @@ describe("SearchResults", () => {
   });
 
   it("renders error component when there is an error", () => {
+    const useOMDBDataBySearch = jest.requireMock(
+      "@/hooks/use.omdb.data.by.search"
+    ).default;
     const mockError = new Error("Test error");
-    (useOMDBDataBySearch as jest.Mock).mockReturnValue({
+    useOMDBDataBySearch.mockReturnValue({
       isLoading: false,
       data: null,
       error: mockError,
@@ -72,7 +113,10 @@ describe("SearchResults", () => {
   });
 
   it("renders no results message when search returns empty results", () => {
-    (useOMDBDataBySearch as jest.Mock).mockReturnValue({
+    const useOMDBDataBySearch = jest.requireMock(
+      "@/hooks/use.omdb.data.by.search"
+    ).default;
+    useOMDBDataBySearch.mockReturnValue({
       isLoading: false,
       data: [],
       error: null,
@@ -84,7 +128,10 @@ describe("SearchResults", () => {
   });
 
   it("renders search results correctly", () => {
-    (useOMDBDataBySearch as jest.Mock).mockReturnValue({
+    const useOMDBDataBySearch = jest.requireMock(
+      "@/hooks/use.omdb.data.by.search"
+    ).default;
+    useOMDBDataBySearch.mockReturnValue({
       isLoading: false,
       data: mockSearchResults,
       error: null,
@@ -100,7 +147,10 @@ describe("SearchResults", () => {
   });
 
   it("navigates correctly when movie card is clicked", () => {
-    (useOMDBDataBySearch as jest.Mock).mockReturnValue({
+    const useOMDBDataBySearch = jest.requireMock(
+      "@/hooks/use.omdb.data.by.search"
+    ).default;
+    useOMDBDataBySearch.mockReturnValue({
       isLoading: false,
       data: mockSearchResults,
       error: null,
@@ -109,14 +159,17 @@ describe("SearchResults", () => {
 
     render(<SearchResults search="test" />);
 
-    const movieCard = screen.getByTestId("movie-card-tt15164982");
+    const movieCard = screen.getByTestId("movie-card-tt4507428");
     fireEvent.click(movieCard);
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/tv/tt15164982");
+    expect(mockRouter.push).toHaveBeenCalledWith("/movies/tt4507428");
   });
 
   it("navigates correctly when series card is clicked", () => {
-    (useOMDBDataBySearch as jest.Mock).mockReturnValue({
+    const useOMDBDataBySearch = jest.requireMock(
+      "@/hooks/use.omdb.data.by.search"
+    ).default;
+    useOMDBDataBySearch.mockReturnValue({
       isLoading: false,
       data: mockSearchResults,
       error: null,

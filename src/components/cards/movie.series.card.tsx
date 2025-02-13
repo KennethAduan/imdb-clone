@@ -52,6 +52,10 @@ const MovieSeriesCard = ({
                   <Button
                     size={"icon"}
                     className="absolute z-10 text-xs top-2 right-2"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      alert("clicked");
+                    }}
                   >
                     <BookmarkIcon className="w-4 h-4" />
                   </Button>
