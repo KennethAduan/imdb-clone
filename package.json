@@ -20,8 +20,10 @@
     "test:node": "jest --selectProjects node"
   },
   "dependencies": {
+    "@hookform/resolvers": "^4.0.0",
     "@prisma/client": "^6.3.1",
     "@radix-ui/react-dialog": "^1.1.6",
+    "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-navigation-menu": "^1.2.5",
     "@radix-ui/react-scroll-area": "^1.2.3",
     "@radix-ui/react-separator": "^1.1.2",
@@ -37,15 +39,17 @@
     "lucide-react": "^0.475.0",
     "motion": "^12.4.2",
     "next": "15.1.6",
+    "next-safe-action": "^7.10.3",
     "next-themes": "^0.4.4",
     "nextjs-toploader": "^3.7.15",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
     "tailwind-merge": "^3.0.1",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",
     "winston": "^3.17.0",
-    "zod": "^3.24.1",
+    "zod": "^3.24.2",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

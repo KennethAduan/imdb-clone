@@ -6,6 +6,8 @@ export const APP_LOGO = "/movie-icon.png";
 export const ROUTES = {
   HOME: "/",
   SIGN_IN: "/sign-in",
+  SIGN_UP: "/sign-up",
+  PROFILE: "/profile",
   MOVIE: "/movies",
   SERIES: "/series",
   SERIES_DETAILS_BY_ID: "/series/:id",

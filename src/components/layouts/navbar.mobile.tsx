@@ -20,7 +20,7 @@ import SearchDialog from "../search.dialog";
 
 const NavbarMobile = ({ pathname }: NavbarComponentProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isSiginIn = true;
+  const isSiginIn = false;
   return (
     <div
       data-testid="mobile-nav"
@@ -84,7 +84,7 @@ const NavbarMobile = ({ pathname }: NavbarComponentProps) => {
           <SearchDialog data-testid="search-dialog" />
           {isSiginIn ? (
             <Button variant={"ghost"} className="rounded-full" asChild>
-              <Link href={ROUTES.WATCHLIST}>
+              <Link href={ROUTES.PROFILE}>
                 <UserIcon className="w-6 h-6" />
               </Link>
             </Button>
