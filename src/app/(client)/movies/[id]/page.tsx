@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import MovieSeriesDetailsSkeleton from "@/components/loaders/movie.series.details.skeleton";
 import { MovieResponse } from "@/types/omdb.types";
 import { handleError } from "@/lib/server-utils";
+import { getSession } from "@/lib/jwt";
 
 const getMovieById = async (id: string) => {
   const res = await fetch(
@@ -23,11 +24,12 @@ const getMovieById = async (id: string) => {
 
 const MoviePageById = async ({ params }: { params: { id: string } }) => {
   const id = (await params).id;
+  const user = await getSession();
   const movie: MovieResponse = await getMovieById(id);
 
   return (
     <Suspense key={movie.data.imdbID} fallback={<MovieSeriesDetailsSkeleton />}>
-      <MovieDetails movie={movie.data} />
+      <MovieDetails movie={movie.data} userId={user?.userId ?? ""} />
     </Suspense>
   );
 };

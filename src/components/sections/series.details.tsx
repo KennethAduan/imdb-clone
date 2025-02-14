@@ -44,7 +44,7 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
             data-testid="title-section"
             className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
           >
-            <h1 data-testid="series-title" className="text-4xl font-bold">
+            <h1 data-testid="series-title" className="text-xl font-bold">
               {series.Title}
             </h1>
             <WatchlistButton

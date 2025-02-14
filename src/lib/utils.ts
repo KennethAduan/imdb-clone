@@ -31,6 +31,10 @@ export const isUndefined = (value: unknown) => {
   return value === undefined;
 };
 
+export const isNull = (value: unknown) => {
+  return value === null;
+};
+
 export const isFalseString = (value: string) => {
   return value === "False";
 };

@@ -11,12 +11,14 @@ import {
 
 type WatchlistButtonProps = {
   isInWatchlist: boolean;
+  isSaving: boolean;
   onToggleWatchlist: () => void;
 };
 
 export const WatchlistButton = ({
   isInWatchlist,
   onToggleWatchlist,
+  isSaving,
 }: WatchlistButtonProps) => (
   <TooltipProvider>
     <Tooltip>
@@ -25,6 +27,7 @@ export const WatchlistButton = ({
           onClick={onToggleWatchlist}
           variant="outline"
           className="flex items-center gap-2 h-11"
+          disabled={isSaving}
         >
           <motion.div
             whileTap={{ scale: 0.9 }}

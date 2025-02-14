@@ -10,12 +10,17 @@ import { InfoCard } from "../cards/info.card";
 import { MediaBadges } from "../media.badge";
 import { MediaPoster } from "../media.poster";
 import { WatchlistButton } from "../watch.list.button";
+import { useAction } from "next-safe-action/hooks";
+import { WatchlistFormValues } from "@/schema/user.account.schema";
+import { addToWatchlist } from "@/server-actions/user.action";
+import { toast } from "sonner";
 
 type MovieDetailsProps = {
   movie: Data;
+  userId: string;
 };
 
-const MovieDetails = ({ movie }: MovieDetailsProps) => {
+const MovieDetails = ({ movie, userId }: MovieDetailsProps) => {
   const [isInWatchlist, setIsInWatchlist] = useState(false);
   const [imgError, setImgError] = useState<boolean>(false);
 
@@ -24,9 +29,27 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5 },
   };
-
-  const handleWatchlistClick = () => {
-    setIsInWatchlist(!isInWatchlist);
+  const { execute, isExecuting } = useAction(addToWatchlist, {
+    onSuccess: () => {
+      setIsInWatchlist(!isInWatchlist);
+      toast.success("Added to watchlist");
+    },
+  });
+  const handleWatchlistClick = ({
+    imdbId,
+    title,
+    poster,
+    year,
+    type,
+  }: WatchlistFormValues) => {
+    execute({
+      userId,
+      imdbId,
+      title,
+      poster,
+      year,
+      type,
+    });
   };
 
   return (
@@ -34,21 +57,31 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
       data-testid="movie-details-container"
       initial="initial"
       animate="animate"
-      className="w-full max-w-7xl mx-auto p-4 md:p-8 mt-12 md:mt-22"
+      className="w-full p-4 mx-auto mt-12 max-w-7xl md:p-8 md:mt-22"
     >
-      <Card className="bg-background/60 backdrop-blur-lg border-none shadow-none">
+      <Card className="border-none shadow-none bg-background/60 backdrop-blur-lg">
         <CardContent className="p-6">
           {/* Title and Watchlist Section */}
           <motion.div
             {...fadeIn}
-            className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
+            className="flex flex-col justify-between gap-4 mb-8 sm:flex-row sm:items-center"
           >
-            <h1 data-testid="movie-title" className="text-4xl font-bold">
+            <h1 data-testid="movie-title" className="text-xl font-bold">
               {movie.Title}
             </h1>
             <WatchlistButton
+              isSaving={isExecuting}
               isInWatchlist={isInWatchlist}
-              onToggleWatchlist={handleWatchlistClick}
+              onToggleWatchlist={() =>
+                handleWatchlistClick({
+                  userId,
+                  imdbId: movie.imdbID,
+                  title: movie.Title,
+                  poster: movie.Poster,
+                  year: movie.Year,
+                  type: movie.Type,
+                })
+              }
             />
           </motion.div>
 
@@ -66,7 +99,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
               <MediaBadges media={movie} type="movie" />
 
               {/* Ratings and Info */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+              <div className="grid grid-cols-2 gap-4 mb-6 md:grid-cols-4">
                 <InfoCard
                   icon={<Star className="w-4 h-4 text-yellow-400" />}
                   label="IMDb"
@@ -97,23 +130,23 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
 
               {/* Plot */}
               <div className="mb-6">
-                <h2 className="text-xl font-semibold mb-2">Plot</h2>
+                <h2 className="mb-2 text-xl font-semibold">Plot</h2>
                 <p
                   data-testid="movie-plot"
-                  className="text-muted-foreground leading-relaxed"
+                  className="leading-relaxed text-muted-foreground"
                 >
                   {movie.Plot}
                 </p>
               </div>
 
               {/* Cast & Crew */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">Cast</h2>
+                  <h2 className="mb-2 text-xl font-semibold">Cast</h2>
                   <p className="text-muted-foreground">{movie.Actors}</p>
                 </div>
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">Director</h2>
+                  <h2 className="mb-2 text-xl font-semibold">Director</h2>
                   <p className="text-muted-foreground">{movie.Director}</p>
                 </div>
               </div>
@@ -129,7 +162,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                     <Trophy className="w-5 h-5 text-yellow-400" />
                     <h2 className="text-xl font-semibold">Awards</h2>
                   </div>
-                  <p className="text-muted-foreground mt-2">{movie.Awards}</p>
+                  <p className="mt-2 text-muted-foreground">{movie.Awards}</p>
                 </motion.div>
               )}
             </motion.div>
