@@ -3,10 +3,10 @@
 import React, { useCallback, useTransition, memo } from "react";
 
 import { APPLICATION_TYPES, ROUTES } from "@/constants";
-import ErrorData from "../error.data";
-import MoviesSeriesCardSkeleton from "../loaders/movies.series.card.skeleton";
-import PagePagination from "../page.pagination";
-import MovieSeriesCard from "../cards/movie.series.card";
+import ErrorData from "../../error.data";
+import MoviesSeriesCardSkeleton from "../../loaders/movies.series.card.skeleton";
+import PagePagination from "../../page.pagination";
+import MovieSeriesCard from "../../cards/movie.series.card";
 import { Data } from "@/types/omdb.types";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";

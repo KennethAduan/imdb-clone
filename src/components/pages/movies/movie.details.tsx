@@ -4,74 +4,53 @@ import { Data } from "@/types/omdb.types";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, Clock, Calendar, Trophy, Globe } from "lucide-react";
-import { useState } from "react";
-import { InfoCard } from "../cards/info.card";
-import { MediaBadges } from "../media.badge";
-import { MediaPoster } from "../media.poster";
-import { WatchlistButton } from "../watch.list.button";
-import { useAction } from "next-safe-action/hooks";
-import { WatchlistFormValues } from "@/schema/user.account.schema";
-import { addToWatchlist } from "@/server-actions/user.action";
-import { toast } from "sonner";
+import { Trophy } from "lucide-react";
+import { useState, useCallback } from "react";
+import { MediaBadges } from "../../media.badge";
+import { MediaPoster } from "../../media.poster";
+import { WatchlistButton } from "../../watch.list.button";
+import MovieInfo from "./movie.info";
+import useWatchlist from "@/hooks/use.watchlist";
 
 type MovieDetailsProps = {
   movie: Data;
   userId: string;
+  isInWatchlist: boolean;
 };
 
-const MovieDetails = ({ movie, userId }: MovieDetailsProps) => {
-  const [isInWatchlist, setIsInWatchlist] = useState(false);
+const MovieDetails = ({ movie, userId, isInWatchlist }: MovieDetailsProps) => {
   const [imgError, setImgError] = useState<boolean>(false);
 
+  const { inWatchlist, handleWatchlistClick, isAdding, isRemoving } =
+    useWatchlist({
+      isInWatchlist,
+      userId,
+    });
+
+  const handleImageError = useCallback(() => setImgError(true), []);
+
+  // Animation variants that respect the watchlist action
   const fadeIn = {
-    initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5 },
   };
-  const { execute, isExecuting } = useAction(addToWatchlist, {
-    onSuccess: () => {
-      setIsInWatchlist(!isInWatchlist);
-      toast.success("Added to watchlist");
-    },
-  });
-  const handleWatchlistClick = ({
-    imdbId,
-    title,
-    poster,
-    year,
-    type,
-  }: WatchlistFormValues) => {
-    execute({
-      userId,
-      imdbId,
-      title,
-      poster,
-      year,
-      type,
-    });
-  };
 
   return (
-    <motion.div
+    <div
       data-testid="movie-details-container"
-      initial="initial"
-      animate="animate"
       className="w-full p-4 mx-auto mt-12 max-w-7xl md:p-8 md:mt-22"
+      role="main"
+      aria-label={`Details for ${movie.Title}`}
     >
       <Card className="border-none shadow-none bg-background/60 backdrop-blur-lg">
         <CardContent className="p-6">
-          {/* Title and Watchlist Section */}
-          <motion.div
-            {...fadeIn}
-            className="flex flex-col justify-between gap-4 mb-8 sm:flex-row sm:items-center"
-          >
+          <div className="flex flex-col justify-between gap-4 mb-8 sm:flex-row sm:items-center">
             <h1 data-testid="movie-title" className="text-xl font-bold">
               {movie.Title}
             </h1>
             <WatchlistButton
-              isSaving={isExecuting}
-              isInWatchlist={isInWatchlist}
+              isSaving={isAdding || isRemoving}
+              isInWatchlist={inWatchlist}
               onToggleWatchlist={() =>
                 handleWatchlistClick({
                   userId,
@@ -83,48 +62,19 @@ const MovieDetails = ({ movie, userId }: MovieDetailsProps) => {
                 })
               }
             />
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
-            {/* Poster Section */}
             <MediaPoster
               posterUrl={movie.Poster}
               title={movie.Title}
               hasError={imgError}
-              onError={() => setImgError(true)}
+              onError={handleImageError}
             />
 
-            {/* Details Section */}
-            <motion.div {...fadeIn} transition={{ delay: 0.4 }}>
+            <motion.div {...fadeIn}>
               <MediaBadges media={movie} type="movie" />
-
-              {/* Ratings and Info */}
-              <div className="grid grid-cols-2 gap-4 mb-6 md:grid-cols-4">
-                <InfoCard
-                  icon={<Star className="w-4 h-4 text-yellow-400" />}
-                  label="IMDb"
-                  value={`${movie.imdbRating}/10`}
-                  testId="imdb-rating"
-                />
-                <InfoCard
-                  icon={<Clock className="w-4 h-4" />}
-                  label="Runtime"
-                  value={movie.Runtime}
-                  testId="runtime-value"
-                />
-                <InfoCard
-                  icon={<Calendar className="w-4 h-4" />}
-                  label="Released"
-                  value={movie.Released}
-                  testId="release-date"
-                />
-                <InfoCard
-                  icon={<Globe className="w-4 h-4" />}
-                  label="Language"
-                  value={movie.Language}
-                  testId="language-value"
-                />
-              </div>
+              <MovieInfo movie={movie} />
 
               <Separator className="my-4" />
 
@@ -153,23 +103,19 @@ const MovieDetails = ({ movie, userId }: MovieDetailsProps) => {
 
               {/* Awards if any */}
               {movie.Awards !== "N/A" && (
-                <motion.div
-                  {...fadeIn}
-                  transition={{ delay: 0.6 }}
-                  className="mt-6"
-                >
+                <div className="mt-6">
                   <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-yellow-400" />
                     <h2 className="text-xl font-semibold">Awards</h2>
                   </div>
                   <p className="mt-2 text-muted-foreground">{movie.Awards}</p>
-                </motion.div>
+                </div>
               )}
             </motion.div>
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+    </div>
   );
 };
 

@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { render, screen, fireEvent } from "@testing-library/react";
-import SeriesDetails from "@/components/sections/series.details";
+
 import { Data } from "@/types/omdb.types";
+import SeriesDetails from "@/components/pages/series/series.details";
 
 // Mock framer-motion with all motion properties
 jest.mock("framer-motion", () => ({

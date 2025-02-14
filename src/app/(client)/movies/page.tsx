@@ -1,4 +1,4 @@
-import Movies from "@/components/sections/movies";
+import Movies from "@/components/pages/movies/movies";
 import React from "react";
 
 const MoviesPage = () => {

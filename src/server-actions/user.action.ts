@@ -163,3 +163,28 @@ export const removeFromWatchlist = actionClient
     revalidatePath(ROUTES.WATCHLIST);
     return { success: true, message: "Item removed from watchlist" };
   });
+
+export const checkIfInWatchlist = async (userId: string, imdbId: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    return { success: false, message: "User not found" };
+  }
+
+  const existingWatchlist = await prisma.savedMovie.findUnique({
+    where: {
+      userId_imdbId: {
+        userId,
+        imdbId,
+      },
+    },
+  });
+
+  if (existingWatchlist) {
+    return { success: true, message: "Item in watchlist" };
+  }
+
+  return { success: false, message: "Item not in watchlist" };
+};

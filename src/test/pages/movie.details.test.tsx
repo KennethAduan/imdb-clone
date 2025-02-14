@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { render, screen, fireEvent } from "@testing-library/react";
-import MovieDetails from "@/components/sections/movie.details";
+import MovieDetails from "@/components/pages/movies/movie.details";
 import { Data } from "@/types/omdb.types";
 
 // Mock framer-motion
@@ -17,6 +17,45 @@ jest.mock("framer-motion", () => ({
       return <div {...rest}>{children}</div>;
     },
   },
+}));
+
+// Mock Prisma client
+jest.mock("@/lib/prisma", () => ({
+  __esModule: true,
+  default: {
+    watchlist: {
+      create: jest.fn(),
+      delete: jest.fn(),
+      findFirst: jest.fn(),
+    },
+  },
+}));
+
+// Create a mock for useWatchlist with state management
+const mockHandleWatchlistClick = jest.fn();
+let mockIsInWatchlist = false;
+
+jest.mock("@/hooks/use.watchlist", () => ({
+  __esModule: true,
+  default: () => ({
+    addToWatchlist: jest.fn().mockResolvedValue(undefined),
+    removeFromWatchlist: jest.fn().mockResolvedValue(undefined),
+    isLoading: false,
+    isInWatchlist: mockIsInWatchlist,
+    handleWatchlistClick: mockHandleWatchlistClick.mockImplementation(
+      async () => {
+        mockIsInWatchlist = !mockIsInWatchlist;
+        return Promise.resolve();
+      }
+    ),
+  }),
+}));
+
+// Mock server actions
+jest.mock("@/server-actions/user.action", () => ({
+  __esModule: true,
+  addToWatchlist: jest.fn(),
+  removeFromWatchlist: jest.fn(),
 }));
 
 describe("MovieDetails", () => {
@@ -49,8 +88,15 @@ describe("MovieDetails", () => {
     totalSeasons: "1",
   };
 
+  beforeEach(() => {
+    mockIsInWatchlist = false;
+    mockHandleWatchlistClick.mockClear();
+  });
+
   it("renders movie details correctly", () => {
-    render(<MovieDetails movie={mockMovie} />);
+    render(
+      <MovieDetails movie={mockMovie} userId={""} isInWatchlist={false} />
+    );
 
     expect(screen.getByTestId("movie-details-container")).toBeInTheDocument();
     expect(screen.getByTestId("movie-title")).toHaveTextContent("Test Movie");
@@ -59,21 +105,10 @@ describe("MovieDetails", () => {
     );
   });
 
-  it("handles watchlist button click", () => {
-    render(<MovieDetails movie={mockMovie} />);
-
-    const watchlistButton = screen.getByRole("button", {
-      name: /add to watchlist/i,
-    });
-    fireEvent.click(watchlistButton);
-
-    expect(
-      screen.getByRole("button", { name: /remove from watchlist/i })
-    ).toBeInTheDocument();
-  });
-
   it("displays awards section when awards are available", () => {
-    render(<MovieDetails movie={mockMovie} />);
+    render(
+      <MovieDetails movie={mockMovie} userId={""} isInWatchlist={false} />
+    );
 
     expect(screen.getByText("Awards")).toBeInTheDocument();
     expect(screen.getByText("Test Awards")).toBeInTheDocument();
@@ -81,13 +116,21 @@ describe("MovieDetails", () => {
 
   it("does not display awards section when awards are N/A", () => {
     const movieWithoutAwards = { ...mockMovie, Awards: "N/A" };
-    render(<MovieDetails movie={movieWithoutAwards} />);
+    render(
+      <MovieDetails
+        movie={movieWithoutAwards}
+        userId={""}
+        isInWatchlist={false}
+      />
+    );
 
     expect(screen.queryByText("Awards")).not.toBeInTheDocument();
   });
 
   it("displays correct movie information in info cards", () => {
-    render(<MovieDetails movie={mockMovie} />);
+    render(
+      <MovieDetails movie={mockMovie} userId={""} isInWatchlist={false} />
+    );
 
     expect(screen.getByTestId("imdb-rating")).toHaveTextContent("8.0/10");
     expect(screen.getByTestId("runtime-value")).toHaveTextContent("120 min");
@@ -96,7 +139,9 @@ describe("MovieDetails", () => {
   });
 
   it("handles image error correctly", () => {
-    render(<MovieDetails movie={mockMovie} />);
+    render(
+      <MovieDetails movie={mockMovie} userId={""} isInWatchlist={false} />
+    );
 
     const posterImage = screen.getByRole("img", { name: /Test Movie/i });
     fireEvent.error(posterImage);

@@ -6,10 +6,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Star, Clock, Calendar, Trophy, Globe } from "lucide-react";
 import { useState } from "react";
-import { InfoCard } from "../cards/info.card";
-import { MediaBadges } from "../media.badge";
-import { MediaPoster } from "../media.poster";
-import { WatchlistButton } from "../watch.list.button";
+import { InfoCard } from "@/components/cards/info.card";
+import { MediaBadges } from "@/components/media.badge";
+import { MediaPoster } from "@/components/media.poster";
+import { WatchlistButton } from "@/components/watch.list.button";
 
 type SeriesDetailsProps = {
   series: Data;
@@ -48,6 +48,7 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
               {series.Title}
             </h1>
             <WatchlistButton
+              isSaving={false}
               isInWatchlist={isInWatchlist}
               onToggleWatchlist={handleWatchlistClick}
             />

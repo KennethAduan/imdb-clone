@@ -1,10 +1,10 @@
 import MovieSeriesDetailsSkeleton from "@/components/loaders/movie.series.details.skeleton";
-import SeriesDetails from "@/components/sections/series.details";
 import { config } from "@/config/environment";
 import { APPLICATION_TYPES } from "@/constants";
 import { SeriesResponse } from "@/types/omdb.types";
 import { handleError } from "@/lib/server-utils";
 import React, { Suspense } from "react";
+import SeriesDetails from "@/components/pages/series/series.details";
 
 const getTvShowById = async (id: string) => {
   const res = await fetch(

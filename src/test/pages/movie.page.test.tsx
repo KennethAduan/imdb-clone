@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import useLatestOMDBDataByType from "@/hooks/use.latest.omdb.data.by.type";
-import Movies from "@/components/sections/movies";
+import Movies from "@/components/pages/movies/movies";
 import { ROUTES } from "@/constants";
 
 // Mock the hooks
