@@ -1,7 +1,7 @@
-import SeriesPage from "@/components/sections/series";
+import SeriesPage from "@/components/pages/series/series";
 
-const TvPage = () => {
+const Series = () => {
   return <SeriesPage />;
 };
 
-export default TvPage;
+export default Series;

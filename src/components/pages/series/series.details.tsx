@@ -10,23 +10,29 @@ import { InfoCard } from "@/components/cards/info.card";
 import { MediaBadges } from "@/components/media.badge";
 import { MediaPoster } from "@/components/media.poster";
 import { WatchlistButton } from "@/components/watch.list.button";
+import useWatchlist from "@/hooks/use.watchlist";
 
 type SeriesDetailsProps = {
   series: Data;
+  userId: string;
+  isInWatchlist: boolean;
 };
 
-const SeriesDetails = ({ series }: SeriesDetailsProps) => {
-  const [isInWatchlist, setIsInWatchlist] = useState(false);
+const SeriesDetails = ({
+  series,
+  userId,
+  isInWatchlist,
+}: SeriesDetailsProps) => {
   const [imgError, setImgError] = useState<boolean>(false);
-
+  const { inWatchlist, handleWatchlistClick, isAdding, isRemoving } =
+    useWatchlist({
+      isInWatchlist,
+      userId,
+    });
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
     transition: { duration: 0.5 },
-  };
-
-  const handleWatchlistClick = () => {
-    setIsInWatchlist(!isInWatchlist);
   };
 
   return (
@@ -48,9 +54,18 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
               {series.Title}
             </h1>
             <WatchlistButton
-              isSaving={false}
-              isInWatchlist={isInWatchlist}
-              onToggleWatchlist={handleWatchlistClick}
+              isSaving={isAdding || isRemoving}
+              isInWatchlist={inWatchlist}
+              onToggleWatchlist={() =>
+                handleWatchlistClick({
+                  userId,
+                  imdbId: series.imdbID,
+                  title: series.Title,
+                  poster: series.Poster,
+                  year: series.Year,
+                  type: series.Type,
+                })
+              }
             />
           </motion.div>
 

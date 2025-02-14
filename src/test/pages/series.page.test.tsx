@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import useLatestOMDBDataByType from "@/hooks/use.latest.omdb.data.by.type";
-import Series from "@/components/sections/series";
+import Series from "@/components/pages/series/series";
 
 // Mock the hooks
 jest.mock("next/navigation", () => ({

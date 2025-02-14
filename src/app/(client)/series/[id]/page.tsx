@@ -5,31 +5,64 @@ import { SeriesResponse } from "@/types/omdb.types";
 import { handleError } from "@/lib/server-utils";
 import React, { Suspense } from "react";
 import SeriesDetails from "@/components/pages/series/series.details";
+import { checkIfInWatchlist } from "@/server-actions/user.action";
+import { Metadata } from "next";
+import { getSession } from "@/lib/jwt";
 
-const getTvShowById = async (id: string) => {
-  const res = await fetch(
-    `${config.api.baseUrl}/${APPLICATION_TYPES.SERIES}/${id}`,
-    {
-      next: { revalidate: 3600 },
+// Parallel data fetching function
+const getSeriesData = async (id: string, userId: string | undefined) => {
+  try {
+    const [seriesResponse, watchlistStatus] = await Promise.all([
+      fetch(`${config.api.baseUrl}/${APPLICATION_TYPES.SERIES}/${id}`, {
+        next: { revalidate: 3600 },
+      }),
+      checkIfInWatchlist(userId ?? "", id),
+    ]);
+    if (!seriesResponse.ok) {
+      handleError(Error(seriesResponse.statusText), seriesResponse.status);
     }
-  );
 
-  if (!res.ok) {
-    handleError(Error(res.statusText), res.status);
+    const seriesData: SeriesResponse = await seriesResponse.json();
+    return { seriesData, isInWatchlist: watchlistStatus.success };
+  } catch (error) {
+    handleError(error as Error, 500);
   }
-  const data = await res.json();
-  return data;
 };
+
+// Metadata generation
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const id = (await params).id;
+  const { seriesData } = (await getSeriesData(id, undefined)) ?? {};
+
+  return {
+    title: seriesData?.data.Title ?? "Series Details",
+    description: seriesData?.data.Plot,
+    openGraph: {
+      images: [{ url: seriesData?.data.Poster ?? "" }],
+    },
+  };
+}
+
 const TvShowById = async ({ params }: { params: { id: string } }) => {
   const id = (await params).id;
-  const tvShow: SeriesResponse = await getTvShowById(id);
-  console.log(tvShow);
+  const user = await getSession();
+  const data = await getSeriesData(id, user?.userId);
+
+  if (!data) return null;
+
+  const { seriesData, isInWatchlist } = data;
+  console.log(seriesData);
   return (
-    <Suspense
-      key={tvShow.data.imdbID}
-      fallback={<MovieSeriesDetailsSkeleton />}
-    >
-      <SeriesDetails series={tvShow.data} />
+    <Suspense fallback={<MovieSeriesDetailsSkeleton />}>
+      <SeriesDetails
+        series={seriesData.data}
+        userId={user?.userId ?? ""}
+        isInWatchlist={isInWatchlist}
+      />
     </Suspense>
   );
 };
