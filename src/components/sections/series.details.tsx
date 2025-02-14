@@ -31,6 +31,7 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
 
   return (
     <motion.div
+      data-testid="series-details-container"
       initial="initial"
       animate="animate"
       className="w-full max-w-7xl mx-auto p-4 md:p-8 mt-12 md:mt-22"
@@ -40,9 +41,12 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
           {/* Title and Watchlist Section */}
           <motion.div
             {...fadeIn}
+            data-testid="title-section"
             className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
           >
-            <h1 className="text-4xl font-bold">{series.Title}</h1>
+            <h1 data-testid="series-title" className="text-4xl font-bold">
+              {series.Title}
+            </h1>
             <WatchlistButton
               isInWatchlist={isInWatchlist}
               onToggleWatchlist={handleWatchlistClick}
@@ -69,6 +73,7 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
                     icon={<Star className="w-4 h-4 text-yellow-400" />}
                     label="IMDb"
                     value={`${series.imdbRating}/10`}
+                    testId="imdb-rating"
                   />
                 )}
                 {series.Runtime !== "N/A" && (
@@ -76,6 +81,7 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
                     icon={<Clock className="w-4 h-4" />}
                     label="Runtime"
                     value={series.Runtime}
+                    testId="runtime-value"
                   />
                 )}
                 {series.Released !== "N/A" && (
@@ -83,6 +89,7 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
                     icon={<Calendar className="w-4 h-4" />}
                     label="Released"
                     value={series.Released}
+                    testId="release-date"
                   />
                 )}
                 {series.Country !== "N/A" && (
@@ -90,6 +97,7 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
                     icon={<Globe className="w-4 h-4" />}
                     label="Country"
                     value={series.Country}
+                    testId="country-value"
                   />
                 )}
               </div>
@@ -100,7 +108,10 @@ const SeriesDetails = ({ series }: SeriesDetailsProps) => {
               {series.Plot !== "N/A" && (
                 <div className="mb-6">
                   <h2 className="text-xl font-semibold mb-2">Plot</h2>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <p
+                    data-testid="series-plot"
+                    className="text-muted-foreground leading-relaxed"
+                  >
                     {series.Plot}
                   </p>
                 </div>

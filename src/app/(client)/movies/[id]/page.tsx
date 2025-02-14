@@ -10,7 +10,7 @@ const getMovieById = async (id: string) => {
   const res = await axios.get<MovieResponse>(
     `${config.api.baseUrl}/${APPLICATION_TYPES.MOVIE}/${id}`
   );
-  const data = await res.data;
+  const data = res.data;
   return data;
 };
 

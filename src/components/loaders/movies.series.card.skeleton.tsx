@@ -9,7 +9,7 @@ const MoviesSeriesCardSkeleton = ({
   return (
     <section
       data-testid={dataTestId}
-      className="w-full max-w-[90%] md:max-w-[70%] mx-auto mb-4 mt-24"
+      className="w-full max-w-[90%] md:max-w-[80%] mx-auto mb-4 mt-24"
     >
       <div className="grid grid-cols-1 gap-6 p-6 mt-16 md:mt-32 md:grid-cols-5">
         {Array.from({ length: 10 }).map((_, index) => (

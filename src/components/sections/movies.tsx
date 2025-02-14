@@ -47,7 +47,7 @@ const Movies = memo(() => {
   return (
     <section
       data-testid="search-results-section"
-      className="w-full max-w-[90%] md:max-w-[70%] mx-auto mb-4 mt-24"
+      className="w-full max-w-[90%] md:max-w-[80%] mx-auto mb-4 mt-24"
     >
       <PagePagination />
       <div

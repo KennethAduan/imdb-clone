@@ -31,6 +31,7 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
 
   return (
     <motion.div
+      data-testid="movie-details-container"
       initial="initial"
       animate="animate"
       className="w-full max-w-7xl mx-auto p-4 md:p-8 mt-12 md:mt-22"
@@ -42,7 +43,9 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
             {...fadeIn}
             className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
           >
-            <h1 className="text-4xl font-bold">{movie.Title}</h1>
+            <h1 data-testid="movie-title" className="text-4xl font-bold">
+              {movie.Title}
+            </h1>
             <WatchlistButton
               isInWatchlist={isInWatchlist}
               onToggleWatchlist={handleWatchlistClick}
@@ -68,21 +71,25 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
                   icon={<Star className="w-4 h-4 text-yellow-400" />}
                   label="IMDb"
                   value={`${movie.imdbRating}/10`}
+                  testId="imdb-rating"
                 />
                 <InfoCard
                   icon={<Clock className="w-4 h-4" />}
                   label="Runtime"
                   value={movie.Runtime}
+                  testId="runtime-value"
                 />
                 <InfoCard
                   icon={<Calendar className="w-4 h-4" />}
                   label="Released"
                   value={movie.Released}
+                  testId="release-date"
                 />
                 <InfoCard
                   icon={<Globe className="w-4 h-4" />}
                   label="Language"
                   value={movie.Language}
+                  testId="language-value"
                 />
               </div>
 
@@ -91,7 +98,10 @@ const MovieDetails = ({ movie }: MovieDetailsProps) => {
               {/* Plot */}
               <div className="mb-6">
                 <h2 className="text-xl font-semibold mb-2">Plot</h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <p
+                  data-testid="movie-plot"
+                  className="text-muted-foreground leading-relaxed"
+                >
                   {movie.Plot}
                 </p>
               </div>

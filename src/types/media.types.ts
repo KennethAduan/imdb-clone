@@ -9,6 +9,7 @@ export type InfoCardProps = {
   icon: React.ReactNode;
   label: string;
   value: string;
+  testId?: string;
 };
 
 export const fadeInAnimation = {

@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { InfoCardProps } from "@/types/media.types";
 
-export const InfoCard = ({ icon, label, value }: InfoCardProps) => (
+export const InfoCard = ({ icon, label, value, testId }: InfoCardProps) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
     className="flex flex-col items-center justify-center p-3 rounded-lg bg-secondary/50"
@@ -11,6 +11,8 @@ export const InfoCard = ({ icon, label, value }: InfoCardProps) => (
       {icon}
       <span className="text-sm font-medium">{label}</span>
     </div>
-    <span className="text-sm text-muted-foreground">{value}</span>
+    <span data-testid={testId} className="text-sm text-muted-foreground">
+      {value}
+    </span>
   </motion.div>
 );
