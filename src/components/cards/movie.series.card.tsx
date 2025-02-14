@@ -3,10 +3,11 @@ import { Data } from "@/types/omdb.types";
 import { useState } from "react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import Image from "next/image";
-import { APP_LOGO } from "@/constants";
+
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PlayIcon } from "lucide-react";
+import ImagePlaceholder from "@/components/ui/image-placeholder";
 
 type MovieCardProps = {
   content: Data;
@@ -39,18 +40,22 @@ const MovieSeriesCard = ({
             </Badge>
           )}
 
-          <Image
-            src={
-              imgError || content.Poster === "N/A" ? APP_LOGO : content.Poster
-            }
-            alt={content.Title}
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-            className="object-cover transition-transform duration-300 hover:scale-105"
-            data-testid={`movie-poster-${content.imdbID}`}
-            onError={() => setImgError(true)}
-          />
+          {imgError || content.Poster === "N/A" ? (
+            <div className="relative w-full h-full">
+              <ImagePlaceholder title={content.Title} />
+            </div>
+          ) : (
+            <Image
+              src={content.Poster}
+              alt={content.Title}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+              className="object-cover transition-transform duration-300 hover:scale-105"
+              data-testid={`movie-poster-${content.imdbID}`}
+              onError={() => setImgError(true)}
+            />
+          )}
         </div>
         <h3
           className="mt-2 text-sm font-bold text-center line-clamp-1"

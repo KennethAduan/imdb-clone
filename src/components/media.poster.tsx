@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInAnimation } from "@/types/media.types";
-import { APP_LOGO } from "@/constants";
+import ImagePlaceholder from "./ui/image-placeholder";
 
 type MediaPosterProps = {
   posterUrl: string;
@@ -22,14 +22,18 @@ export const MediaPoster = ({
     transition={{ delay: 0.2 }}
     className="relative aspect-[2/3] rounded-lg overflow-hidden"
   >
-    <Image
-      src={hasError || posterUrl === "N/A" ? APP_LOGO : posterUrl}
-      alt={title}
-      fill
-      className="object-cover"
-      priority
-      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      onError={onError}
-    />
+    {hasError || posterUrl === "N/A" ? (
+      <ImagePlaceholder title={title} />
+    ) : (
+      <Image
+        src={posterUrl}
+        alt={title}
+        fill
+        className="object-cover"
+        priority
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        onError={onError}
+      />
+    )}
   </motion.div>
 );
