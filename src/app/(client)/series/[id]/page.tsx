@@ -3,19 +3,26 @@ import SeriesDetails from "@/components/sections/series.details";
 import { config } from "@/config/environment";
 import { APPLICATION_TYPES } from "@/constants";
 import { SeriesResponse } from "@/types/omdb.types";
-import axios from "axios";
+import { handleError } from "@/lib/server-utils";
 import React, { Suspense } from "react";
 
 const getTvShowById = async (id: string) => {
-  const res = await axios.get<SeriesResponse>(
-    `${config.api.baseUrl}/${APPLICATION_TYPES.SERIES}/${id}`
+  const res = await fetch(
+    `${config.api.baseUrl}/${APPLICATION_TYPES.SERIES}/${id}`,
+    {
+      next: { revalidate: 3600 },
+    }
   );
-  const data = await res.data;
+
+  if (!res.ok) {
+    handleError(Error(res.statusText), res.status);
+  }
+  const data = await res.json();
   return data;
 };
 const TvShowById = async ({ params }: { params: { id: string } }) => {
   const id = (await params).id;
-  const tvShow = await getTvShowById(id);
+  const tvShow: SeriesResponse = await getTvShowById(id);
   console.log(tvShow);
   return (
     <Suspense

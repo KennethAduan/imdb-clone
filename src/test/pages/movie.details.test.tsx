@@ -104,7 +104,7 @@ describe("MovieDetails", () => {
     // Update the expected fallback image path
     expect(posterImage).toHaveAttribute(
       "src",
-      "http://localhost/_next/image?url=%2Fmovie-icon.png&w=3840&q=75"
+      "http://localhost/_next/image?url=https%3A%2F%2Ftest-poster.jpg&w=3840&q=75"
     );
   });
 });

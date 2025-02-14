@@ -33,7 +33,7 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
         ) {
           router.push(`${ROUTES.MOVIE}/${imdbID}`);
         } else if (type === APPLICATION_TYPES.SERIES) {
-          router.push(`${ROUTES.TV}/${imdbID}`);
+          router.push(`${ROUTES.SERIES}/${imdbID}`);
         }
       });
     },

@@ -25,7 +25,7 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
     const route =
       type === API_FOLDER_DETAILS.TYPE.MOVIE
         ? ROUTES.MOVIE_DETAILS_BY_ID.replace(":id", omdbDetails.imdbID)
-        : ROUTES.TV_DETAILS_BY_ID.replace(":id", omdbDetails.imdbID);
+        : ROUTES.SERIES_DETAILS_BY_ID.replace(":id", omdbDetails.imdbID);
 
     router.push(route);
   };

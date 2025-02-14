@@ -31,7 +31,7 @@ const Series = memo(() => {
   const handleCardClick = useCallback(
     (imdbID: string) => {
       startTransition(() => {
-        router.push(`${ROUTES.TV}/${imdbID}`);
+        router.push(`${ROUTES.SERIES}/${imdbID}`);
       });
     },
     [router]

@@ -7,8 +7,8 @@ export const ROUTES = {
   HOME: "/",
   SIGN_IN: "/sign-in",
   MOVIE: "/movies",
-  TV: "/tv",
-  TV_DETAILS_BY_ID: "/tv/:id",
+  SERIES: "/series",
+  SERIES_DETAILS_BY_ID: "/series/:id",
   PERSON: "/person",
   SEARCH: "/search",
   WATCHLIST: "/watchlist",
@@ -29,7 +29,7 @@ export const NAVBAR_DETAILS = {
     },
     {
       label: "TV Series",
-      href: ROUTES.TV,
+      href: ROUTES.SERIES,
     },
     {
       label: "Watchlist",
@@ -119,7 +119,7 @@ export const LATEST_SERIES_CAROUSEL_DETAILS = {
   RETRY_BUTTON_TEXT: "Retry",
   N_A_IMAGE_SOURCE: "N/A",
   EXPLORE_MORE_BUTTON_TEXT: "Explore More",
-  EXPLORE_MORE_BUTTON_LINK: ROUTES.TV,
+  EXPLORE_MORE_BUTTON_LINK: ROUTES.SERIES,
 } as const;
 
 export const FOOTER_DETAILS = {
@@ -133,7 +133,7 @@ export const FOOTER_DETAILS = {
       title: "Resources",
       links: [
         { label: "Movies", href: ROUTES.MOVIE },
-        { label: "TV Shows", href: ROUTES.TV },
+        { label: "TV Shows", href: ROUTES.SERIES },
         { label: "Top Rated", href: ROUTES.HOME },
         { label: "Coming Soon", href: ROUTES.HOME },
       ],

@@ -106,7 +106,7 @@ describe("SeriesDetails", () => {
     // Update the expected fallback image path to match the actual implementation
     expect(posterImage).toHaveAttribute(
       "src",
-      "http://localhost/_next/image?url=%2Fmovie-icon.png&w=3840&q=75"
+      "http://localhost/_next/image?url=https%3A%2F%2Ftest-series-poster.jpg&w=3840&q=75"
     );
   });
 

@@ -106,7 +106,7 @@ const LatestSeriesCarousel = () => {
                       data-testid={`movie-card-${series.imdbID}`}
                       content={series as Data}
                       onClick={() => {
-                        router.push(`${ROUTES.TV}/${series.imdbID}`);
+                        router.push(`${ROUTES.SERIES}/${series.imdbID}`);
                       }}
                     />
                   </CarouselItem>

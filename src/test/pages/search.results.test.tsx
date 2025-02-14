@@ -181,6 +181,6 @@ describe("SearchResults", () => {
     const seriesCard = screen.getByTestId("movie-card-tt15164982");
     fireEvent.click(seriesCard);
 
-    expect(mockRouter.push).toHaveBeenCalledWith("/tv/tt15164982");
+    expect(mockRouter.push).toHaveBeenCalledWith("/series/tt15164982");
   });
 });

@@ -92,7 +92,7 @@ describe("Series Component", () => {
     fireEvent.click(seriesCard);
 
     expect(mockRouter.push).toHaveBeenCalledWith(
-      `/tv/${mockSeriesData.Search[0].imdbID}`
+      `/series/${mockSeriesData.Search[0].imdbID}`
     );
   });
 
