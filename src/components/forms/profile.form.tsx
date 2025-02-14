@@ -135,7 +135,10 @@ const ProfileForm = ({ user }: { user: User }) => {
                 />
               </CardContent>
               <CardFooter>
-                <Button type="submit" disabled={isUpdatingAccount}>
+                <Button
+                  type="submit"
+                  disabled={isUpdatingAccount || !accountForm.formState.isDirty}
+                >
                   {isUpdatingAccount ? "Saving..." : "Save changes"}
                 </Button>
               </CardFooter>
@@ -192,7 +195,12 @@ const ProfileForm = ({ user }: { user: User }) => {
                 />
               </CardContent>
               <CardFooter>
-                <Button type="submit" disabled={isUpdatingPassword}>
+                <Button
+                  type="submit"
+                  disabled={
+                    isUpdatingPassword || !passwordForm.formState.isDirty
+                  }
+                >
                   {isUpdatingPassword ? "Saving..." : "Save password"}
                 </Button>
               </CardFooter>

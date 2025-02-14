@@ -16,10 +16,35 @@ import { NavbarComponentProps } from "@/types/component";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
+import { Button } from "../ui/button";
+import { LogOut, User2 } from "lucide-react";
+import { signOutAction } from "@/server-actions/auth.action";
+import { useAction } from "next-safe-action/hooks";
+import { toast } from "sonner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "../ui/tooltip";
 
-const NavbarDesktop = ({ isScrolled, pathname }: NavbarComponentProps) => {
+const NavbarDesktop = ({
+  isScrolled,
+  pathname,
+  isAuthenticated,
+}: NavbarComponentProps) => {
   const searchParams = useSearchParams();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
+  const { execute: signOut } = useAction(signOutAction, {
+    onSuccess: ({ data }) => {
+      if (data?.success) {
+        push(ROUTES.HOME);
+      }
+    },
+    onError: ({ error }) => {
+      toast.error(error?.serverError);
+    },
+  });
 
   const handleSearch = useDebouncedCallback((search) => {
     const params = new URLSearchParams(searchParams);
@@ -76,19 +101,53 @@ const NavbarDesktop = ({ isScrolled, pathname }: NavbarComponentProps) => {
       <div className="flex items-center justify-end flex-1 gap-2">
         {/* Search Input */}
         <SearchInput onChange={handleSearch} />
-        <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              {NAVBAR_DETAILS.NAVLINKS_RIGHT_SIDE.map(({ href, label }) => (
-                <NavigationMenuLink key={href} asChild>
-                  <Link href={href} className="px-4 text-base hover:font-bold">
-                    {label}
-                  </Link>
-                </NavigationMenuLink>
-              ))}
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
+        {isAuthenticated ? (
+          <div className="flex items-center gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={"ghost"}
+                    size="icon"
+                    onClick={() => push(ROUTES.PROFILE)}
+                  >
+                    <User2 className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Profile</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant={"ghost"}
+                    size="icon"
+                    onClick={() => signOut()}
+                  >
+                    <LogOut className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Sign out</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+        ) : (
+          <>
+            <Button
+              variant={"outline"}
+              className="rounded-full"
+              onClick={() => push(ROUTES.SIGN_IN)}
+            >
+              Login
+            </Button>
+          </>
+        )}
         <ToggleTheme />
       </div>
     </nav>

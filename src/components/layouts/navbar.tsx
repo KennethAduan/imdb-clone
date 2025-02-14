@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import NavbarDesktop from "./navbar.desktop";
 import NavbarMobile from "./navbar.mobile";
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -25,9 +25,17 @@ const Navbar = () => {
   return (
     <>
       {/* Desktop Nav */}
-      <NavbarDesktop isScrolled={isScrolled} pathname={pathname} />
+      <NavbarDesktop
+        isScrolled={isScrolled}
+        pathname={pathname}
+        isAuthenticated={isAuthenticated}
+      />
       {/* Mobile Nav */}
-      <NavbarMobile isScrolled={isScrolled} pathname={pathname} />
+      <NavbarMobile
+        isAuthenticated={isAuthenticated}
+        isScrolled={isScrolled}
+        pathname={pathname}
+      />
     </>
   );
 };

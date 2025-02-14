@@ -5,12 +5,12 @@ import { encrypt } from "@/lib/jwt";
 
 import prisma from "@/lib/prisma";
 import { actionClient } from "@/lib/safe.action";
-import { authSchema } from "@/schema/auth.schema";
+import { signUpSchema, signInSchema } from "@/schema/auth.schema";
 import bcrypt from "bcrypt";
 import { cookies } from "next/headers";
 
 export const signUpAction = actionClient
-  .schema(authSchema)
+  .schema(signUpSchema)
   .action(async ({ parsedInput: { email, username, password } }) => {
     const user = await prisma.user.findUnique({
       where: { email },
@@ -36,7 +36,7 @@ export const signUpAction = actionClient
   });
 
 export const signInAction = actionClient
-  .schema(authSchema)
+  .schema(signInSchema)
   .action(async ({ parsedInput: { email, password } }) => {
     const user = await prisma.user.findUnique({
       where: { email },

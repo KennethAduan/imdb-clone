@@ -1,19 +1,21 @@
 import { isFalse, isUndefined } from "@/lib/utils";
 import { getUserAction } from "@/server-actions/user.action";
 import ProfileForm from "@/components/forms/profile.form";
+import { ROUTES } from "@/constants";
+import { redirect } from "next/navigation";
 
 const ProfilePage = async () => {
   const user = await getUserAction();
 
   if (isUndefined(user!.data)) {
-    return <div>Error: User not found</div>;
+    redirect(ROUTES.SIGN_IN);
   }
   if (isFalse(user!.success)) {
-    return <div>Error: {user?.message}</div>;
+    redirect(ROUTES.SIGN_IN);
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center mr-4">
       <div className="w-full max-w-sm">
         <ProfileForm user={user!.data!} />
       </div>

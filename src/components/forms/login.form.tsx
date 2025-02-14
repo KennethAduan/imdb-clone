@@ -1,6 +1,5 @@
 "use client";
 
-import { authSchema } from "@/schema/auth.schema";
 import {
   Form,
   FormControl,
@@ -24,24 +23,38 @@ import { ROUTES } from "@/constants";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useAction } from "next-safe-action/hooks";
+import { signInAction } from "@/server-actions/auth.action";
+import { useRouter } from "next/navigation";
+import { signInSchema } from "@/schema/auth.schema";
 
-type FormData = z.infer<typeof authSchema>;
+type FormData = z.infer<typeof signInSchema>;
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
+  const router = useRouter();
   const form = useForm<FormData>({
-    resolver: zodResolver(authSchema),
+    resolver: zodResolver(signInSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
+  const { execute, isExecuting } = useAction(signInAction, {
+    onSuccess: ({ data }) => {
+      if (data?.success) {
+        router.push(ROUTES.PROFILE);
+      } else {
+        form.setError("root", { message: data?.message });
+      }
+    },
+  });
+
   const handleSubmit = async (data: FormData) => {
-    // TODO: Implement login logic
-    console.log(data);
+    execute(data);
   };
 
   return (
@@ -59,6 +72,12 @@ export function LoginForm({
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-6"
             >
+              {/* Show root error message if it exists */}
+              {form.formState.errors.root && (
+                <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                  {form.formState.errors.root.message}
+                </div>
+              )}
               <FormField
                 control={form.control}
                 name="email"
@@ -97,8 +116,8 @@ export function LoginForm({
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
-                Login
+              <Button type="submit" className="w-full" disabled={isExecuting}>
+                {isExecuting ? "Logging in..." : "Login"}
               </Button>
             </form>
           </Form>

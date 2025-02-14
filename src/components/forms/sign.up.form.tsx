@@ -27,9 +27,9 @@ import { cn } from "@/lib/utils";
 import { signUpAction } from "@/server-actions/auth.action";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
-import { authSchema } from "@/schema/auth.schema";
+import { signUpSchema } from "@/schema/auth.schema";
 
-type FormData = z.infer<typeof authSchema>;
+type FormData = z.infer<typeof signUpSchema>;
 
 const SignUpForm = ({
   className,
@@ -38,7 +38,7 @@ const SignUpForm = ({
   const router = useRouter();
 
   const form = useForm<FormData>({
-    resolver: zodResolver(authSchema),
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       email: "",
       username: "",

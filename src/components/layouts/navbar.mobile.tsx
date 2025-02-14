@@ -4,7 +4,7 @@ import { NAVBAR_DETAILS } from "@/constants";
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import ToggleTheme from "../toggle.mode";
+
 import { NavbarComponentProps } from "@/types/component";
 import {
   Sheet,
@@ -14,15 +14,28 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Menu, UserIcon } from "lucide-react";
+import { LogOut, Menu, UserIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import SearchDialog from "../search.dialog";
+import ToggleTheme from "../toggle.mode";
+import { useAction } from "next-safe-action/hooks";
+import { signOutAction } from "@/server-actions/auth.action";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
-const NavbarMobile = ({
-  pathname,
-  isSignedIn = false,
-}: NavbarComponentProps & { isSignedIn?: boolean }) => {
+const NavbarMobile = ({ pathname, isAuthenticated }: NavbarComponentProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { push } = useRouter();
+  const { execute: signOut } = useAction(signOutAction, {
+    onSuccess: ({ data }) => {
+      if (data?.success) {
+        push(ROUTES.HOME);
+      }
+    },
+    onError: ({ error }) => {
+      toast.error(error.serverError || "Something went wrong");
+    },
+  });
   return (
     <div
       data-testid="mobile-nav"
@@ -68,6 +81,7 @@ const NavbarMobile = ({
                     {label}
                   </Link>
                 ))}
+                <ToggleTheme />
               </nav>
             </SheetContent>
           </Sheet>
@@ -84,19 +98,27 @@ const NavbarMobile = ({
         </div>
         <div className="flex items-center gap-2">
           <SearchDialog data-testid="search-dialog" />
-          {isSignedIn ? (
-            <Button variant={"ghost"} className="rounded-full" asChild>
-              <Link href={ROUTES.PROFILE} aria-label="Profile">
-                <UserIcon className="w-6 h-6" />
-              </Link>
-            </Button>
+          {isAuthenticated ? (
+            <div className="flex items-center">
+              <Button variant={"ghost"} className="rounded-full" asChild>
+                <Link href={ROUTES.PROFILE} aria-label="Profile">
+                  <UserIcon className="w-6 h-6" />
+                </Link>
+              </Button>
+
+              <Button
+                variant={"ghost"}
+                className="rounded-full"
+                onClick={() => signOut()}
+              >
+                <LogOut className="w-6 h-6" />
+              </Button>
+            </div>
           ) : (
             <Button variant={"outline"} className="rounded-full" asChild>
               <Link href={ROUTES.SIGN_IN}>Sign In</Link>
             </Button>
           )}
-
-          <ToggleTheme />
         </div>
       </div>
     </div>
