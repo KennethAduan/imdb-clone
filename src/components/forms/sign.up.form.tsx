@@ -2,7 +2,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authSchema } from "../schema/auth.schema";
+
 import {
   Form,
   FormControl,
@@ -24,9 +24,11 @@ import {
 import Link from "next/link";
 import { ROUTES } from "@/constants";
 import { cn } from "@/lib/utils";
-import { signUpAction } from "@/server-actions/auth";
+import { signUpAction } from "@/server-actions/auth.action";
 import { useAction } from "next-safe-action/hooks";
 import { useRouter } from "next/navigation";
+import { authSchema } from "@/schema/auth.schema";
+
 type FormData = z.infer<typeof authSchema>;
 
 const SignUpForm = ({
