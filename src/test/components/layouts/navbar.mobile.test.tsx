@@ -71,10 +71,10 @@ describe("NavbarMobile", () => {
   });
 
   it("shows user icon when signed in", () => {
-    render(<NavbarMobile {...defaultProps} />);
+    render(<NavbarMobile {...defaultProps} isSignedIn={true} />);
 
-    const userIcon = screen.getByRole("link", { name: "" });
-    expect(userIcon).toHaveAttribute("href", ROUTES.WATCHLIST);
+    const userIcon = screen.getByRole("link", { name: "Profile" });
+    expect(userIcon).toHaveAttribute("href", ROUTES.PROFILE);
   });
 
   it("applies correct styling when pathname matches link", () => {

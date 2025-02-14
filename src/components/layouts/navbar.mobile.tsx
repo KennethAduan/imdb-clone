@@ -18,9 +18,11 @@ import { Menu, UserIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import SearchDialog from "../search.dialog";
 
-const NavbarMobile = ({ pathname }: NavbarComponentProps) => {
+const NavbarMobile = ({
+  pathname,
+  isSignedIn = false,
+}: NavbarComponentProps & { isSignedIn?: boolean }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isSiginIn = false;
   return (
     <div
       data-testid="mobile-nav"
@@ -82,9 +84,9 @@ const NavbarMobile = ({ pathname }: NavbarComponentProps) => {
         </div>
         <div className="flex items-center gap-2">
           <SearchDialog data-testid="search-dialog" />
-          {isSiginIn ? (
+          {isSignedIn ? (
             <Button variant={"ghost"} className="rounded-full" asChild>
-              <Link href={ROUTES.PROFILE}>
+              <Link href={ROUTES.PROFILE} aria-label="Profile">
                 <UserIcon className="w-6 h-6" />
               </Link>
             </Button>

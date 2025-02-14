@@ -2,7 +2,6 @@ import type { Config } from "jest";
 import nextJest from "next/jest.js";
 
 const createJestConfig = nextJest({
-  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: "./",
 });
 
@@ -19,8 +18,7 @@ const baseConfig: Config = {
     "^.+\\.(t|j)sx?$": "@swc/jest",
   },
   transformIgnorePatterns: [
-    // The pattern below tells Jest to not transform any node_module except lucide-react
-    "/node_modules/(?!(lucide-react)/)",
+    "/node_modules/(?!(lucide-react|next-safe-action|@hookform/resolvers)/)",
   ],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json"],
   testEnvironmentOptions: {
