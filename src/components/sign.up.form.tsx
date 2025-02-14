@@ -24,25 +24,39 @@ import {
 import Link from "next/link";
 import { ROUTES } from "@/constants";
 import { cn } from "@/lib/utils";
-
+import { signUpAction } from "@/server-actions/auth";
+import { useAction } from "next-safe-action/hooks";
+import { useRouter } from "next/navigation";
 type FormData = z.infer<typeof authSchema>;
 
 const SignUpForm = ({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) => {
+  const router = useRouter();
+
   const form = useForm<FormData>({
     resolver: zodResolver(authSchema),
     defaultValues: {
       email: "",
+      username: "",
       password: "",
       confirmPassword: "",
     },
   });
 
+  const { execute, isExecuting } = useAction(signUpAction, {
+    onSuccess: ({ data }) => {
+      if (data?.success) {
+        router.replace(ROUTES.PROFILE);
+      } else if (data?.message) {
+        form.setError("root", { message: data.message });
+      }
+    },
+  });
+
   const handleSubmit = async (data: FormData) => {
-    // TODO: Implement sign-up logic
-    console.log(data);
+    execute(data);
   };
 
   return (
@@ -60,6 +74,13 @@ const SignUpForm = ({
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-6"
             >
+              {/* Show root error message if it exists */}
+              {form.formState.errors.root && (
+                <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                  {form.formState.errors.root.message}
+                </div>
+              )}
+
               <FormField
                 control={form.control}
                 name="email"
@@ -78,7 +99,23 @@ const SignUpForm = ({
                   </FormItem>
                 )}
               />
-
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="johndoe"
+                        autoComplete="username"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="password"
@@ -90,6 +127,7 @@ const SignUpForm = ({
                         {...field}
                         type="password"
                         autoComplete="new-password"
+                        placeholder="********"
                       />
                     </FormControl>
                     <FormMessage />
@@ -108,6 +146,7 @@ const SignUpForm = ({
                         {...field}
                         type="password"
                         autoComplete="new-password"
+                        placeholder="********"
                       />
                     </FormControl>
                     <FormMessage />
@@ -115,8 +154,8 @@ const SignUpForm = ({
                 )}
               />
 
-              <Button type="submit" className="w-full">
-                Sign up
+              <Button type="submit" className="w-full" disabled={isExecuting}>
+                {isExecuting ? "Signing up..." : "Sign up"}
               </Button>
             </form>
           </Form>

@@ -90,6 +90,7 @@ export function LoginForm({
                         {...field}
                         type="password"
                         autoComplete="current-password"
+                        placeholder="********"
                       />
                     </FormControl>
                     <FormMessage />

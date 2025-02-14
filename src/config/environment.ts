@@ -4,10 +4,11 @@ const envSchema = z.object({
   OMDB_API_KEY: z.string().min(1, "OMDB API key is required"),
   OMDB_API_URL: z.string().min(1, "OMDB API URL is required"),
   API_URL: z.string().min(1, "API URL is required"),
-
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
+  ALGORITHM: z.string().min(1, "Algorithm is required"),
+  SESSION_NAME: z.string().min(1, "Session name is required"),
   JWT_SECRET: z.string().min(32, "JWT secret must be at least 32 characters"),
   JWT_EXPIRES_IN: z.string().default("7d"),
 });
@@ -37,6 +38,8 @@ export const config = {
   environment: env.NODE_ENV,
   auth: {
     jwt: {
+      algorithm: env.ALGORITHM,
+      sessionName: env.SESSION_NAME,
       secret: env.JWT_SECRET,
       expiresIn: env.JWT_EXPIRES_IN,
     },
