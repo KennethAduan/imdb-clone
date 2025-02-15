@@ -32,7 +32,7 @@ const getSeriesById = async ({ id }: ParamsRequest) => {
 
 export const GET = async (
   req: Request,
-  { params }: { params: ParamsRequest }
+  { params }: { params: { id: string } }
 ) => {
   const id = (await params).id;
 
