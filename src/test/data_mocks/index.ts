@@ -36,6 +36,10 @@ export const mockEpisodeData: EpisodeResponse = {
     imdbRating: "8.1",
     imdbVotes: "1,234,567",
     totalSeasons: "1",
+    DVD: "",
+    BoxOffice: "",
+    Production: "",
+    Website: "",
   },
   error: undefined,
 };
@@ -92,6 +96,10 @@ export const mockSeriesData: SeriesResponse = {
     Type: "series",
     totalSeasons: "5",
     Response: "True",
+    DVD: "",
+    BoxOffice: "",
+    Production: "",
+    Website: "",
   },
   error: undefined,
 };

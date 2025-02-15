@@ -30,14 +30,11 @@ const getSeriesById = async ({ id }: ParamsRequest) => {
   }
 };
 
-type RouteContext = {
-  params: {
-    id: string;
-  };
-};
-
-export async function GET(req: Request, context: RouteContext) {
-  const { id } = await context.params;
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
 
   try {
     if (isUndefined(id) || isEmptyString(id)) {
