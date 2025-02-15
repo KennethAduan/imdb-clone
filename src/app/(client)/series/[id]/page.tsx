@@ -6,11 +6,10 @@ import { handleError } from "@/lib/server-utils";
 import React, { Suspense } from "react";
 import SeriesDetails from "@/components/pages/series/series.details";
 import { checkIfInWatchlist } from "@/server-actions/user.action";
-import { Metadata } from "next";
 import { getSession } from "@/lib/jwt";
-
+import { PageProps } from "@/types/page.type";
 // Parallel data fetching function
-const getSeriesData = async (id: string, userId: string | undefined) => {
+const getSeriesData = async (id: string, userId?: string) => {
   try {
     const [seriesResponse, watchlistStatus] = await Promise.all([
       fetch(`${config.api.baseUrl}/${APPLICATION_TYPES.SERIES}/${id}`, {
@@ -18,6 +17,7 @@ const getSeriesData = async (id: string, userId: string | undefined) => {
       }),
       checkIfInWatchlist(userId ?? "", id),
     ]);
+
     if (!seriesResponse.ok) {
       handleError(Error(seriesResponse.statusText), seriesResponse.status);
     }
@@ -29,25 +29,8 @@ const getSeriesData = async (id: string, userId: string | undefined) => {
   }
 };
 
-// Metadata generation
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const { seriesData } = (await getSeriesData(params.id, undefined)) ?? {};
-
-  return {
-    title: seriesData?.data.Title ?? "Series Details",
-    description: seriesData?.data.Plot,
-    openGraph: {
-      images: [{ url: seriesData?.data.Poster ?? "" }],
-    },
-  };
-}
-
-const TvShowById = async ({ params }: { params: { id: string } }) => {
-  const id = params.id;
+const TvShowById = async ({ params }: PageProps) => {
+  const id = (await params).id;
   const user = await getSession();
   const data = await getSeriesData(id, user?.userId);
 

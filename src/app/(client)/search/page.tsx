@@ -1,14 +1,11 @@
 import React from "react";
 import SearchResults from "@/components/sections/search.results";
+import { PageProps } from "@/types/page.type";
 
-const TitleSearchPage = async ({
-  searchParams,
-}: {
-  searchParams: { title?: string };
-}) => {
-  const title = (await searchParams).title?.trim();
+const TitleSearchPage = async ({ searchParams }: PageProps) => {
+  const title = (await searchParams)?.title;
 
-  return <SearchResults search={title ?? ""} />;
+  return <SearchResults search={title as string} />;
 };
 
 export default TitleSearchPage;

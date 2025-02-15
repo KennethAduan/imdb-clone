@@ -7,8 +7,7 @@ import { MovieResponse } from "@/types/omdb.types";
 import { handleError } from "@/lib/server-utils";
 import { getSession } from "@/lib/jwt";
 import { checkIfInWatchlist } from "@/server-actions/user.action";
-import { Metadata } from "next";
-
+import { PageProps } from "@/types/page.type";
 // Parallel data fetching function
 const getMovieData = async (id: string, userId: string | undefined) => {
   try {
@@ -29,25 +28,8 @@ const getMovieData = async (id: string, userId: string | undefined) => {
   }
 };
 
-// Metadata generation
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
-}): Promise<Metadata> {
-  const { movieData } = (await getMovieData(params.id, undefined)) ?? {};
-
-  return {
-    title: movieData?.data.Title ?? "Movie Details",
-    description: movieData?.data.Plot,
-    openGraph: {
-      images: [{ url: movieData?.data.Poster ?? "" }],
-    },
-  };
-}
-
-const MoviePageById = async ({ params }: { params: { id: string } }) => {
-  const id = params.id;
+const MoviePageById = async ({ params }: PageProps) => {
+  const id = (await params).id;
   const user = await getSession();
   const data = await getMovieData(id, user?.userId);
 
