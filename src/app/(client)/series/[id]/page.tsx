@@ -35,8 +35,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const id = (await params).id;
-  const { seriesData } = (await getSeriesData(id, undefined)) ?? {};
+  const { seriesData } = (await getSeriesData(params.id, undefined)) ?? {};
 
   return {
     title: seriesData?.data.Title ?? "Series Details",
@@ -48,14 +47,14 @@ export async function generateMetadata({
 }
 
 const TvShowById = async ({ params }: { params: { id: string } }) => {
-  const id = (await params).id;
+  const id = params.id;
   const user = await getSession();
   const data = await getSeriesData(id, user?.userId);
 
   if (!data) return null;
 
   const { seriesData, isInWatchlist } = data;
-  console.log(seriesData);
+
   return (
     <Suspense fallback={<MovieSeriesDetailsSkeleton />}>
       <SeriesDetails

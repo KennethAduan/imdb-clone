@@ -35,8 +35,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const id = (await params).id;
-  const { movieData } = (await getMovieData(id, undefined)) ?? {};
+  const { movieData } = (await getMovieData(params.id, undefined)) ?? {};
 
   return {
     title: movieData?.data.Title ?? "Movie Details",
@@ -48,7 +47,7 @@ export async function generateMetadata({
 }
 
 const MoviePageById = async ({ params }: { params: { id: string } }) => {
-  const id = (await params).id;
+  const id = params.id;
   const user = await getSession();
   const data = await getMovieData(id, user?.userId);
 
