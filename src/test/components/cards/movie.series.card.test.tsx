@@ -11,6 +11,7 @@ jest.mock("next/image", () => ({
   }: {
     alt: string;
     "data-testid": string;
+    // eslint-disable-next-line @next/next/no-img-element
   }) => <img alt={alt} data-testid={dataTestId} />,
 }));
 

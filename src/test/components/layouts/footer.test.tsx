@@ -14,6 +14,7 @@ jest.mock("next/image", () => ({
       ...props,
       priority: props.priority?.toString() || undefined,
     };
+    // eslint-disable-next-line @next/next/no-img-element
     return <img {...modifiedProps} alt="Moviesflix logo" />;
   },
 }));
