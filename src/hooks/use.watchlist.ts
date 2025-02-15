@@ -23,6 +23,9 @@ const useWatchlist = ({ isInWatchlist, userId }: UseWatchlistProps) => {
         toast.error(data?.message);
       }
     },
+    onError: ({ error }) => {
+      toast.error(error?.serverError || "Please login to add to watchlist");
+    },
   });
 
   const { execute: remove, isExecuting: isRemoving } = useAction(

@@ -124,6 +124,22 @@ export const LATEST_SERIES_CAROUSEL_DETAILS = {
   EXPLORE_MORE_BUTTON_LINK: ROUTES.SERIES,
 } as const;
 
+export const MOVIE_SERIES_DETAILS = {
+  PLOT_TITLE: "Plot",
+  CAST_TITLE: "Cast",
+  AWARDS_TITLE: "Awards",
+  DIRECTOR_TITLE: "Director",
+  N_A_VALUE: "N/A",
+  SEASON_TITLE: "Season",
+  LABEL: {
+    IMDB: "IMDB",
+    RUNTIME: "Runtime",
+    RELEASED: "Released",
+    LANGUAGE: "Language",
+    COUNTRY: "Country",
+  },
+} as const;
+
 export const FOOTER_DETAILS = {
   LOGO: "/movie-icon.png",
   DESCRIPTION:

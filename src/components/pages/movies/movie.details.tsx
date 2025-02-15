@@ -11,6 +11,7 @@ import { MediaPoster } from "../../media.poster";
 import { WatchlistButton } from "../../watch.list.button";
 import MovieInfo from "./movie.info";
 import useWatchlist from "@/hooks/use.watchlist";
+import { APPLICATION_TYPES, MOVIE_SERIES_DETAILS } from "@/constants";
 
 type MovieDetailsProps = {
   movie: Data;
@@ -73,14 +74,16 @@ const MovieDetails = ({ movie, userId, isInWatchlist }: MovieDetailsProps) => {
             />
 
             <motion.div {...fadeIn}>
-              <MediaBadges media={movie} type="movie" />
+              <MediaBadges media={movie} type={APPLICATION_TYPES.MOVIE} />
               <MovieInfo movie={movie} />
 
               <Separator className="my-4" />
 
               {/* Plot */}
               <div className="mb-6">
-                <h2 className="mb-2 text-xl font-semibold">Plot</h2>
+                <h2 className="mb-2 text-xl font-semibold">
+                  {MOVIE_SERIES_DETAILS.PLOT_TITLE}
+                </h2>
                 <p
                   data-testid="movie-plot"
                   className="leading-relaxed text-muted-foreground"
@@ -92,11 +95,15 @@ const MovieDetails = ({ movie, userId, isInWatchlist }: MovieDetailsProps) => {
               {/* Cast & Crew */}
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                 <div>
-                  <h2 className="mb-2 text-xl font-semibold">Cast</h2>
+                  <h2 className="mb-2 text-xl font-semibold">
+                    {MOVIE_SERIES_DETAILS.CAST_TITLE}
+                  </h2>
                   <p className="text-muted-foreground">{movie.Actors}</p>
                 </div>
                 <div>
-                  <h2 className="mb-2 text-xl font-semibold">Director</h2>
+                  <h2 className="mb-2 text-xl font-semibold">
+                    {MOVIE_SERIES_DETAILS.DIRECTOR_TITLE}
+                  </h2>
                   <p className="text-muted-foreground">{movie.Director}</p>
                 </div>
               </div>
@@ -106,7 +113,9 @@ const MovieDetails = ({ movie, userId, isInWatchlist }: MovieDetailsProps) => {
                 <div className="mt-6">
                   <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-yellow-400" />
-                    <h2 className="text-xl font-semibold">Awards</h2>
+                    <h2 className="text-xl font-semibold">
+                      {MOVIE_SERIES_DETAILS.AWARDS_TITLE}
+                    </h2>
                   </div>
                   <p className="mt-2 text-muted-foreground">{movie.Awards}</p>
                 </div>

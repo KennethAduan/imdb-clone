@@ -8,7 +8,7 @@ import {
 } from "@/constants";
 import { Button } from "../ui/button";
 import { Data } from "@/types/omdb.types";
-import { Film, Tv, PlusIcon } from "lucide-react";
+import { Film, Tv } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Image from "next/image";
@@ -95,13 +95,6 @@ const HeroCard = ({ omdbDetails }: { omdbDetails: Data }) => {
               onClick={() => handleRedirectByType(omdbDetails.Type)}
             >
               {CAROUSEL_DETAILS.WATCH_NOW_BUTTON_TEXT}
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-12 p-0 transition-transform duration-300 border-0 rounded-full aspect-square hover:scale-105 bg-white/10 hover:bg-white/20"
-            >
-              <PlusIcon className="w-5 h-5 text-white" />
             </Button>
           </div>
         </div>

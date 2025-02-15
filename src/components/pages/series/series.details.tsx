@@ -4,13 +4,14 @@ import { Data } from "@/types/omdb.types";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Star, Clock, Calendar, Trophy, Globe } from "lucide-react";
 import { useState } from "react";
-import { InfoCard } from "@/components/cards/info.card";
 import { MediaBadges } from "@/components/media.badge";
 import { MediaPoster } from "@/components/media.poster";
 import { WatchlistButton } from "@/components/watch.list.button";
 import useWatchlist from "@/hooks/use.watchlist";
+import SeriesInfo from "./series.info";
+import { Trophy } from "lucide-react";
+import { MOVIE_SERIES_DETAILS } from "@/constants";
 
 type SeriesDetailsProps = {
   series: Data;
@@ -83,47 +84,16 @@ const SeriesDetails = ({
               <MediaBadges media={series} type="series" />
 
               {/* Ratings and Info */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                {series.imdbRating !== "N/A" && (
-                  <InfoCard
-                    icon={<Star className="w-4 h-4 text-yellow-400" />}
-                    label="IMDb"
-                    value={`${series.imdbRating}/10`}
-                    testId="imdb-rating"
-                  />
-                )}
-                {series.Runtime !== "N/A" && (
-                  <InfoCard
-                    icon={<Clock className="w-4 h-4" />}
-                    label="Runtime"
-                    value={series.Runtime}
-                    testId="runtime-value"
-                  />
-                )}
-                {series.Released !== "N/A" && (
-                  <InfoCard
-                    icon={<Calendar className="w-4 h-4" />}
-                    label="Released"
-                    value={series.Released}
-                    testId="release-date"
-                  />
-                )}
-                {series.Country !== "N/A" && (
-                  <InfoCard
-                    icon={<Globe className="w-4 h-4" />}
-                    label="Country"
-                    value={series.Country}
-                    testId="country-value"
-                  />
-                )}
-              </div>
+              <SeriesInfo series={series} />
 
               <Separator className="my-4" />
 
               {/* Plot */}
-              {series.Plot !== "N/A" && (
+              {series.Plot !== MOVIE_SERIES_DETAILS.N_A_VALUE && (
                 <div className="mb-6">
-                  <h2 className="text-xl font-semibold mb-2">Plot</h2>
+                  <h2 className="text-xl font-semibold mb-2">
+                    {MOVIE_SERIES_DETAILS.PLOT_TITLE}
+                  </h2>
                   <p
                     data-testid="series-plot"
                     className="text-muted-foreground leading-relaxed"
@@ -135,22 +105,26 @@ const SeriesDetails = ({
 
               {/* Cast & Crew */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {series.Actors !== "N/A" && (
+                {series.Actors !== MOVIE_SERIES_DETAILS.N_A_VALUE && (
                   <div>
-                    <h2 className="text-xl font-semibold mb-2">Cast</h2>
+                    <h2 className="text-xl font-semibold mb-2">
+                      {MOVIE_SERIES_DETAILS.CAST_TITLE}
+                    </h2>
                     <p className="text-muted-foreground">{series.Actors}</p>
                   </div>
                 )}
                 {series.Director !== "N/A" && (
                   <div>
-                    <h2 className="text-xl font-semibold mb-2">Director</h2>
+                    <h2 className="text-xl font-semibold mb-2">
+                      {MOVIE_SERIES_DETAILS.DIRECTOR_TITLE}
+                    </h2>
                     <p className="text-muted-foreground">{series.Director}</p>
                   </div>
                 )}
               </div>
 
               {/* Awards if any */}
-              {series.Awards !== "N/A" && (
+              {series.Awards !== MOVIE_SERIES_DETAILS.N_A_VALUE && (
                 <motion.div
                   {...fadeIn}
                   transition={{ delay: 0.6 }}
@@ -158,7 +132,9 @@ const SeriesDetails = ({
                 >
                   <div className="flex items-center gap-2">
                     <Trophy className="w-5 h-5 text-yellow-400" />
-                    <h2 className="text-xl font-semibold">Awards</h2>
+                    <h2 className="text-xl font-semibold">
+                      {MOVIE_SERIES_DETAILS.AWARDS_TITLE}
+                    </h2>
                   </div>
                   <p className="text-muted-foreground mt-2">{series.Awards}</p>
                 </motion.div>
