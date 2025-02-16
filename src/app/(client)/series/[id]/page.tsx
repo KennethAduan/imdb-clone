@@ -1,5 +1,4 @@
 import MovieSeriesDetailsSkeleton from "@/components/loaders/movie.series.details.skeleton";
-import { config } from "@/config/environment";
 import { APPLICATION_TYPES } from "@/constants";
 import { SeriesResponse } from "@/types/omdb.types";
 import { handleError } from "@/lib/server-utils";
@@ -12,9 +11,12 @@ import { PageProps } from "@/types/page.type";
 const getSeriesData = async (id: string, userId?: string) => {
   try {
     const [seriesResponse, watchlistStatus] = await Promise.all([
-      fetch(`${config.api.baseUrl}/${APPLICATION_TYPES.SERIES}/${id}`, {
-        next: { revalidate: 3600 },
-      }),
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/${APPLICATION_TYPES.SERIES}/${id}`,
+        {
+          next: { revalidate: 3600 },
+        }
+      ),
       checkIfInWatchlist(userId ?? "", id),
     ]);
 

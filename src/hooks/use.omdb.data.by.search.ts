@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { SearchResponseParams } from "@/types/data.fetching.type";
 import axios from "axios";
-import { API_URL } from "@/constants";
 import { SearchResponse } from "@/types/omdb.types";
 
 const getOMDBDataBySearch = async ({
@@ -9,7 +8,7 @@ const getOMDBDataBySearch = async ({
   page = "",
 }: SearchResponseParams) => {
   try {
-    const url = `${API_URL}/search?s=${search}&page=${page}`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/search?s=${search}&page=${page}`;
 
     const response = await axios<SearchResponse>(url);
 

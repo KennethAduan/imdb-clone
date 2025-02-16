@@ -1,4 +1,3 @@
-import { API_URL } from "@/constants";
 import { LatestResponse } from "@/types/data.fetching.type";
 import { OMDBResponse } from "@/types/omdb.types";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +11,7 @@ const getLatestOMDBDataByType = async ({
 }: LatestResponse) => {
   try {
     const response = await axios<OMDBResponse>(
-      `${API_URL}/omdb?type=${type}&page=${page}&y=${year}&plot=${plot}`
+      `${process.env.NEXT_PUBLIC_API_URL}/omdb?type=${type}&page=${page}&y=${year}&plot=${plot}`
     );
 
     if (response.data.Response === "True") {

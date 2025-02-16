@@ -1,4 +1,3 @@
-import { config } from "@/config/environment";
 import { APPLICATION_TYPES } from "@/constants";
 import MovieDetails from "@/components/pages/movies/movie.details";
 import { Suspense } from "react";
@@ -12,9 +11,12 @@ import { PageProps } from "@/types/page.type";
 const getMovieData = async (id: string, userId: string | undefined) => {
   try {
     const [movieResponse, watchlistStatus] = await Promise.all([
-      fetch(`${config.api.baseUrl}/${APPLICATION_TYPES.MOVIE}/${id}`, {
-        next: { revalidate: 3600 },
-      }),
+      fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/${APPLICATION_TYPES.MOVIE}/${id}`,
+        {
+          next: { revalidate: 3600 },
+        }
+      ),
       checkIfInWatchlist(userId ?? "", id),
     ]);
     if (!movieResponse.ok) {
