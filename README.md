@@ -220,4 +220,4 @@ To learn more about the technologies used in this project:
 
 This application can be deployed on [Vercel](https://vercel.com) with minimal configuration.
 
-Production link : https://moviesflix-hazel.vercel.app/
+Production link : https://imdb-clone-one-drab.vercel.app/
