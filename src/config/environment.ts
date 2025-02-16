@@ -32,7 +32,7 @@ export const config = {
     baseUrl: env.API_URL || process.env.API_URL,
     omdb: {
       baseUrl: env.OMDB_API_URL || process.env.OMDB_API_URL,
-      key: env.OMDB_API_KEY || process.env.OMDB_API_KEY, // Fallback to process.env
+      key: env.OMDB_API_KEY || process.env.OMDB_API_KEY,
     },
   },
   environment: env.NODE_ENV || process.env.NODE_ENV,

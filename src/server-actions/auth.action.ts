@@ -27,7 +27,7 @@ export const signUpAction = actionClient
 
     const token = await encrypt({ userId: newUser.id, email: newUser.email });
 
-    (await cookies()).set(config.auth.jwt.sessionName, token, {
+    (await cookies()).set(config.auth.jwt.sessionName || "", token, {
       expires: new Date(Date.now() + Number(config.auth.jwt.expiresIn)),
       httpOnly: true,
     });
@@ -54,7 +54,7 @@ export const signInAction = actionClient
 
     const token = await encrypt({ userId: user.id, email: user.email });
 
-    (await cookies()).set(config.auth.jwt.sessionName, token, {
+    (await cookies()).set(config.auth.jwt.sessionName || "", token, {
       expires: new Date(Date.now() + Number(config.auth.jwt.expiresIn)),
       httpOnly: true,
     });
@@ -64,7 +64,7 @@ export const signInAction = actionClient
 
 export const signOutAction = actionClient.action(async () => {
   try {
-    (await cookies()).delete(config.auth.jwt.sessionName);
+    (await cookies()).delete(config.auth.jwt.sessionName || "");
     return { success: true, message: "User signed out successfully" };
   } catch (error) {
     console.error("Error signing out:", error);
