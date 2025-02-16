@@ -4,7 +4,7 @@ import { NextResponse, NextRequest } from "next/server";
 
 const PRIVATE_ROUTES = ["/profile"];
 const allowedOrigins = [
-  "https://moviesflix-hazel.vercel.app/",
+  "https://moviesflix-hazel.vercel.app",
   "http://localhost:3000",
 ];
 
@@ -26,6 +26,22 @@ export async function middleware(request: NextRequest) {
       ...corsOptions,
     };
     return NextResponse.json({}, { headers: preflightHeaders });
+  }
+
+  // Allow public access to GET requests
+  if (
+    request.method === "GET" &&
+    request.nextUrl.pathname.startsWith("/api/")
+  ) {
+    const response = NextResponse.next();
+    // Still apply CORS headers
+    if (isAllowedOrigin) {
+      response.headers.set("Access-Control-Allow-Origin", origin);
+    }
+    Object.entries(corsOptions).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+    return response;
   }
 
   // Handle simple requests
@@ -61,5 +77,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: "/api/:path*",
+  matcher: ["/api/:path*", "/profile"],
 };
