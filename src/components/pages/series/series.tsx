@@ -10,7 +10,9 @@ import MovieSeriesCard from "@/components/cards/movie.series.card";
 import ErrorData from "@/components/error.data";
 import MoviesSeriesCardSkeleton from "@/components/loaders/movies.series.card.skeleton";
 import PagePagination from "@/components/page.pagination";
-
+import { isTrue } from "@/lib/utils";
+import NavigationLoader from "@/components/loaders/navigation.loader";
+import { AnimatePresence } from "framer-motion";
 const Series = memo(() => {
   const params = useSearchParams();
   const page = params.get("page") || "1";
@@ -36,7 +38,7 @@ const Series = memo(() => {
     [router]
   );
 
-  if (isLoading) {
+  if (isTrue(isLoading)) {
     return <MoviesSeriesCardSkeleton data-testid="movies-series-skeleton" />;
   }
   if (error) {
@@ -44,31 +46,36 @@ const Series = memo(() => {
   }
 
   return (
-    <section
-      data-testid="search-results-section"
-      className="w-full max-w-[90%] md:max-w-[80%] mx-auto mb-4 mt-24"
-    >
-      <PagePagination />
-      <div
-        data-testid="search-results-grid"
-        className={`grid grid-cols-1 gap-6 p-6 md:grid-cols-5 ${
-          isPending ? "opacity-70" : ""
-        }`}
+    <>
+      <AnimatePresence>
+        {isTrue(isPending) && <NavigationLoader />}
+      </AnimatePresence>
+      <section
+        data-testid="search-results-section"
+        className="w-full max-w-[90%] md:max-w-[80%] mx-auto mb-4 mt-24"
       >
-        {seriesData?.Search?.map((item) => (
-          <MovieSeriesCard
-            key={item.imdbID}
-            showYear
-            content={item as Data}
-            onClick={() => handleCardClick(item.imdbID)}
-            data-testid={`movie-card-${item.imdbID}`}
-          />
-        ))}
-      </div>
-      <div data-testid="mobile-pagination" className="block sm:hidden">
         <PagePagination />
-      </div>
-    </section>
+        <div
+          data-testid="search-results-grid"
+          className={`grid grid-cols-1 gap-6 p-6 md:grid-cols-5 ${
+            isPending ? "opacity-70" : ""
+          }`}
+        >
+          {seriesData?.Search?.map((item) => (
+            <MovieSeriesCard
+              key={item.imdbID}
+              showYear
+              content={item as Data}
+              onClick={() => handleCardClick(item.imdbID)}
+              data-testid={`movie-card-${item.imdbID}`}
+            />
+          ))}
+        </div>
+        <div data-testid="mobile-pagination" className="block sm:hidden">
+          <PagePagination />
+        </div>
+      </section>
+    </>
   );
 });
 

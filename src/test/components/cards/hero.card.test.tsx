@@ -34,7 +34,7 @@ describe("HeroCard", () => {
   });
 
   it("renders essential elements", () => {
-    render(<HeroCard omdbDetails={mockData as Data} />);
+    render(<HeroCard omdbDetails={mockData as Data} onCardClick={mockPush} />);
 
     // Check if main elements are present
     expect(screen.getByText(mockData.Title)).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe("HeroCard", () => {
   });
 
   it("handles navigation on watch button click", () => {
-    render(<HeroCard omdbDetails={mockData as Data} />);
+    render(<HeroCard omdbDetails={mockData as Data} onCardClick={mockPush} />);
 
     fireEvent.click(
       screen.getByRole("button", {
@@ -57,6 +57,6 @@ describe("HeroCard", () => {
       })
     );
 
-    expect(mockPush).toHaveBeenCalledWith(`/movies/${mockData.imdbID}`);
+    expect(mockPush).toHaveBeenCalledWith(`${mockData.imdbID}`, "movie");
   });
 });
