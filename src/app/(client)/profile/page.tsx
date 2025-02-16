@@ -1,4 +1,3 @@
-import { isFalse, isUndefined } from "@/lib/utils";
 import { getUserAction } from "@/server-actions/user.action";
 import ProfileForm from "@/components/forms/profile.form";
 import { ROUTES } from "@/constants";
@@ -7,10 +6,7 @@ import { redirect } from "next/navigation";
 const ProfilePage = async () => {
   const user = await getUserAction();
 
-  if (isUndefined(user!.data)) {
-    redirect(ROUTES.SIGN_IN);
-  }
-  if (isFalse(user!.success)) {
+  if (!user || !user.success) {
     redirect(ROUTES.SIGN_IN);
   }
 

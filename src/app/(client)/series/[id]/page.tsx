@@ -39,7 +39,10 @@ const TvShowById = async ({ params }: PageProps) => {
   const { seriesData, isInWatchlist } = data;
 
   return (
-    <Suspense fallback={<MovieSeriesDetailsSkeleton />}>
+    <Suspense
+      key={seriesData.data.imdbID}
+      fallback={<MovieSeriesDetailsSkeleton />}
+    >
       <SeriesDetails
         series={seriesData.data}
         userId={user?.userId ?? ""}

@@ -3,26 +3,41 @@ import { getSession } from "@/lib/jwt";
 import { NextResponse, NextRequest } from "next/server";
 
 const PRIVATE_ROUTES = ["/profile"];
+const allowedOrigins = [
+  "https://moviesflix-hazel.vercel.app/",
+  "http://localhost:3000",
+];
 
+const corsOptions = {
+  "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
 export async function middleware(request: NextRequest) {
-  // Handle CORS
+  // Check the origin from the request
+  const origin = request.headers.get("origin") ?? "";
+  const isAllowedOrigin = allowedOrigins.includes(origin);
+
+  // Handle preflighted requests
+  const isPreflight = request.method === "OPTIONS";
+
+  if (isPreflight) {
+    const preflightHeaders = {
+      ...(isAllowedOrigin && { "Access-Control-Allow-Origin": origin }),
+      ...corsOptions,
+    };
+    return NextResponse.json({}, { headers: preflightHeaders });
+  }
+
+  // Handle simple requests
   const response = NextResponse.next();
 
-  response.headers.set("Access-Control-Allow-Origin", "*");
-
-  response.headers.set(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS, PATCH"
-  );
-
-  response.headers.set("Access-Control-Allow-Headers", "*");
-
-  response.headers.set("Access-Control-Allow-Credentials", "true");
-
-  // Handle preflight requests
-  if (request.method === "OPTIONS") {
-    return response;
+  if (isAllowedOrigin) {
+    response.headers.set("Access-Control-Allow-Origin", origin);
   }
+
+  Object.entries(corsOptions).forEach(([key, value]) => {
+    response.headers.set(key, value);
+  });
 
   const session = await getSession();
   const isPrivateRoute = PRIVATE_ROUTES.includes(request.nextUrl.pathname);
@@ -44,3 +59,7 @@ export async function middleware(request: NextRequest) {
 
   return response;
 }
+
+export const config = {
+  matcher: "/api/:path*",
+};
