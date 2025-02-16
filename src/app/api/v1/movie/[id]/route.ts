@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { config } from "@/config/environment";
 import { ParamsRequest } from "../../shared/types";
 import { isEmptyString, isFalse, isUndefined } from "@/lib/utils";
-import logger from "@/lib/logger";
+
 import { MovieResponse } from "@/types/omdb.types";
 import { handleError } from "@/lib/server-utils";
 
@@ -25,7 +25,7 @@ const getMovieById = async ({ id }: ParamsRequest) => {
 
     return data;
   } catch (error) {
-    logger.error("Error fetching movie details:", { error, movieId: id });
+    console.error("Error fetching movie details:", { error, movieId: id });
     throw error;
   }
 };
@@ -41,13 +41,13 @@ export async function GET(
     }
 
     const movie = await getMovieById({ id });
-    logger.info("Movie details:", { movie });
+    console.info("Movie details:", { movie });
     return NextResponse.json({
       success: true,
       data: movie,
     });
   } catch (error) {
-    logger.error("Error in movie GET endpoint:", {
+    console.error("Error in movie GET endpoint:", {
       error,
       movieId: id,
     });

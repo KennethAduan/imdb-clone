@@ -1,5 +1,4 @@
 import { config } from "@/config/environment";
-import logger from "@/lib/logger";
 import { handleError } from "@/lib/server-utils";
 import { isFalse, isUndefined } from "@/lib/utils";
 import { SearchResponse } from "@/types/omdb.types";
@@ -33,7 +32,7 @@ const getSearchResults = async ({
     }
     return SearchResponseData;
   } catch (error) {
-    logger.error("Error fetching search results:", { error, searchTerm });
+    console.error("Error fetching search results:", { error, searchTerm });
     return handleError(
       error instanceof Error ? error.message : "Failed to fetch search results",
       500
@@ -57,7 +56,7 @@ export const GET = async (req: Request) => {
       data: response,
     });
   } catch (error) {
-    logger.error("Error in search route:", { error });
+    console.error("Error in search route:", { error });
     return handleError(
       error instanceof Error ? error.message : "Internal server error",
       500
