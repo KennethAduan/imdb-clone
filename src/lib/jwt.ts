@@ -15,15 +15,15 @@ interface SessionPayload {
 
 async function encrypt(payload: SessionPayload): Promise<string> {
   return new SignJWT({ ...payload })
-    .setProtectedHeader({ alg: config.auth.jwt.algorithm })
+    .setProtectedHeader({ alg: config.auth.jwt.algorithm || "" })
     .setIssuedAt()
-    .setExpirationTime(config.auth.jwt.expiresIn)
+    .setExpirationTime(config.auth.jwt.expiresIn || "")
     .sign(encodedKey);
 }
 
 async function decrypt(input: string): Promise<SessionPayload> {
   const { payload } = await jwtVerify(input, encodedKey, {
-    algorithms: [config.auth.jwt.algorithm],
+    algorithms: [config.auth.jwt.algorithm || ""],
   });
   return payload as unknown as SessionPayload;
 }
