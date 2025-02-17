@@ -10,12 +10,31 @@ import { PageProps } from "@/types/page.type";
 // Parallel data fetching function
 const getMovieData = async (id: string, userId: string | undefined) => {
   try {
-    // Add more robust error logging
     console.log(`Fetching movie data for ID: ${id}`);
-
     const movieUrl = `${process.env.NEXT_PUBLIC_API_URL}/${APPLICATION_TYPES.MOVIE}/${id}`;
-    console.log(`API URL: ${movieUrl}`);
 
+    // If no userId, only fetch movie data
+    if (!userId) {
+      const movieResponse = await fetch(movieUrl, {
+        next: { revalidate: 3600 },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!movieResponse.ok) {
+        console.error(
+          `Movie API error: ${movieResponse.status} ${movieResponse.statusText}`
+        );
+        handleError(Error(movieResponse.statusText), movieResponse.status);
+      }
+
+      const movieData: MovieResponse = await movieResponse.json();
+      return { movieData, isInWatchlist: false };
+    }
+
+    // If userId exists, fetch both movie data and watchlist status
     const [movieResponse, watchlistStatus] = await Promise.all([
       fetch(movieUrl, {
         next: { revalidate: 3600 },
@@ -24,7 +43,7 @@ const getMovieData = async (id: string, userId: string | undefined) => {
           "Content-Type": "application/json",
         },
       }),
-      checkIfInWatchlist(userId ?? "", id),
+      checkIfInWatchlist(userId, id),
     ]);
 
     if (!movieResponse.ok) {
@@ -35,7 +54,7 @@ const getMovieData = async (id: string, userId: string | undefined) => {
     }
 
     const movieData: MovieResponse = await movieResponse.json();
-    return { movieData, isInWatchlist: watchlistStatus.success };
+    return { movieData, isInWatchlist: watchlistStatus?.success ?? false };
   } catch (error) {
     console.error("Error fetching movie data:", error);
     handleError(error as Error, 500);

@@ -8,20 +8,42 @@ import { checkIfInWatchlist } from "@/server-actions/user.action";
 import { getSession } from "@/lib/jwt";
 import { PageProps } from "@/types/page.type";
 // Parallel data fetching function
-const getSeriesData = async (id: string, userId?: string) => {
+const getSeriesData = async (id: string, userId: string | undefined) => {
   try {
+    console.log(`Fetching movie data for ID: ${id}`);
+    const seriesUrl = `${process.env.NEXT_PUBLIC_API_URL}/${APPLICATION_TYPES.SERIES}/${id}`;
+
+    // If no userId, only fetch series data
+    if (!userId) {
+      const seriesResponse = await fetch(seriesUrl, {
+        next: { revalidate: 3600 },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!seriesResponse.ok) {
+        console.error(
+          `Series API error: ${seriesResponse.status} ${seriesResponse.statusText}`
+        );
+        handleError(Error(seriesResponse.statusText), seriesResponse.status);
+      }
+
+      const seriesData: SeriesResponse = await seriesResponse.json();
+      return { seriesData, isInWatchlist: false };
+    }
+
+    // If userId exists, fetch both movie data and watchlist status
     const [seriesResponse, watchlistStatus] = await Promise.all([
-      fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/${APPLICATION_TYPES.SERIES}/${id}`,
-        {
-          next: { revalidate: 3600 },
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      ),
-      checkIfInWatchlist(userId ?? "", id),
+      fetch(seriesUrl, {
+        next: { revalidate: 3600 },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }),
+      checkIfInWatchlist(userId, id),
     ]);
 
     if (!seriesResponse.ok) {
@@ -32,13 +54,12 @@ const getSeriesData = async (id: string, userId?: string) => {
     }
 
     const seriesData: SeriesResponse = await seriesResponse.json();
-    return { seriesData, isInWatchlist: watchlistStatus.success };
+    return { seriesData, isInWatchlist: watchlistStatus?.success ?? false };
   } catch (error) {
     console.error("Error fetching series data:", error);
     handleError(error as Error, 500);
   }
 };
-
 export const generateMetadata = async ({ params }: PageProps) => {
   const id = (await params).id;
   const seriesData = await getSeriesData(id, "");
