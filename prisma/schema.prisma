@@ -6,35 +6,34 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:../src/database/imdb.db"
+  provider  = "postgresql"
+  url  	    = env("DATABASE_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String   // Will store hashed password
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String       @id @default(cuid())
+  email       String       @unique
+  password    String // Will store hashed password
+  name        String?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   savedMovies SavedMovie[]
 }
 
 model SavedMovie {
-  id          String   @id @default(cuid())
-  imdbId      String   // OMDB movie ID
-  type        String   // movie or series
-  title       String   // movie or series title
-  poster      String   // movie or series poster
-  year        String   // movie or series year
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  imdbId    String // OMDB movie ID
+  type      String // movie or series
+  title     String // movie or series title
+  poster    String // movie or series poster
+  year      String // movie or series year
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@unique([userId, imdbId]) 
+  @@unique([userId, imdbId])
   @@index([userId])
   @@index([imdbId])
 }
-

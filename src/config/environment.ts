@@ -11,6 +11,8 @@ const envSchema = z.object({
   SESSION_NAME: z.string(),
   JWT_SECRET: z.string(),
   JWT_EXPIRES_IN: z.string(),
+  DATABASE_URL: z.string(),
+  POSTGRES_URL_NON_POOLING: z.string(),
 });
 
 // This will not throw an error, but will log warnings
@@ -43,5 +45,10 @@ export const config = {
       secret: env.JWT_SECRET || process.env.JWT_SECRET,
       expiresIn: env.JWT_EXPIRES_IN || process.env.JWT_EXPIRES_IN,
     },
+  },
+  postgres: {
+    url: env.DATABASE_URL || process.env.DATABASE_URL,
+    nonPoolingUrl:
+      env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL_NON_POOLING,
   },
 } as const;
