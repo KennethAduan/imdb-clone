@@ -1,16 +1,16 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  OMDB_API_KEY: z.string().optional().default(""),
-  OMDB_API_URL: z.string().optional().default("https://www.omdbapi.com"),
-  API_URL: z.string().optional().default("http://localhost:3000"),
+  OMDB_API_KEY: z.string(),
+  OMDB_API_URL: z.string(),
+  API_URL: z.string(),
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
-  ALGORITHM: z.string().optional().default("HS256"),
-  SESSION_NAME: z.string().optional().default("session"),
-  JWT_SECRET: z.string().optional().default("your-secret-key"),
-  JWT_EXPIRES_IN: z.string().default("7d"),
+  ALGORITHM: z.string(),
+  SESSION_NAME: z.string(),
+  JWT_SECRET: z.string(),
+  JWT_EXPIRES_IN: z.string(),
 });
 
 // This will not throw an error, but will log warnings
