@@ -33,9 +33,7 @@ describe("Series Route Handler", () => {
     const request = new Request(
       "http://localhost:3000/api/v1/series/tt0903747"
     );
-    await GET(request, {
-      params: { id: "tt0903747" },
-    });
+    await GET(request, { params: Promise.resolve({ id: "tt0903747" }) });
 
     // Verify the fetch call
     expect(global.fetch).toHaveBeenCalledWith(
@@ -51,9 +49,7 @@ describe("Series Route Handler", () => {
 
   it("should handle empty series ID", async () => {
     const request = new Request("http://localhost:3000/api/v1/series/");
-    await GET(request, {
-      params: { id: "" },
-    });
+    await GET(request, { params: Promise.resolve({ id: "" }) });
 
     expect(NextResponse.json).toHaveBeenCalledWith(
       {
@@ -66,9 +62,7 @@ describe("Series Route Handler", () => {
 
   it("should handle undefined series ID", async () => {
     const request = new Request("http://localhost:3000/api/v1/series/");
-    await GET(request, {
-      params: { id: "" },
-    });
+    await GET(request, { params: Promise.resolve({ id: "" }) });
 
     expect(NextResponse.json).toHaveBeenCalledWith(
       {
@@ -90,9 +84,7 @@ describe("Series Route Handler", () => {
     const request = new Request(
       "http://localhost:3000/api/v1/series/tt0903747"
     );
-    await GET(request, {
-      params: { id: "tt0903747" },
-    });
+    await GET(request, { params: Promise.resolve({ id: "tt0903747" }) });
 
     expect(NextResponse.json).toHaveBeenCalledWith(
       {
@@ -112,9 +104,7 @@ describe("Series Route Handler", () => {
     const request = new Request(
       "http://localhost:3000/api/v1/series/tt0903747"
     );
-    await GET(request, {
-      params: { id: "tt0903747" },
-    });
+    await GET(request, { params: Promise.resolve({ id: "tt0903747" }) });
 
     expect(NextResponse.json).toHaveBeenCalledWith(
       {

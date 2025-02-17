@@ -2,7 +2,6 @@ import { config } from "@/config/environment";
 import { NextResponse } from "next/server";
 import {
   getRandomSearchTerm,
-  isEmptyArray,
   isEmptyString,
   isFalse,
   isUndefined,
@@ -54,18 +53,25 @@ export const GET = async (req: Request) => {
 
       const data: OMDBResponse = await response.json();
 
-      if (isEmptyArray(data.Search)) {
-        return handleError(data.error?.message ?? "No results found", 400);
+      // Add null check before checking array length
+      if (!data || !data.Search) {
+        return handleError("No results found", 400);
+      }
+
+      // Only check if empty after confirming array exists
+      if (Array.isArray(data.Search) && data.Search.length === 0) {
+        return handleError("No results found", 400);
       }
 
       return NextResponse.json({
         ...data,
       });
     } catch (fetchError) {
-      console.error(fetchError as Error);
+      console.error("OMDB API fetch error:", fetchError);
       return handleError(fetchError, 503);
     }
   } catch (error) {
+    console.error("General error in OMDB route:", error);
     return handleError(error);
   }
 };

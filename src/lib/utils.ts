@@ -19,8 +19,9 @@ export const isEmptyObject = (value: object) => {
   return Object.keys(value).length === 0;
 };
 
-export const isEmptyArray = (value: unknown[]) => {
-  return value.length === 0;
+export const isEmptyArray = (arr: unknown[] | null | undefined): boolean => {
+  if (!arr) return true;
+  return Array.isArray(arr) && arr.length === 0;
 };
 
 export const isEmptyString = (value: string) => {

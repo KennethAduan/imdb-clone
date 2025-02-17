@@ -12,43 +12,56 @@ const corsHeaders = {
 };
 
 export async function middleware(request: NextRequest) {
-  const response = NextResponse.next();
+  try {
+    const response = NextResponse.next();
 
-  Object.entries(corsHeaders).forEach(([key, value]) => {
-    response.headers.set(key, value);
-  });
-
-  if (request.method === "OPTIONS") {
-    return new NextResponse(null, {
-      status: 200,
-      headers: corsHeaders,
+    // Add CORS headers
+    Object.entries(corsHeaders).forEach(([key, value]) => {
+      response.headers.set(key, value);
     });
-  }
 
-  const session = await getSession();
-  const isPrivateRoute = PRIVATE_ROUTES.includes(request.nextUrl.pathname);
+    if (request.method === "OPTIONS") {
+      return new NextResponse(null, {
+        status: 200,
+        headers: corsHeaders,
+      });
+    }
+    // Get session
+    const session = await getSession();
+    const isPrivateRoute = PRIVATE_ROUTES.some((route) =>
+      request.nextUrl.pathname.startsWith(route)
+    );
 
-  if (isPrivateRoute && !session) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
-  }
-
-  // 5. Refresh session if it exists
-  if (session) {
-    try {
-      await refreshSession(request);
-    } catch (error) {
-      console.error("Error updating session:", error);
+    // Only redirect for private routes
+    if (isPrivateRoute && !session) {
+      console.log("Redirecting to sign-in: No session found for private route");
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
-  }
 
-  return response;
+    // Refresh session if it exists
+    if (session) {
+      try {
+        await refreshSession(request);
+      } catch (error) {
+        console.error("Error refreshing session:", error);
+        // Only redirect to sign-in for private routes when session refresh fails
+        if (isPrivateRoute) {
+          return NextResponse.redirect(new URL("/sign-in", request.url));
+        }
+      }
+    }
+
+    return response;
+  } catch (error) {
+    console.error("Middleware error:", error);
+    return NextResponse.next();
+  }
 }
 
 export const config = {
   matcher: [
     "/api/:path*",
-    "/profile",
-    "/((?!_next/static|favicon.ico|images).*)",
+    "/profile/:path*",
+    "/((?!_next/static|_next/image|favicon.ico|images|.*\\.(?:jpg|jpeg|gif|png|svg|ico)).*)",
   ],
 };

@@ -27,7 +27,7 @@ describe("Movies API Route", () => {
     const mockMovie = {
       Title: "Test Movie",
       Year: "2024",
-      imdbID: "tt1234567",
+      imdbID: "tt32306375",
       success: true,
     };
 
@@ -37,14 +37,12 @@ describe("Movies API Route", () => {
     });
 
     const request = new Request(
-      "http://localhost:3000/api/v1/movies/tt1234567"
+      "http://localhost:3000/api/v1/movies/tt32306375"
     );
-    await GET(request, {
-      params: { id: "tt1234567" },
-    });
+    await GET(request, { params: Promise.resolve({ id: "tt32306375" }) });
 
     expect(global.fetch).toHaveBeenCalledWith(
-      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=movie&i=tt1234567`
+      `${config.api.omdb.baseUrl}?apikey=${config.api.omdb.key}&type=movie&i=tt32306375`
     );
     expect(NextResponse.json).toHaveBeenCalledWith({
       success: true,
@@ -54,9 +52,7 @@ describe("Movies API Route", () => {
 
   it("should handle empty movie ID", async () => {
     const request = new Request("http://localhost:3000/api/v1/movies/");
-    await GET(request, {
-      params: { id: "" },
-    });
+    await GET(request, { params: Promise.resolve({ id: "" }) });
 
     expect(NextResponse.json).toHaveBeenCalledWith(
       {
@@ -73,11 +69,9 @@ describe("Movies API Route", () => {
     });
 
     const request = new Request(
-      "http://localhost:3000/api/v1/movies/tt1234567"
+      "http://localhost:3000/api/v1/movies/tt32306375"
     );
-    await GET(request, {
-      params: { id: "tt1234567" },
-    });
+    await GET(request, { params: Promise.resolve({ id: "tt32306375" }) });
 
     expect(NextResponse.json).toHaveBeenCalledWith(
       {

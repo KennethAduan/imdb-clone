@@ -11,6 +11,9 @@ import PagePagination from "../page.pagination";
 import MoviesSeriesCardSkeleton from "../loaders/movies.series.card.skeleton";
 import ErrorData from "../error.data";
 import useOMDBDataBySearch from "@/hooks/use.omdb.data.by.search";
+import NavigationLoader from "../loaders/navigation.loader";
+import { isTrue } from "@/lib/utils";
+import { AnimatePresence } from "framer-motion";
 
 const SearchResults = memo(({ search }: SearchResponseParams) => {
   const params = useSearchParams();
@@ -61,32 +64,37 @@ const SearchResults = memo(({ search }: SearchResponseParams) => {
   }
 
   return (
-    <section
-      data-testid="search-results-section"
-      className="w-full max-w-[90%] md:max-w-[70%] mx-auto mb-4 mt-24"
-    >
-      <PagePagination />
-      <div
-        data-testid="search-results-grid"
-        className={`grid grid-cols-1 gap-6 p-6 md:grid-cols-5 ${
-          isPending ? "opacity-70" : ""
-        }`}
+    <>
+      <AnimatePresence>
+        {isTrue(isPending) && <NavigationLoader />}
+      </AnimatePresence>
+      <section
+        data-testid="search-results-section"
+        className="w-full max-w-[90%] md:max-w-[70%] mx-auto mb-4 mt-24"
       >
-        {searchResultsData.map((item) => (
-          <MovieSeriesCard
-            key={item.imdbID}
-            showType
-            showYear
-            content={item as Data}
-            onClick={() => handleCardClick(item.imdbID, item.Type)}
-            data-testid={`movie-card-${item.imdbID}`}
-          />
-        ))}
-      </div>
-      <div data-testid="mobile-pagination" className="block sm:hidden">
         <PagePagination />
-      </div>
-    </section>
+        <div
+          data-testid="search-results-grid"
+          className={`grid grid-cols-1 gap-6 p-6 md:grid-cols-5 ${
+            isPending ? "opacity-70" : ""
+          }`}
+        >
+          {searchResultsData.map((item) => (
+            <MovieSeriesCard
+              key={item.imdbID}
+              showType
+              showYear
+              content={item as Data}
+              onClick={() => handleCardClick(item.imdbID, item.Type)}
+              data-testid={`movie-card-${item.imdbID}`}
+            />
+          ))}
+        </div>
+        <div data-testid="mobile-pagination" className="block sm:hidden">
+          <PagePagination />
+        </div>
+      </section>
+    </>
   );
 });
 
